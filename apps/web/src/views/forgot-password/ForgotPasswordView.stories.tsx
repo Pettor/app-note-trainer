@@ -24,7 +24,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const defaultArgs = {
-  appName: "My App",
+  appName: "Note Trainer",
   resetForm: {
     loading: false,
     onSubmit: () => console.log("onSubmit"),

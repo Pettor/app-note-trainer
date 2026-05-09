@@ -24,7 +24,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const defaultArgs = {
-  appName: "My App",
+  appName: "Note Trainer",
   loginForm: {
     loading: false,
     onForgotPassword: () => console.log("handleForgotPassword"),
