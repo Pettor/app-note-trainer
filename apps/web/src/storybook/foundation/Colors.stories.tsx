@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactElement, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactElement, type ReactNode } from "react";
 import { Card, CardContent } from "@heroui/react";
 import { DocumentationDecorator, DocumentationLayout } from "@package/storybook";
 
@@ -65,31 +65,54 @@ function ColorItem({ text, bgColor }: { text: string; bgColor: string }): ReactE
   );
 }
 
+function GradientSwatch({ text, style }: { text: string; style: CSSProperties }): ReactElement {
+  return (
+    <div className="m-2 flex h-15 w-35 items-center justify-center overflow-hidden rounded-xl" style={style}>
+      <span className="truncate px-3 text-xs text-white">{text}</span>
+    </div>
+  );
+}
+
+function GradientBar(): ReactElement {
+  return <div className="mx-6 my-3 h-3 rounded-full" style={{ background: "var(--brand-gradient)" }} />;
+}
+
 export function Colors(): ReactElement {
   return (
     <DocumentationLayout label="Colors">
       <div className="h-8" />
       <div className="flex flex-col gap-4">
-        <ColorSection title="Base Colors">
-          <ColorItem text="--white" bgColor="bg-[var(--white)]" />
-          <ColorItem text="--black" bgColor="bg-[var(--black)]" />
-          <ColorItem text="--snow" bgColor="bg-[var(--snow)]" />
-          <ColorItem text="--eclipse" bgColor="bg-[var(--eclipse)]" />
-        </ColorSection>
-        <ColorSection title="Background & Surface">
+        <ColorSection title="Background & Surfaces">
           <ColorItem text="--background" bgColor="bg-background" />
           <ColorItem text="--foreground" bgColor="bg-foreground" />
           <ColorItem text="--surface" bgColor="bg-surface" />
           <ColorItem text="--surface-foreground" bgColor="bg-surface-foreground" />
+          <ColorItem text="--surface-secondary" bgColor="bg-surface-secondary" />
+          <ColorItem text="--surface-secondary-fg" bgColor="bg-surface-secondary-foreground" />
+          <ColorItem text="--surface-tertiary" bgColor="bg-surface-tertiary" />
+          <ColorItem text="--surface-tertiary-fg" bgColor="bg-surface-tertiary-foreground" />
           <ColorItem text="--overlay" bgColor="bg-overlay" />
           <ColorItem text="--overlay-foreground" bgColor="bg-overlay-foreground" />
         </ColorSection>
-        <ColorSection title="Primary Colors">
+
+        <ColorSection title="Brand Colors">
           <ColorItem text="--accent" bgColor="bg-accent" />
-          <ColorItem text="--accent-foreground" bgColor="bg-accent-foreground" />
+          <ColorItem text="--secondary" bgColor="bg-[var(--secondary)]" />
           <ColorItem text="--accent-soft" bgColor="bg-accent-soft" />
-          <ColorItem text="--accent-soft-foreground" bgColor="bg-accent-soft-foreground" />
         </ColorSection>
+
+        <div>
+          <p className="text-xl font-medium">Brand Gradient</p>
+          <div className="h-2" />
+          <GradientBar />
+          <div className="flex flex-row flex-wrap items-center justify-start px-4 py-1">
+            <GradientSwatch text="--brand-grad-1" style={{ background: "var(--brand-grad-1)" }} />
+            <GradientSwatch text="--brand-grad-2" style={{ background: "var(--brand-grad-2)" }} />
+            <GradientSwatch text="--brand-grad-3" style={{ background: "var(--brand-grad-3)" }} />
+            <GradientSwatch text="--brand-gradient" style={{ background: "var(--brand-gradient)", width: "9.5rem" }} />
+          </div>
+        </div>
+
         <ColorSection title="Status Colors">
           <ColorItem text="--success" bgColor="bg-success" />
           <ColorItem text="--success-foreground" bgColor="bg-success-foreground" />
@@ -98,17 +121,20 @@ export function Colors(): ReactElement {
           <ColorItem text="--danger" bgColor="bg-danger" />
           <ColorItem text="--danger-foreground" bgColor="bg-danger-foreground" />
         </ColorSection>
+
         <ColorSection title="Form Field Colors">
           <ColorItem text="--field-background" bgColor="bg-field" />
           <ColorItem text="--field-foreground" bgColor="bg-field-foreground" />
           <ColorItem text="--field-placeholder" bgColor="bg-field-placeholder" />
           <ColorItem text="--field-border" bgColor="bg-field-border" />
         </ColorSection>
+
         <ColorSection title="Other Colors">
           <ColorItem text="--default" bgColor="bg-default" />
           <ColorItem text="--default-foreground" bgColor="bg-default-foreground" />
           <ColorItem text="--muted" bgColor="bg-muted" />
           <ColorItem text="--border" bgColor="bg-border" />
+          <ColorItem text="--separator" bgColor="bg-separator" />
           <ColorItem text="--focus" bgColor="bg-focus" />
           <ColorItem text="--link" bgColor="bg-link" />
           <ColorItem text="--backdrop" bgColor="bg-[var(--backdrop)]" />

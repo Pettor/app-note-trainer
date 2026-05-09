@@ -34,6 +34,9 @@
     --accent: var(--color-theme-light-accent-default);
     --accent-foreground: var(--color-theme-light-accent-foreground);
 
+    --secondary: var(--color-theme-light-secondary-default);
+    --secondary-foreground: var(--color-theme-light-secondary-foreground);
+
     --success: var(--color-theme-light-success-default);
     --success-foreground: var(--color-theme-light-success-foreground);
 
@@ -52,6 +55,12 @@
     --field-placeholder: var(--color-theme-light-field-placeholder);
 
     --disabled-opacity: var(--layout-disabled-opacity);
+
+    /* Brand gradient — violet → magenta → amber (constant across themes) */
+    --brand-grad-1: oklch(0.55 0.22 285);
+    --brand-grad-2: oklch(0.66 0.235 15);
+    --brand-grad-3: oklch(0.80 0.165 75);
+    --brand-gradient: linear-gradient(135deg, var(--brand-grad-1), var(--brand-grad-2) 55%, var(--brand-grad-3));
   }
 
   .dark,
@@ -79,6 +88,9 @@
     --accent: var(--color-theme-dark-accent-default);
     --accent-foreground: var(--color-theme-dark-accent-foreground);
 
+    --secondary: var(--color-theme-dark-secondary-default);
+    --secondary-foreground: var(--color-theme-dark-secondary-foreground);
+
     --success: var(--color-theme-dark-success-default);
     --success-foreground: var(--color-theme-dark-success-foreground);
 
@@ -97,6 +109,12 @@
     --field-placeholder: var(--color-theme-dark-field-placeholder);
 
     --disabled-opacity: var(--layout-disabled-opacity);
+
+    /* Brand gradient — constant across themes */
+    --brand-grad-1: oklch(0.55 0.22 285);
+    --brand-grad-2: oklch(0.66 0.235 15);
+    --brand-grad-3: oklch(0.80 0.165 75);
+    --brand-gradient: linear-gradient(135deg, var(--brand-grad-1), var(--brand-grad-2) 55%, var(--brand-grad-3));
   }
 
   html {
