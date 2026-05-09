@@ -19,7 +19,6 @@ export default defineConfig({
   ],
   reporter: [["list"], ["json", { outputFile: "./test-results/test-results.json" }]],
   retries: 1,
-  workers: 1,
   testDir: "src",
   use: {
     baseURL: "https://localhost:4173",

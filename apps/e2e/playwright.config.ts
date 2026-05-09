@@ -10,7 +10,6 @@ export default defineConfig({
     },
   ],
   reporter: [["list"], ["json", { outputFile: "./test-results/test-results.json" }]],
-  workers: 1,
   retries: 1,
   testDir: "src",
   use: {

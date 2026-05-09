@@ -3,7 +3,6 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "./src",
   testMatch: "**/generate-screenshots.spec.ts",
-  workers: 1,
   reporter: "list",
   use: {
     baseURL: "http://localhost:9050",
