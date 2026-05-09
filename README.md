@@ -1,6 +1,16 @@
 # Note Trainer
 
+[![GitHub](https://img.shields.io/badge/license-MIT-green)](https://github.com/Pettor/app-pixi-image-editor/blob/main/LICENSE)
+[![Actions Main](../../actions/workflows/main.yml/badge.svg)](../../actions/workflows/main.yml)
+[![Coverage](https://img.shields.io/badge/coverage-%E2%89%A580%25-brightgreen)](../../actions/workflows/ci.yml)
+[![Storybook](https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg)](https://pettor.github.io/app-pixi-image-editor/storybook/)
+
 A progressive web app for learning to read sheet music and building a deeper understanding of music theory — on desktop and mobile.
+
+## Live Demo
+
+- **[Live Application Demo](https://pettor.github.io/app-note-trainer/app/)** - See the main application
+- **[Storybook Component Library](https://pettor.github.io/app-note-trainer/storybook/)** - Explore the component documentation
 
 ## What it does
 
