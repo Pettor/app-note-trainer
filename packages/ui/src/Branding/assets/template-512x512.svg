@@ -1,14 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="Eighth note · solo">
   <defs>
-    <linearGradient id="g-glyph" x1="0.854" y1="0.146" x2="0.146" y2="0.854">
-      <stop offset="0%" stop-color="#5294ff"/>
-      <stop offset="100%" stop-color="#ef4444"/>
-    </linearGradient>
     <linearGradient id="g-tile" x1="0.854" y1="0.146" x2="0.146" y2="0.854">
-      <stop offset="0%" stop-color="#f7f8fa"/>
-      <stop offset="100%" stop-color="#e6e8ec"/>
+      <stop offset="0%" stop-color="#6c4cf0"/>
+      <stop offset="55%" stop-color="#ee4d6b"/>
+      <stop offset="100%" stop-color="#f3a83b"/>
     </linearGradient>
   </defs>
   <rect x="0" y="0" width="240" height="240" rx="54" ry="54" fill="url(#g-tile)"/>
-  <path d="M 100 70 C 100 64 102 60 106 60 L 106 60 C 110 60 112 64 112 70 C 134 78 152 90 152 104 C 152 116 144 124 132 128 C 138 122 142 114 140 106 C 138 96 128 90 112 86 L 112 158 C 112 168 106 178 92 184 C 78 190 64 188 60 178 C 56 168 64 155 80 152 C 92 150 100 154 100 154 Z" fill="url(#g-glyph)" transform="translate(15 0)"/>
+  <path d="M 100 70 C 100 64 102 60 106 60 L 106 60 C 110 60 112 64 112 70 C 134 78 152 90 152 104 C 152 116 144 124 132 128 C 138 122 142 114 140 106 C 138 96 128 90 112 86 L 112 158 C 112 168 106 178 92 184 C 78 190 64 188 60 178 C 56 168 64 155 80 152 C 92 150 100 154 100 154 Z" fill="#ffffff" transform="translate(15 0)"/>
 </svg>
