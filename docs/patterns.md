@@ -122,7 +122,7 @@ Return a single `XxxViewProps`-shaped object so the route component can spread i
 
 ### The view
 
-Lives in `views/<name>/<Name>View.tsx`. Accepts the props object. Never calls hooks from `core/` or `@package/api` directly — if you find yourself wanting to, move the call into the route hook.
+Lives in `views/<name>/<Name>View.tsx`. Accepts the props object. Never calls hooks from `core/` directly — if you find yourself wanting to, move the call into the route hook.
 
 ## Atoms co-location
 

@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { ChartBarSquareIcon, HomeIcon } from "@heroicons/react/20/solid";
+import { HomeIcon } from "@heroicons/react/20/solid";
 import type { IntlShape } from "react-intl";
 
 export interface NavMenuItem {
@@ -11,12 +11,7 @@ export interface NavMenuItem {
   children?: NavMenuItem[];
 }
 
-export interface NavMenuSocialLinks {
-  github: string;
-  linkedIn: string;
-}
-
-export function createNavMenuItems(_socialLinks: NavMenuSocialLinks, intl: IntlShape): NavMenuItem[] {
+export function createNavMenuItems(intl: IntlShape): NavMenuItem[] {
   return [
     {
       id: "home",
@@ -27,16 +22,6 @@ export function createNavMenuItems(_socialLinks: NavMenuSocialLinks, intl: IntlS
       }),
       href: "#/",
       icon: <HomeIcon className="h-5 w-5" />,
-    },
-    {
-      id: "dashboard",
-      name: intl.formatMessage({
-        description: "NavMenuItems: menu-item - dashboard",
-        defaultMessage: "Dashboard",
-        id: "boO2/q",
-      }),
-      href: "#/dashboard",
-      icon: <ChartBarSquareIcon className="h-5 w-5" />,
     },
   ];
 }

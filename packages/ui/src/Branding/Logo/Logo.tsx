@@ -9,7 +9,7 @@ export function Logo({ size = "large" }: LogoProps): ReactElement {
   let xy = 0;
   switch (size) {
     case "small":
-      xy = 60;
+      xy = 40;
       break;
     case "medium":
       xy = 80;

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, within } from "storybook/test";
+import { expect } from "storybook/test";
 import { NavbarContent as Component } from "./NavbarContent";
 import type { NavbarContentProps as Props } from "./NavbarContent";
 import { NavbarContentCommonData } from "~/storybook/data/NavbarContentData";
@@ -35,12 +35,8 @@ export const Phone: Story = {
 
 export const Interaction: Story = {
   args: defaultArgs,
-  play: async ({ canvas, userEvent }) => {
-    const menuButton = canvas.getByTestId("home-page__menu-button");
-    await expect(menuButton).toBeInTheDocument();
-    await userEvent.click(menuButton);
-    const body = within(document.body);
-    await expect(body.getByTestId("quick-menu__settings-button")).toBeInTheDocument();
-    await userEvent.click(body.getByTestId("quick-menu__settings-button"));
+  play: async ({ canvas }) => {
+    const settingsButton = canvas.getByTestId("home-page__settings-button");
+    await expect(settingsButton).toBeInTheDocument();
   },
 };

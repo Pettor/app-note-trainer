@@ -1,6 +1,5 @@
 import type { ReactElement, ReactNode } from "react";
 import { Surface } from "@heroui/react";
-import { Logo } from "../../Branding/Logo/Logo";
 
 export interface NavbarLayoutProps {
   navbarElement: ReactNode;
@@ -29,7 +28,6 @@ export function NavbarLayout({
       {footer && (
         <footer className="container mx-auto flex flex-col place-items-center px-12 pb-12">
           <div className="grid place-items-center gap-0.5">
-            <Logo size="large" />
             <p className="text-base font-bold">{footerText ?? "Made with ☕ by Petter Hancock"}</p>
             <p>{footerCopyright ?? "Copyright © 2024 - All rights reserved"}</p>
             {footerContent && <div className="mt-4">{footerContent}</div>}

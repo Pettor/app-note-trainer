@@ -1,7 +1,7 @@
 {
-  "name": "template-web-app-react-enterprise",
+  "name": "app-note-trainer",
   "version": "0.7.0",
-  "description": "A template for building enterprise-grade web applications using React, TypeScript, and modern tooling.",
+  "description": "Note Trainer — learn to read sheet music and understand music theory through interactive exercises.",
   "license": "MIT",
   "private": true,
   "type": "module",
@@ -15,8 +15,6 @@
     "clean:all": "pnpm clean:root && turbo run clean:all",
     "clean:root": "rimraf output",
     "dev": "turbo run dev",
-    "dev:mocks": "turbo run dev:mocks",
-    "dev:mocks:cli": "pnpm --filter=@tool/mock dev:mocks:cli",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix && sherif --fix",

@@ -13,30 +13,30 @@ type Story = StoryObj<typeof meta>;
 
 export const FullSmall: Story = {
   args: {
-    appName: "My App",
+    appName: "Note Trainer",
     size: "small",
   },
   play: async ({ canvas }) => {
-    await expect(canvas.getByText("My App")).toBeInTheDocument();
+    await expect(canvas.getByText("Note Trainer")).toBeInTheDocument();
   },
 };
 
 export const FullMedium: Story = {
   args: {
-    appName: "My App",
+    appName: "Note Trainer",
     size: "medium",
   },
   play: async ({ canvas }) => {
-    await expect(canvas.getByText("My App")).toBeInTheDocument();
+    await expect(canvas.getByText("Note Trainer")).toBeInTheDocument();
   },
 };
 
 export const FullLarge: Story = {
   args: {
-    appName: "My App",
+    appName: "Note Trainer",
     size: "large",
   },
   play: async ({ canvas }) => {
-    await expect(canvas.getByText("My App")).toBeInTheDocument();
+    await expect(canvas.getByText("Note Trainer")).toBeInTheDocument();
   },
 };

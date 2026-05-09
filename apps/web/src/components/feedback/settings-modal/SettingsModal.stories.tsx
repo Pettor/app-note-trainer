@@ -19,7 +19,7 @@ const accountArgs = {
 };
 
 const aboutArgs = {
-  appName: "My App",
+  appName: "Note Trainer",
   appVersion: "1.0.0",
   serverVersion: "2.0.0",
 };

@@ -13,7 +13,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const defaultArgs = {
-  appName: "My App",
+  appName: "Note Trainer",
   appVersion: "1.0.0",
   serverVersion: "1.0.0",
 } satisfies Props;

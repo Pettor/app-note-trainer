@@ -1,7 +1,7 @@
 {
   "name": "@app/web",
   "version": "0.7.0",
-  "description": "Web application built with React, TypeScript, and Vite",
+  "description": "Note Trainer — learn to read sheet music and understand music theory through interactive exercises.",
   "license": "MIT",
   "private": true,
   "type": "module",
@@ -9,7 +9,6 @@
     "clean": "rimraf dist",
     "clean:all": "pnpm clean node_modules",
     "dev": "vite --open",
-    "dev:mocks": "vite --mode mocks",
     "lint": "eslint ./src",
     "lint:fix": "pnpm lint --fix",
     "generate:assets": "generate-assets public",
@@ -20,15 +19,14 @@
     "deploy:demo": "pnpm deploy:demo:build && pnpm deploy:move",
     "deploy:demo:build": "pnpm build:demo",
     "deploy:move": "move-cli dist \"../../output/deployment/app\" --mkdirp",
-    "test:e2e:env": "vite --mode mocks --port 4173 --strictPort",
-    "test:e2e:env:coverage": "cross-env VITE_COVERAGE=true vite --mode mocks --port 4173 --strictPort"
+    "test:e2e:env": "vite --port 4173 --strictPort",
+    "test:e2e:env:coverage": "cross-env VITE_COVERAGE=true vite --port 4173 --strictPort"
   },
   "dependencies": {
     "@config/tailwind": "workspace:*",
     "@fontsource/rubik": "catalog:design",
     "@heroicons/react": "catalog:design",
     "@heroui/react": "catalog:design",
-    "@package/api": "workspace:*",
     "@package/react": "workspace:*",
     "@package/ui": "workspace:*",
     "@tanstack/react-form": "catalog:tanstack",
@@ -60,7 +58,6 @@
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:typescript",
     "vite": "catalog:vite",
-    "vite-plugin-http2-proxy": "catalog:vite",
     "vite-plugin-istanbul": "catalog:coverage",
     "@vite-pwa/assets-generator": "catalog:vite",
     "vite-plugin-pwa": "catalog:vite",

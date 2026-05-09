@@ -95,7 +95,6 @@ HeroUIProvider (implicit via HeroUI v3 — no Provider component needed)
                                 └── AppRoutes (RouterProvider from @tanstack/react-router)
 ```
 
-Authentication state uses **Jotai atoms** (`core/auth/AuthAtoms.ts`) rather than a React Context provider; `AuthInitializer` hydrates the atom on mount.
 
 ## Data flow
 
@@ -103,13 +102,12 @@ Authentication state uses **Jotai atoms** (`core/auth/AuthAtoms.ts`) rather than
 
 1. A component or view calls a hook from `core/` (e.g. `useAuth`, `useSettingsModal`, `useCommandPalette`).
 2. The hook reads atom state or calls into a service.
-3. Mutations flow through `@tanstack/react-query` mutations defined in `@package/api`.
+3. Mutations flow through `@tanstack/react-query` mutations.
 
 ### Domain → UI
 
 1. Atoms in `core/<feature>/XxxAtoms.ts` hold global state; `atomEffect` persists relevant slices to localStorage.
-2. React Query caches server state; components consume it via the hooks exposed from `@package/api`.
-3. Route hooks adapt domain data into the props shape each view expects.
+2. React Query caches server state; route hooks adapt domain data into the props shape each view expects.
 
 ### Route → view
 
@@ -127,16 +125,8 @@ When a route needs to render a feature that reaches across the app (settings mod
 | --- | --- | --- |
 | Global, persisted UI state | Jotai atoms + `atomEffect` | `core/<feature>/XxxAtoms.ts` |
 | Local, ephemeral UI state | Jotai atoms (no persistence) | co-located with the consumer (e.g. `components/actions/command-palette/CommandPaletteAtoms.ts`) |
-| Server state | `@tanstack/react-query` | `packages/api` hooks; route loaders |
-| Auth state | Jotai atoms + initializer | `core/auth/` |
+| Server state | `@tanstack/react-query` | route loaders |
 | Component-local state | `useState`, `useReducer` | inline |
 
 Atoms live **as close to their consumer as possible**. There is no central `src/atoms/` folder — global atoms sit in the relevant `core/` feature, and feature-local atoms sit next to the component that owns the feature.
 
-## API layer
-
-- All API calls are delegated to a **Web Worker** (`ApiWorker`) via `@package/api`'s `ApiClient`, keeping the main thread free.
-- Each endpoint is a folder under `packages/api/src/Api/<EndpointName>/` containing `Schema.ts` (Zod), `Classes.ts` (domain types), `Convert.ts` (DTO → domain), and `Post.ts` / `Get.ts` (service + React Query hook).
-- `TokenStorage` is intentionally **not exported** from the barrel — access tokens stay inside worker memory.
-
-See [packages.md](./packages.md#packageapi) for the full package tour.

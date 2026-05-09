@@ -23,7 +23,6 @@
     "@tailwindcss/vite": "catalog:tailwind",
     "@vitejs/plugin-react": "catalog:vite",
     "vite": "catalog:vite",
-    "vite-plugin-http2-proxy": "catalog:vite",
     "vite-plugin-pwa": "catalog:vite"
   },
   "devDependencies": {
