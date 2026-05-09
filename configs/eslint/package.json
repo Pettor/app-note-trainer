@@ -1,0 +1,31 @@
+{
+  "name": "@config/eslint",
+  "version": "0.7.0",
+  "description": "ESLint configuration for TypeScript and React projects",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./base": "./base.js",
+    "./react": "./react.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean:all": "rimraf dist node_modules"
+  },
+  "devDependencies": {
+    "@eslint/js": "catalog:eslint",
+    "eslint": "catalog:eslint",
+    "eslint-config-prettier": "catalog:eslint",
+    "eslint-plugin-formatjs": "catalog:eslint",
+    "eslint-plugin-import-x": "catalog:eslint",
+    "eslint-plugin-prettier": "catalog:eslint",
+    "eslint-plugin-react": "catalog:eslint",
+    "eslint-plugin-react-compiler": "catalog:eslint",
+    "eslint-plugin-react-hooks": "catalog:eslint",
+    "eslint-plugin-storybook": "catalog:eslint",
+    "typescript-eslint": "catalog:eslint"
+  }
+}

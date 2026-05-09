@@ -1,0 +1,131 @@
+packages:
+- apps/*
+- configs/*
+- design/*
+- packages/*
+- tools/*
+overrides:
+  '@tanstack/react-query': catalog:tanstack
+  '@tanstack/query-core': 5.100.9
+  react: catalog:react19
+  react-dom: catalog:react19
+  # Security fixes for transitive dev dependencies flagged by GitHub Dependabot.
+  # All chains terminate in dev-only tooling (@mocks-server/*, vite-plugin-pwa,
+  # workbox-build, eslint, tsup, move-cli, commitlint).
+  # Scoped to v8 only: ESLint depends on ajv@^6 and requires an internal file
+  # removed in v8, so a broad `ajv` override breaks lint. ajv <7 is not in the
+  # vulnerable range.
+  'ajv@8': ^8.18.0
+  body-parser: ^2.0.0
+  cookie: ^1.0.0
+  express: ^5.0.0
+  flatted: ^3.4.2
+  form-data: ^4.0.4
+  got: ^15.0.0
+  handlebars: ^4.7.9
+  'js-yaml@3': ^4.0.0
+  'js-yaml@4': ^4.1.1
+  lodash: ^4.18.0
+  'minimatch@3': ^3.1.4
+  'minimatch@5': ^10.0.0
+  'minimatch@9': ^10.0.0
+  'path-to-regexp@0': ^8.0.0
+  'picomatch@2': ^4.0.0
+  'picomatch@4': ^4.0.4
+  qs: ^6.14.2
+  'rollup@2': ^4.0.0
+  'rollup@4': ^4.59.0
+  send: ^1.0.0
+  serialize-javascript: ^7.0.5
+  serve-static: ^2.0.0
+  tmp: ^0.2.4
+  'yaml@1': ^2.0.0
+  'yaml@2': ^2.8.3
+  'glob@10': ^13.0.0
+catalogs:
+  common:
+    '@faker-js/faker': 10.4.0
+    '@fontsource/rubik': 5.2.8
+    '@formatjs/cli': 6.14.4
+    clsx: 2.1.1
+    cross-env: 10.1.0
+    framer-motion: 12.38.0
+    immer: 11.1.4
+    jotai: 2.19.1
+    jotai-effect: 2.2.3
+    move-cli: 2.0.0
+    react-intl: 10.1.4
+    rimraf: 6.1.3
+    workbox-window: 7.4.0
+  design:
+    '@fontsource/rubik': 5.2.8
+    '@heroicons/react': 2.2.0
+    '@heroui/react': 3.0.4
+    'style-dictionary': 5.4.0
+  eslint:
+    '@eslint/js': 10.0.1
+    eslint: 10.3.0
+    eslint-config-prettier: 10.1.8
+    eslint-plugin-formatjs: 6.4.7
+    eslint-plugin-import-x: 4.16.2
+    eslint-plugin-prettier: 5.5.5
+    eslint-plugin-react: 7.37.5
+    eslint-plugin-react-compiler: 19.1.0-rc.2
+    eslint-plugin-react-hooks: 7.1.1
+    eslint-plugin-storybook: 10.3.6
+    typescript-eslint: 8.59.1
+  mocks:
+    '@mocks-server/admin-api-client': 7.0.1
+    '@mocks-server/admin-api-paths': 5.0.0
+    '@mocks-server/main': 4.1.0
+  playwright:
+    '@playwright/test': 1.59.1
+    playwright: 1.59.1
+  react19:
+    '@types/react': 19.2.14
+    '@types/react-dom': 19.2.3
+    babel-plugin-react-compiler: 19.1.0-rc.3
+    react: 19.2.5
+    react-dom: 19.2.5
+  storybook:
+    '@storybook/addon-a11y': 10.3.6
+    '@storybook/addon-docs': 10.3.6
+    '@storybook/addon-mcp': 0.6.0
+    '@storybook/addon-themes': 10.3.6
+    '@storybook/addon-vitest': 10.3.6
+    '@storybook/builder-vite': 10.3.6
+    '@storybook/react': 10.3.6
+    '@storybook/react-vite': 10.3.6
+    storybook: 10.3.6
+  tailwind:
+    tailwindcss: 4.2.4
+    '@tailwindcss/aspect-ratio': 0.4.2
+    '@tailwindcss/typography': 0.5.19
+    '@tailwindcss/vite': 4.2.4
+    'tw-animate-css': 1.4.0
+  typescript:
+    typescript: 6.0.3
+  validation:
+    '@hookform/resolvers': 5.2.2
+    zod: 4.4.2
+  coverage:
+    nyc: 18.0.0
+    vite-plugin-istanbul: 8.0.0
+  vite:
+    '@rolldown/plugin-babel': 0.2.3
+    '@vitejs/plugin-basic-ssl': 2.3.0
+    '@vitejs/plugin-react': 6.0.1
+    vite: 8.0.10
+    vite-plugin-http2-proxy: 0.5.1
+    vite-plugin-pwa: 1.2.0
+    '@vite-pwa/assets-generator': 1.0.2
+  tanstack:
+    '@tanstack/react-form': 1.29.1
+    '@tanstack/react-query': 5.100.9
+    '@tanstack/react-router': 1.169.1
+    '@tanstack/router-plugin': 1.167.32
+  vitest:
+    vitest: 4.1.5
+    '@vitest/browser': 4.1.5
+    '@vitest/browser-playwright': 4.1.5
+    '@vitest/coverage-v8': 4.1.5
