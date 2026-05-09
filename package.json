@@ -1,7 +1,7 @@
 {
-  "name": "template-web-app-react-enterprise",
+  "name": "app-note-trainer",
   "version": "0.7.0",
-  "description": "A template for building enterprise-grade web applications using React, TypeScript, and modern tooling.",
+  "description": "Note Trainer — learn to read sheet music and understand music theory through interactive exercises.",
   "license": "MIT",
   "private": true,
   "type": "module",

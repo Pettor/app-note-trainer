@@ -1,197 +1,81 @@
-# React Web Enterprise Application Template
+# Note Trainer
 
-[![GitHub](https://img.shields.io/badge/license-MIT-green)](https://github.com/Pettor/template-web-app-react-enterprise/blob/main/LICENSE)
-[![Actions Main](../../actions/workflows/main.yml/badge.svg)](../../actions/workflows/main.yml)
-[![Coverage](https://img.shields.io/badge/coverage-%E2%89%A580%25-brightgreen)](../../actions/workflows/ci.yml)
-[![Storybook](https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg)](https://pettor.github.io/template-web-app-react-enterprise/storybook/)
+A progressive web app for learning to read sheet music and building a deeper understanding of music theory — on desktop and mobile.
 
-A modern, production-ready React web application template designed to jumpstart your next enterprise project with industry best practices, comprehensive tooling, and a robust development workflow.
+## What it does
 
-## 🚀 Demo
+Note Trainer provides interactive exercises and drills that help musicians at any level:
 
-Experience the template in action:
+- **Note recognition** — identify notes on the staff quickly and accurately
+- **Interval training** — hear and name the distance between two notes
+- **Theory fundamentals** — understand how notes relate to scales, keys, and chords
+- **Spaced repetition** — exercises adapt to your progress so you spend time where it counts
 
-- **[Live Application Demo](https://pettor.github.io/template-web-app-react-enterprise/app/)** - See the main application
-- **[Storybook Component Library](https://pettor.github.io/template-web-app-react-enterprise/storybook/)** - Explore the component documentation
+The app works offline as a PWA and is designed for short, focused practice sessions on both phone and desktop.
 
-## ✨ Key Features
-
-This template provides a complete modern web development stack with everything you need to build scalable applications:
-
-### 🏗️ **Core Technologies**
-
-- **[React 19](https://reactjs.org/)** - Latest React with concurrent features and improved performance
-- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript for better developer experience and fewer runtime errors
-- **[Vite](https://vitejs.dev/)** - Lightning-fast development server and optimized production builds
-- **[Turborepo](https://turbo.build/repo/)** - High-performance monorepo build system for scalable development
-
-### 🎨 **Styling & UI**
-
-- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework for rapid UI development
-- **[HeroUI](https://www.heroui.com/)** - Beautiful, semantic component library built on Tailwind
-- **Responsive Design** - Mobile-first approach with modern CSS Grid and Flexbox layouts
-
-### 🧪 **Testing & Quality Assurance**
-
-- **[Vitest](https://vitest.dev/)** - Fast unit and integration testing with hot reload
-- **[Playwright](https://playwright.dev/)** - Reliable end-to-end testing across all browsers
-- **[Storybook Component Testing](https://storybook.js.org/docs/writing-tests/component-testing)** - Visual component testing and documentation
-- **Code Coverage Reports** - Comprehensive coverage tracking with detailed reporting
-
-### 🔧 **Development Tools**
-
-- **[Storybook](https://storybook.js.org/)** - Component development environment and documentation
-- **[ESLint](https://eslint.org/)** - Advanced linting with React and TypeScript rules
-- **[Prettier](https://prettier.io/)** - Consistent code formatting across the entire codebase
-- **Hot Module Replacement** - Instant feedback during development
-
-### 🚀 **DevOps & Deployment**
-
-- **[GitHub Actions](https://docs.github.com/en/actions)** - Automated CI/CD pipeline with comprehensive testing
-- **[GitHub Pages](https://pages.github.com/)** - Seamless deployment and hosting
-- **Automated Quality Gates** - Build, lint, and test validation on every pull request
-- **Branch Protection Rules** - Enforce code quality standards before merging
-
-### 🌐 **Additional Integrations**
-
-- **Mock API Server** - [Mocks Server](https://mocks-server.org/) integration for frontend development
-- **Internationalization Ready** - Built-in i18n support with React Intl
-- **Environment Configuration** - Multi-environment setup with proper variable management
-- **Performance Monitoring** - Build-time performance analysis and optimization
-
-## 🏃‍♂️ Quick Start
-
-Get up and running in minutes:
+## Quick start
 
 ### Prerequisites
 
 - Node.js 22 or higher
-- pnpm (recommended package manager)
+- pnpm (via corepack)
 
 ### Installation
 
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/Pettor/template-web-app-react.git
-   cd template-web-app-react
-   ```
-
-2. **Enable corepack for package manager**
-
-   ```bash
-   corepack enable
-   ```
-
-3. **Install dependencies**
-
-   ```bash
-   pnpm install
-   ```
-
-4. **Start development server**
-   ```bash
-   pnpm dev
-   ```
-
-Your application will be available at `http://localhost:5173` with hot reload enabled.
-
-### Available Scripts
-
-- `pnpm dev` - Start development server
-- `pnpm build` - Build for production
-- `pnpm test` - Run unit tests
-- `pnpm test:e2e` - Run end-to-end tests
-- `pnpm lint` - Run ESLint
-- `pnpm storybook` - Start Storybook development server
-- `pnpm deploy` - Build and prepare for deployment
-
-## ⚙️ Configuration
-
-### GitHub Actions Setup
-
-Enable continuous integration and deployment:
-
-1. Navigate to repository **Settings** → **Actions**
-2. Enable **"Allow all actions"**
-3. Go to **Settings** → **Rules** and create a branch protection rule:
-   - **Name**: Main
-   - **Target**: Include default branch
-   - **Required status checks**: `Lint`, `Build`, `Test Components`, `Test E2E`
-
-### GitHub Pages Deployment
-
-Set up automatic deployment:
-
-1. Go to **Settings** → **Pages**
-2. Select **Source**: Deploy from a branch
-3. Choose **Branch**: `deploy/main`
-4. Update README links to match your repository URL
-
-## 🏗️ Project Structure
-
-```
-├── apps/
-│   ├── web/                # Main React application (React 19 + Vite 8 + HeroUI v3)
-│   ├── storybook/          # Storybook configuration and stories
-│   ├── e2e/                # Playwright end-to-end tests
-│   └── mock/               # Mocks Server for API mocking
-├── packages/
-│   ├── api/                # (@package/api) API client, auth, Web Worker
-│   ├── ui/                 # (@package/ui) Cross-app UI (logos, layouts, icons)
-│   ├── mocks/              # (@package/mocks) Mocks Server admin client
-│   └── storybook/          # (@package/storybook) Storybook decorators
-├── configs/                # Shared ESLint, Tailwind, TypeScript, Vite configs
-├── design/tokens/          # (@design/tokens) Style Dictionary design tokens
-├── docs/                   # Architectural reference — start here for deeper detail
-├── .github/workflows/      # CI/CD pipeline definitions
-└── output/                 # Build artifacts
+```bash
+corepack enable
+pnpm install
+pnpm dev
 ```
 
-### Architecture
+App runs at `https://localhost:5173`.
 
-`apps/web` uses a **four-layer architecture** — `core/` (domain + app shell), `components/` (reusable UI), `views/` (page compositions), `routes/` (TanStack file-based routes). For the full picture, see:
+### Available scripts
 
-- [`docs/architecture.md`](./docs/architecture.md) — layers, provider hierarchy, data flow
-- [`docs/structure.md`](./docs/structure.md) — full directory tree with per-folder responsibilities
+| Command | Description |
+|---|---|
+| `pnpm dev` | Start development server |
+| `pnpm dev:mocks` | Start dev server with mock API (port 3100) |
+| `pnpm build` | Production build |
+| `pnpm test` | Run unit/component tests |
+| `pnpm test:e2e` | Run Playwright E2E tests |
+| `pnpm lint` | Run ESLint |
+| `pnpm storybook` | Start Storybook (localhost:9050) |
+
+## Project structure
+
+```
+apps/
+  web/          # Main React app (React 19 + Vite + HeroUI v3)
+  storybook/    # Component documentation
+  e2e/          # Playwright end-to-end tests
+  mock/         # Mock API server
+packages/
+  api/          # HTTP client (Web Worker-based)
+  ui/           # Shared UI components
+  react/        # Reusable React hooks
+  mocks/        # Mock data and test utilities
+configs/        # Shared ESLint, Tailwind, TypeScript, Vite configs
+design/tokens/  # Style Dictionary design tokens
+docs/           # Architecture and pattern reference
+```
+
+For architectural detail see the [`docs/`](./docs/) folder:
+
+- [`docs/architecture.md`](./docs/architecture.md) — four-layer architecture and provider hierarchy
+- [`docs/structure.md`](./docs/structure.md) — full directory tree for `apps/web`
 - [`docs/patterns.md`](./docs/patterns.md) — Controller pattern, route hooks, atom co-location
-- [`docs/packages.md`](./docs/packages.md) — workspace package tour
+- [`docs/packages.md`](./docs/packages.md) — workspace package responsibilities
 
-## 🔗 Related Templates
+## Tech stack
 
-Expand your development stack:
+- **React 19** · **TypeScript** · **Vite 8** · **Turborepo**
+- **Tailwind CSS 4** · **HeroUI v3**
+- **TanStack Router** (file-based, hash history) · **TanStack Query**
+- **Jotai** (global state) · **react-intl** (i18n)
+- **Vitest** + **Playwright** (testing) · **Storybook 10**
+- **PWA** via Workbox — offline support, installable on all platforms
 
-- **[.NET 9 Backend Template](https://github.com/Pettor/template-web-api-dotnet)** - Fully integrated C# backend template designed to work seamlessly with this React frontend
+## License
 
-## 🤝 Contributing
-
-We welcome contributions! Here's how to get involved:
-
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
-3. **Make your changes** and add tests
-4. **Run the test suite**: `pnpm test && pnpm test:e2e`
-5. **Submit a pull request** with a clear description
-
-### Contribution Guidelines
-
-- Follow existing code style and conventions
-- Add tests for new features
-- Update documentation as needed
-- Ensure all CI checks pass
-
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-- **Issues**: [GitHub Issues](https://github.com/Pettor/template-web-app-react/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/Pettor/template-web-app-react/discussions)
-- **Documentation**: [Storybook Documentation](https://pettor.github.io/template-web-app-react/storybook/)
-
----
-
-**Ready to build something amazing?** 🚀 Star this repository if you find it helpful and share it with your team!
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+MIT

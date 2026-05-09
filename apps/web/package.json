@@ -1,7 +1,7 @@
 {
   "name": "@app/web",
   "version": "0.7.0",
-  "description": "Web application built with React, TypeScript, and Vite",
+  "description": "Note Trainer — learn to read sheet music and understand music theory through interactive exercises.",
   "license": "MIT",
   "private": true,
   "type": "module",
