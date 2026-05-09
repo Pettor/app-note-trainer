@@ -8,7 +8,7 @@ This folder contains the architectural reference for the repository. Start with 
 | Find out which folder a new file belongs in | [structure.md](./structure.md) |
 | Learn the Controller / route hook / atom co-location patterns | [patterns.md](./patterns.md) |
 | Name a file, folder, hook, atom, story, or test id | [naming.md](./naming.md) |
-| Tour the workspace packages (`@package/api`, `@package/ui`, …) | [packages.md](./packages.md) |
+| Tour the workspace packages (`@package/ui`, `@package/react`, …) | [packages.md](./packages.md) |
 | Add a new component, test, or E2E spec by following an existing playbook | [`/.claude/commands/`](../.claude/commands/) |
 
 ## How the docs fit together

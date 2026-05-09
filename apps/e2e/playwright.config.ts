@@ -10,8 +10,6 @@ export default defineConfig({
     },
   ],
   reporter: [["list"], ["json", { outputFile: "./test-results/test-results.json" }]],
-  // The mock server is shared state — run tests serially to prevent
-  // concurrent Tokens_Refresh variant mutations causing flaky failures.
   workers: 1,
   retries: 1,
   testDir: "src",

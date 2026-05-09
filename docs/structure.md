@@ -129,7 +129,7 @@ views/
     └── SignUpView.tsx
 ```
 
-Each view is a **pure presentational component** that receives every value it needs via props. Views never call hooks from `core/` or `@package/api` directly — that is the route hook's job.
+Each view is a **pure presentational component** that receives every value it needs via props. Views never call hooks from `core/` directly — that is the route hook's job.
 
 A view folder contains:
 

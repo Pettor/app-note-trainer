@@ -45,7 +45,6 @@ App runs at `https://localhost:5173`.
 | Command | Description |
 |---|---|
 | `pnpm dev` | Start development server |
-| `pnpm dev:mocks` | Start dev server with mock API (port 3100) |
 | `pnpm build` | Production build |
 | `pnpm test` | Run unit/component tests |
 | `pnpm test:e2e` | Run Playwright E2E tests |
@@ -59,12 +58,9 @@ apps/
   web/          # Main React app (React 19 + Vite + HeroUI v3)
   storybook/    # Component documentation
   e2e/          # Playwright end-to-end tests
-  mock/         # Mock API server
 packages/
-  api/          # HTTP client (Web Worker-based)
   ui/           # Shared UI components
   react/        # Reusable React hooks
-  mocks/        # Mock data and test utilities
 configs/        # Shared ESLint, Tailwind, TypeScript, Vite configs
 design/tokens/  # Style Dictionary design tokens
 docs/           # Architecture and pattern reference

@@ -19,8 +19,6 @@ This file is the **rules** layer (what you must do); `docs/` is the **reference*
 ### Development
 
 - `pnpm dev` - Start development server (main app at https://localhost:5173)
-- `pnpm dev:mocks` - Start development with mock server enabled (API on port 3100)
-- `pnpm dev:mocks:cli` - Start standalone mock server only
 - `pnpm storybook` - Start Storybook development server (localhost:9050)
 
 ### Build & Deploy
@@ -33,7 +31,7 @@ This file is the **rules** layer (what you must do); `docs/` is the **reference*
 
 - `pnpm test` - Run all unit/component tests with Vitest (browser-based via Playwright)
 - `pnpm test:coverage` - Run tests with Cobertura coverage report
-- `pnpm test:e2e` - Run E2E tests with Playwright UI (starts dev server + mocks automatically)
+- `pnpm test:e2e` - Run E2E tests with Playwright UI (starts dev server automatically)
 - `pnpm test:e2e:ci` - Run E2E tests headless in the terminal (used by CI)
 
 ### Code Quality
@@ -60,13 +58,10 @@ root/
 ├── apps/
 │   ├── web/          # Main React application (Vite + React 19)
 │   ├── storybook/    # Storybook configuration and stories
-│   ├── e2e/          # Playwright end-to-end tests
-│   └── mock/         # Mocks Server for API mocking
+│   └── e2e/          # Playwright end-to-end tests
 ├── packages/
 │   ├── ui/           # (@package/ui) Shared UI components
-│   ├── api/          # (@package/api) API client, auth, data fetching
 │   ├── react/        # (@package/react) Reusable React 19 hooks
-│   ├── mocks/        # (@package/mocks) Mock data and test utilities
 │   └── storybook/    # (@package/storybook) Storybook decorators
 ├── configs/
 │   ├── eslint/       # (@config/eslint) Shared ESLint configs
@@ -99,25 +94,7 @@ root/
 - **Stack**: Playwright 1.58, Chromium, JUnit XML reporter
 - **Config**: `apps/e2e/playwright.config.ts`, base URL https://localhost:5173, 1 retry, screenshots/traces on failure
 
-### `apps/mock` — API Mock Server
-
-- **Stack**: Mocks Server 4.1, runs on port 3100
-- **Activation**: `pnpm dev:mocks` sets `--mode mocks` which switches `VITE_CONNECT_PORT` to 3100
-
 ## Packages
-
-### `@package/api` — API Client & Authentication
-
-Key exports:
-
-- `ApiClient` — Main HTTP client that offloads requests to a **Web Worker** for non-blocking execution
-- `FetchClient` — Low-level fetch wrapper
-- `JwtToken` — JWT token type
-- `ServiceError`, `createServiceError` — Typed error handling
-
-> **Security note**: `TokenStorage` is intentionally NOT exported. The access token lives only in worker memory — `TokenStorage.ts` is excluded from the public barrel and must only be imported from worker-scope modules.
-- API endpoint services: `Login`, `Logout`, `RefreshToken`, `ForgotPassword`, `SelfRegister`, `ApplicationInfo`, `PersonalProfile`
-- Types (Zod schemas + inferred DTOs + domain types co-located in `Types.ts`), Converters, Fetch utilities
 
 ### `@package/react` — Reusable React 19 Hooks
 
@@ -128,10 +105,6 @@ Key exports: `useDocumentTitle`, `useLocalStorage`, `useMediaQuery`, `useBreakpo
 ### `@package/ui` — Shared UI Components
 
 Key exports: `Logo`, `LogoFull`, `GithubIcon`, `LinkedInIcon`, `BasicLayout`, `NavbarLayout`, `BlueFadeBackground`, `GridBackground`, `Navbar`
-
-### `@package/mocks` — Mock Data & Test Utilities
-
-Key exports: `AdminApiClient`, helpers for mock server integration (used in `apps/mock`)
 
 ### `@design/tokens` — Design System Tokens
 
@@ -177,7 +150,6 @@ ToastProvider (@heroui/react)
                           └── AppRoutes (RouterProvider from @tanstack/react-router)
 ```
 
-Auth state uses **Jotai atoms** (`core/auth/AuthAtoms.ts`) — not a React Context provider.
 
 ## Key Architectural Patterns
 
@@ -203,12 +175,6 @@ Every route that has any logic splits into two files:
 
 Files prefixed with `-` are ignored by TanStack Router. Detail: [`docs/patterns.md#route-hook-pattern`](./docs/patterns.md#route-hook-pattern).
 
-### Authentication Flow
-
-- JWT-based with refresh token mechanism stored in **Web Worker memory** via `TokenStorage` (deliberately not exported from the barrel).
-- Auth state lives in Jotai atoms (`core/auth/AuthAtoms.ts`); `AuthInitializer` hydrates on mount.
-- Route guards are applied by **layout segments**: `_authenticated/route.tsx` redirects unauthenticated users, `_public/route.tsx` redirects authenticated users away from login.
-
 ### Routing Strategy
 
 - **TanStack Router** with file-based routing under `apps/web/src/routes/`.
@@ -222,17 +188,10 @@ Files prefixed with `-` are ignored by TanStack Router. Detail: [`docs/patterns.
 | --- | --- | --- |
 | Global, persisted UI state | Jotai atoms + `atomEffect` | `core/<feature>/XxxAtoms.ts` |
 | Feature-local UI state | Jotai atoms | next to the component (e.g. `components/actions/command-palette/CommandPaletteAtoms.ts`) |
-| Server state | `@tanstack/react-query` | `packages/api` hooks; route loaders |
-| Auth state | Jotai atoms + initializer | `core/auth/` |
+| Server state | `@tanstack/react-query` | route loaders |
 | Component-local state | `useState`, `useReducer` | inline |
 
 **Atoms co-locate with their consumer.** There is no central `src/atoms/` folder. See [`docs/patterns.md#atoms-co-location`](./docs/patterns.md#atoms-co-location).
-
-### API Client Pattern
-
-- API calls are delegated to a **Web Worker** (`ApiWorker`) to avoid blocking the main thread.
-- Each endpoint is a folder under `packages/api/src/Api/<EndpointName>/` with `Classes.ts`, `Schema.ts` (Zod), `Convert.ts` (DTO → domain), and `Get.ts` / `Post.ts` (service + React Query hook).
-- Errors are normalized through `ServiceErrorFactory.create()`.
 
 ### Styling Conventions
 
@@ -311,14 +270,11 @@ Turborepo caches outputs; use `--force` to bypass cache when debugging build iss
 
 ## Environment Variables
 
-| Variable            | Default            | Mocks              |
-| ------------------- | ------------------ | ------------------ |
-| `VITE_APP_VERSION`  | `0.6.0`            | `0.6.0`            |
-| `VITE_CONNECT_HOST` | `http://localhost` | `http://127.0.0.1` |
-| `VITE_CONNECT_PORT` | `5000`             | `3100`             |
+| Variable           | Default |
+| ------------------ | ------- |
+| `VITE_APP_VERSION` | `0.6.0` |
 
 - `.env` — development defaults
-- `.env.mocks` — overrides for mock server mode
 - `.env.*.local` — local overrides (gitignored), invalidate Turbo cache
 
 ## Code Quality & Git Hooks
@@ -371,8 +327,7 @@ Hooks for panel-local state (filter, sort, range selection, derived totals) live
 3. **New app-specific component**: Create `apps/web/src/components/<category>/<component-name>/` with `<ComponentName>.tsx` + `.stories.tsx`. Use the Controller pattern if it needs to reach into `core/` — see [`docs/patterns.md`](./docs/patterns.md).
 4. **New view**: Create `apps/web/src/views/<name>/<Name>View.tsx` + `.stories.tsx`. Views are pure — all hooks live in the route hook. Decompose large views into panel sub-components and `Use<Panel>.ts` hooks in the same folder (see Reusability section above).
 5. **New route**: Create `apps/web/src/routes/<segment>/<name>/route.tsx` + `-Use<Name>Route.ts`. File layout determines the URL; prefix `-` files are ignored by the router.
-6. **New API endpoint**: Add `packages/api/src/Api/<EndpointName>/` with `Classes.ts`, `Schema.ts`, `Convert.ts`, `Get.ts`/`Post.ts`. Export via the package barrel.
-7. **New Jotai atom**: Co-locate next to the feature — `core/<feature>/XxxAtoms.ts` for global state, or beside the owning component for feature-local state. Do **not** create `src/atoms/`.
+6. **New Jotai atom**: Co-locate next to the feature — `core/<feature>/XxxAtoms.ts` for global state, or beside the owning component for feature-local state. Do **not** create `src/atoms/`.
 8. **New hook**: Co-locate with the feature it's used by.
 
 ## MANDATORY: HeroUI v3 Components
@@ -478,7 +433,6 @@ Use these skills to follow established patterns when adding to the project:
 | `/add-component` | Add a new UI component with HeroUI v3, Tailwind, React, and Storybook story |
 | `/add-e2e-test` | Add Playwright E2E tests, with optional new API services and mock definitions |
 | `/add-component-test` | Add component tests using Storybook play functions |
-| `/add-api-test` | Add unit tests for API schemas, converters, and utilities in `packages/api/` |
 
 ## Important Notes
 
@@ -487,4 +441,3 @@ Use these skills to follow established patterns when adding to the project:
 - **Hash routing** — all routes use `#/` prefix; account for this in links and tests
 - **Barrel index files** — each package's `src/index.ts` is hand-maintained; add new public exports there
 - **React Compiler** — enabled during production builds for automatic memoization; disabled in dev for faster HMR
-- **Web Worker API** — API calls go through `ApiWorker`; do not call `FetchClient` directly from components
