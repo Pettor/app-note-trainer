@@ -10,19 +10,20 @@ test.describe("home", () => {
 
   test("renders hero heading and tagline", async ({ page }) => {
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-    await expect(page.getByText("Master every note.")).toBeVisible();
+    await expect(page.getByText("Tune your")).toBeVisible();
+    await expect(page.getByText("note reading")).toBeVisible();
   });
 
-  test("renders all feature chips", async ({ page }) => {
-    await expect(page.getByText("Note Recognition")).toBeVisible();
-    await expect(page.getByText("Interval Training")).toBeVisible();
-    await expect(page.getByText("Theory Fundamentals")).toBeVisible();
-    await expect(page.getByText("Spaced Repetition")).toBeVisible();
-    await expect(page.getByText("Works Offline")).toBeVisible();
+  test("renders session setup card with all settings", async ({ page }) => {
+    await expect(page.getByText("Session setup")).toBeVisible();
+    await expect(page.getByText("Difficulty", { exact: true })).toBeVisible();
+    await expect(page.getByText("Staff", { exact: true })).toBeVisible();
+    await expect(page.getByText("Sharps & flats")).toBeVisible();
+    await expect(page.getByText("Time limit")).toBeVisible();
   });
 
-  test("renders start practicing button", async ({ page }) => {
-    await expect(page.getByRole("button", { name: "Start Practicing" })).toBeVisible();
+  test("renders start training button", async ({ page }) => {
+    await expect(page.getByRole("button", { name: "Start training session" })).toBeVisible();
   });
 
   test("renders footer with github and linkedin links", async ({ page }) => {
