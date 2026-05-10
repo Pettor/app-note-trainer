@@ -341,7 +341,7 @@ export function HomeSessionCard(): ReactElement {
           <div
             role="radiogroup"
             aria-label={intl.formatMessage(messages.staffLabel)}
-            className="grid grid-cols-2 gap-2.5"
+            className="grid grid-cols-1 gap-2.5 sm:grid-cols-2"
           >
             {(
               [

@@ -3,8 +3,7 @@ import { HomeSessionCard as Component } from "./HomeSessionCard";
 
 const meta: Meta<typeof Component> = {
   component: Component,
-  title: "Views/Home/HomeSessionCard",
-  tags: ["autodocs"],
+  title: "Views/Home/Home Session Card",
   parameters: {
     layout: "padded",
   },
