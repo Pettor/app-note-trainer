@@ -379,7 +379,7 @@ export function HomeSessionCard(): ReactElement {
                       ? {
                           borderColor: "color-mix(in oklab, var(--accent) 50%, var(--border))",
                           background:
-                            "linear-gradient(180deg, var(--surface), color-mix(in oklab, var(--accent) 12%, white))",
+                            "linear-gradient(180deg, var(--surface), color-mix(in oklab, var(--accent) 12%, var(--surface)))",
                           boxShadow: "0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent)",
                         }
                       : {
