@@ -35,7 +35,6 @@ export function usePwaLifecycle(): void {
 
   const handleRefresh = useCallback(async () => {
     await updateServiceWorker(true);
-    window.location.reload();
   }, [updateServiceWorker]);
 
   const handleRefreshClose = useCallback((): void => {
