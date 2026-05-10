@@ -1,54 +1,47 @@
 import type { ReactElement } from "react";
-import { Button, Chip } from "@heroui/react";
-import { Logo } from "@package/ui";
 import { defineMessages, useIntl } from "react-intl";
 
-export interface HomeHeroProps {
-  appName: string;
-  onStart: () => void;
-}
-
-const chipMessages = defineMessages({
-  "note-recognition": {
-    id: "pHdcEL",
-    description: "HomeHero: chip - feature note-recognition",
-    defaultMessage: "Note Recognition",
+const messages = defineMessages({
+  eyebrow: {
+    id: "ayJ6b5",
+    description: "HomeHero: eyebrow chip label",
+    defaultMessage: "Practice session",
   },
-  "interval-training": {
-    id: "0rjE3f",
-    description: "HomeHero: chip - feature interval-training",
-    defaultMessage: "Interval Training",
+  headingPlain: {
+    id: "Z+x4w0",
+    description: "HomeHero: heading plain part",
+    defaultMessage: "Tune your",
   },
-  "theory-fundamentals": {
-    id: "s8y4Hn",
-    description: "HomeHero: chip - feature theory-fundamentals",
-    defaultMessage: "Theory Fundamentals",
+  headingGradient: {
+    id: "u6ZB3a",
+    description: "HomeHero: heading gradient emphasis part",
+    defaultMessage: "note reading",
   },
-  "spaced-repetition": {
-    id: "yTQO3i",
-    description: "HomeHero: chip - feature spaced-repetition",
-    defaultMessage: "Spaced Repetition",
-  },
-  "works-offline": {
-    id: "ahfeCi",
-    description: "HomeHero: chip - feature works-offline",
-    defaultMessage: "Works Offline",
+  tagline: {
+    id: "ZXufX9",
+    description: "HomeHero: tagline below heading",
+    defaultMessage:
+      "Set the staff, the difficulty, and how forgiving the timer is. Your last settings stick — start in one tap next time.",
   },
 });
 
-const FEATURE_CHIPS = Object.keys(chipMessages) as Array<keyof typeof chipMessages>;
-
-export function HomeHero({ appName, onStart }: HomeHeroProps): ReactElement {
+export function HomeHero(): ReactElement {
   const intl = useIntl();
-  const [firstName, ...rest] = appName.split(" ");
-  const lastName = rest.join(" ");
 
   return (
-    <section className="flex flex-col items-center justify-center py-16 text-center sm:py-24">
-      <Logo size="large" />
+    <section className="pt-2 pb-7 text-center">
+      {/* Eyebrow chip */}
+      <span
+        className="inline-flex items-center gap-2 rounded-full border border-[--border] bg-[--surface] px-3.5 py-1.5 text-[11px] tracking-[0.22em] text-[--muted] uppercase"
+        style={{ boxShadow: "0 1px 2px rgba(15,12,30,0.04), 0 2px 8px rgba(15,12,30,0.04)" }}
+      >
+        <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--brand-gradient)" }} aria-hidden="true" />
+        {intl.formatMessage(messages.eyebrow)}
+      </span>
 
-      <h1 className="mt-8 text-5xl font-bold tracking-tight sm:text-6xl">
-        {firstName}{" "}
+      {/* Heading */}
+      <h1 className="mt-4 text-4xl leading-[1.05] font-bold tracking-[-0.03em] sm:text-[38px]">
+        {intl.formatMessage(messages.headingPlain)}{" "}
         <span
           style={{
             background: "var(--brand-gradient)",
@@ -57,39 +50,15 @@ export function HomeHero({ appName, onStart }: HomeHeroProps): ReactElement {
             backgroundClip: "text",
           }}
         >
-          {lastName}
+          {intl.formatMessage(messages.headingGradient)}
         </span>
+        {"."}
       </h1>
 
-      <p className="text-muted mt-5 max-w-lg text-lg leading-relaxed">
-        {intl.formatMessage({
-          description: "HomeHero: tagline - app description",
-          defaultMessage:
-            "Master every note. From reading sheet music to understanding music theory — at your own pace.",
-          id: "cgFOje",
-        })}
+      {/* Tagline */}
+      <p className="mx-auto mt-2 max-w-[420px] text-[15px] leading-relaxed text-[--muted]">
+        {intl.formatMessage(messages.tagline)}
       </p>
-
-      <div className="mt-8 flex flex-wrap justify-center gap-2">
-        {FEATURE_CHIPS.map((id) => (
-          <Chip key={id} variant="soft">
-            {intl.formatMessage(chipMessages[id])}
-          </Chip>
-        ))}
-      </div>
-
-      <Button
-        className="mt-10 px-8 py-3 text-base font-semibold text-white"
-        style={{ background: "var(--brand-gradient)" }}
-        size="lg"
-        onPress={onStart}
-      >
-        {intl.formatMessage({
-          description: "HomeHero: button - start CTA",
-          defaultMessage: "Start Practicing",
-          id: "Rdddnr",
-        })}
-      </Button>
     </section>
   );
 }

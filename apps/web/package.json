@@ -50,6 +50,7 @@
     "@storybook/react": "catalog:storybook",
     "@tailwindcss/vite": "catalog:tailwind",
     "@tanstack/router-plugin": "catalog:tanstack",
+    "@vite-pwa/assets-generator": "catalog:vite",
     "@vitejs/plugin-basic-ssl": "catalog:vite",
     "@vitejs/plugin-react": "catalog:vite",
     "babel-plugin-react-compiler": "catalog:react19",
@@ -59,7 +60,6 @@
     "typescript": "catalog:typescript",
     "vite": "catalog:vite",
     "vite-plugin-istanbul": "catalog:coverage",
-    "@vite-pwa/assets-generator": "catalog:vite",
     "vite-plugin-pwa": "catalog:vite",
     "vitest": "catalog:vitest",
     "workbox-window": "catalog:common"

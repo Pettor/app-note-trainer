@@ -1,10 +1,9 @@
-import { useAppInfo } from "~/core/config/UseAppInfo";
 import type { HomeViewProps } from "~/views/home/HomeView";
 
 export function useHomeRoute(): HomeViewProps {
-  const { appName } = useAppInfo();
+  function onStart(): void {
+    // Navigation to practice screen will be wired up when that feature is implemented.
+  }
 
-  return {
-    appName,
-  };
+  return { onStart };
 }
