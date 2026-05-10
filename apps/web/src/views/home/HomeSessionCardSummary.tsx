@@ -94,36 +94,38 @@ export function HomeSessionCardSummary({
 
   return (
     <div
-      className="border-separator flex flex-wrap items-center gap-2 border-t px-6 py-3.5"
+      className="border-separator flex flex-col gap-2 border-t px-6 py-3.5 sm:flex-row sm:flex-wrap sm:items-center"
       style={{ background: "linear-gradient(180deg, var(--surface-secondary), var(--surface))" }}
     >
-      <span className="text-muted mr-1 text-[10px] tracking-[0.14em] uppercase">
+      <span className="text-muted shrink-0 text-[10px] tracking-[0.14em] uppercase sm:mr-1">
         {intl.formatMessage(messages.sectionLabel)}
       </span>
-      <SummaryPill>
-        <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: difficultyDotBg }} />
-        {difficultyPillLabel}
-      </SummaryPill>
-      <SummaryPill>
-        <span className="inline-block h-1.5 w-1.5 rounded-full bg-(--secondary)" />
-        {staff === "treble" ? intl.formatMessage(messages.pillTreble) : intl.formatMessage(messages.pillBass)}
-      </SummaryPill>
-      <SummaryPill muted={!sharps}>
-        <span
-          className="inline-block h-1.5 w-1.5 rounded-full"
-          style={{ background: sharps ? "var(--warning)" : "var(--muted)", opacity: sharps ? 1 : 0.5 }}
-        />
-        {sharps ? intl.formatMessage(messages.pillSharpsOn) : intl.formatMessage(messages.pillSharpsOff)}
-      </SummaryPill>
-      <SummaryPill muted={!timerEnabled}>
-        <span
-          className="inline-block h-1.5 w-1.5 rounded-full"
-          style={{ background: timerEnabled ? "var(--accent)" : "var(--muted)", opacity: timerEnabled ? 1 : 0.5 }}
-        />
-        {timerEnabled
-          ? intl.formatMessage(messages.pillTimerOn, { duration })
-          : intl.formatMessage(messages.pillTimerOff)}
-      </SummaryPill>
+      <div className="grid grid-cols-2 justify-items-start gap-2 sm:flex sm:flex-wrap sm:items-center">
+        <SummaryPill>
+          <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: difficultyDotBg }} />
+          {difficultyPillLabel}
+        </SummaryPill>
+        <SummaryPill>
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-(--secondary)" />
+          {staff === "treble" ? intl.formatMessage(messages.pillTreble) : intl.formatMessage(messages.pillBass)}
+        </SummaryPill>
+        <SummaryPill muted={!sharps}>
+          <span
+            className="inline-block h-1.5 w-1.5 rounded-full"
+            style={{ background: sharps ? "var(--warning)" : "var(--muted)", opacity: sharps ? 1 : 0.5 }}
+          />
+          {sharps ? intl.formatMessage(messages.pillSharpsOn) : intl.formatMessage(messages.pillSharpsOff)}
+        </SummaryPill>
+        <SummaryPill muted={!timerEnabled}>
+          <span
+            className="inline-block h-1.5 w-1.5 rounded-full"
+            style={{ background: timerEnabled ? "var(--accent)" : "var(--muted)", opacity: timerEnabled ? 1 : 0.5 }}
+          />
+          {timerEnabled
+            ? intl.formatMessage(messages.pillTimerOn, { duration })
+            : intl.formatMessage(messages.pillTimerOff)}
+        </SummaryPill>
+      </div>
     </div>
   );
 }

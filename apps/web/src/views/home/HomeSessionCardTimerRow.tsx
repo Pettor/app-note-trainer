@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { Switch } from "@heroui/react";
+import { Accordion, Switch } from "@heroui/react";
 import { defineMessages, useIntl } from "react-intl";
 import type { Duration } from "~/core/practice-settings/PracticeSettings";
 
@@ -73,39 +73,45 @@ export function HomeSessionCardTimerRow({
             </Switch.Control>
           </Switch>
         </div>
-        {/* Duration picker — rendered only when timer is enabled to keep focusable elements out of the DOM when hidden */}
-        {timerEnabled && (
-          <div
-            role="radiogroup"
-            aria-label={intl.formatMessage(messages.timePerNote)}
-            className="border-border bg-surface-secondary mt-3.5 grid grid-cols-4 gap-1.5 overflow-hidden rounded-xl border p-1"
-          >
-            {DURATIONS.map((d) => {
-              const isActive = duration === d;
-              return (
-                <button
-                  key={d}
-                  type="button"
-                  role="radio"
-                  aria-checked={isActive}
-                  onClick={() => onDurationChange(d)}
-                  className="cursor-pointer rounded-[9px] py-2 text-center text-xs font-medium transition-all duration-150"
-                  style={
-                    isActive
-                      ? {
-                          background: "var(--surface)",
-                          color: "var(--foreground)",
-                          boxShadow: "0 1px 2px rgba(15,12,30,0.04), 0 4px 10px rgba(15,12,30,0.06)",
-                        }
-                      : { color: "var(--muted)" }
-                  }
+        <Accordion expandedKeys={timerEnabled ? new Set(["duration"]) : new Set()} className="p-0">
+          <Accordion.Item id="duration" className="border-none">
+            <Accordion.Heading className="hidden" />
+            <Accordion.Panel>
+              <Accordion.Body className="px-0 pt-0 pb-0">
+                <div
+                  role="radiogroup"
+                  aria-label={intl.formatMessage(messages.timePerNote)}
+                  className="border-border bg-surface-secondary mt-3.5 grid grid-cols-4 gap-1.5 overflow-hidden rounded-xl border p-1"
                 >
-                  {d}s
-                </button>
-              );
-            })}
-          </div>
-        )}
+                  {DURATIONS.map((d) => {
+                    const isActive = duration === d;
+                    return (
+                      <button
+                        key={d}
+                        type="button"
+                        role="radio"
+                        aria-checked={isActive}
+                        onClick={() => onDurationChange(d)}
+                        className="cursor-pointer rounded-[9px] py-2 text-center text-xs font-medium transition-all duration-150"
+                        style={
+                          isActive
+                            ? {
+                                background: "var(--surface)",
+                                color: "var(--foreground)",
+                                boxShadow: "0 1px 2px rgba(15,12,30,0.04), 0 4px 10px rgba(15,12,30,0.06)",
+                              }
+                            : { color: "var(--muted)" }
+                        }
+                      >
+                        {d}s
+                      </button>
+                    );
+                  })}
+                </div>
+              </Accordion.Body>
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
       </div>
     </div>
   );
