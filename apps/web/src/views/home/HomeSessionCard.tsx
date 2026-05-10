@@ -459,51 +459,39 @@ export function HomeSessionCard(): ReactElement {
                 </Switch.Control>
               </Switch>
             </div>
-            {/* Duration picker */}
-            <div
-              role="radiogroup"
-              aria-label="Time per note"
-              aria-hidden={!timerEnabled}
-              className="mt-3.5 grid grid-cols-4 gap-1.5 overflow-hidden rounded-xl border border-[--border] bg-[--surface-secondary] p-1 transition-all duration-300"
-              style={
-                timerEnabled
-                  ? { maxHeight: 60, opacity: 1 }
-                  : {
-                      maxHeight: 0,
-                      opacity: 0,
-                      marginTop: 0,
-                      paddingTop: 0,
-                      paddingBottom: 0,
-                      borderWidth: 0,
-                      pointerEvents: "none",
-                    }
-              }
-            >
-              {DURATIONS.map((d) => {
-                const isActive = duration === d;
-                return (
-                  <button
-                    key={d}
-                    type="button"
-                    role="radio"
-                    aria-checked={isActive}
-                    onClick={() => onDurationChange(d)}
-                    className="cursor-pointer rounded-[9px] py-2 text-center text-xs font-medium transition-all duration-150"
-                    style={
-                      isActive
-                        ? {
-                            background: "var(--surface)",
-                            color: "var(--foreground)",
-                            boxShadow: "0 1px 2px rgba(15,12,30,0.04), 0 4px 10px rgba(15,12,30,0.06)",
-                          }
-                        : { color: "var(--muted)" }
-                    }
-                  >
-                    {d}s
-                  </button>
-                );
-              })}
-            </div>
+            {/* Duration picker — rendered only when timer is enabled to keep the DOM focusable-element-free when hidden */}
+            {timerEnabled && (
+              <div
+                role="radiogroup"
+                aria-label="Time per note"
+                className="mt-3.5 grid grid-cols-4 gap-1.5 overflow-hidden rounded-xl border border-[--border] bg-[--surface-secondary] p-1"
+              >
+                {DURATIONS.map((d) => {
+                  const isActive = duration === d;
+                  return (
+                    <button
+                      key={d}
+                      type="button"
+                      role="radio"
+                      aria-checked={isActive}
+                      onClick={() => onDurationChange(d)}
+                      className="cursor-pointer rounded-[9px] py-2 text-center text-xs font-medium transition-all duration-150"
+                      style={
+                        isActive
+                          ? {
+                              background: "var(--surface)",
+                              color: "var(--foreground)",
+                              boxShadow: "0 1px 2px rgba(15,12,30,0.04), 0 4px 10px rgba(15,12,30,0.06)",
+                            }
+                          : { color: "var(--muted)" }
+                      }
+                    >
+                      {d}s
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </div>
