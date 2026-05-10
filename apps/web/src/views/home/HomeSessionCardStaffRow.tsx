@@ -1,6 +1,8 @@
 import type { ReactElement } from "react";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { defineMessages, useIntl } from "react-intl";
+import { MusicGlyph } from "~/components/display/music-glyph/MusicGlyph";
+import type { MusicGlyphName } from "~/components/display/music-glyph/MusicGlyph";
 import type { Staff } from "~/core/practice-settings/PracticeSettings";
 
 const messages = defineMessages({
@@ -36,44 +38,6 @@ const messages = defineMessages({
   },
 });
 
-function TrebleClefIcon(): ReactElement {
-  return (
-    <svg
-      width="22"
-      height="30"
-      viewBox="0 0 24 36"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M12 2 C 9 5 8 9 11 13 C 14 17 19 19 19 24 C 19 29 14 32 11 30 C 9 29 8 27 9 25 C 10 23 13 23 14 25 C 15 27 13 29 11 29 M11 29 L 11 33 C 11 35 13 35 13 33 M11 13 C 13 19 13 27 11 33" />
-    </svg>
-  );
-}
-
-function BassClefIcon(): ReactElement {
-  return (
-    <svg
-      width="24"
-      height="30"
-      viewBox="0 0 24 30"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M5 22 C 5 14 13 11 18 14 C 22 17 21 23 16 25 C 13 26 9 25 7 22 M5 22 C 5 12 12 8 16 10" />
-      <circle cx="20" cy="13" r="1.4" fill="currentColor" />
-      <circle cx="20" cy="19" r="1.4" fill="currentColor" />
-    </svg>
-  );
-}
-
 export interface HomeSessionCardStaffRowProps {
   staff: Staff;
   onStaffChange: (value: Staff) => void;
@@ -82,18 +46,20 @@ export interface HomeSessionCardStaffRowProps {
 export function HomeSessionCardStaffRow({ staff, onStaffChange }: HomeSessionCardStaffRowProps): ReactElement {
   const intl = useIntl();
 
-  const options: { value: Staff; name: string; range: string; Icon: () => ReactElement }[] = [
+  const options: { value: Staff; name: string; range: string; glyph: MusicGlyphName; glyphSize: number }[] = [
     {
       value: "treble",
       name: intl.formatMessage(messages.trebleName),
       range: intl.formatMessage(messages.trebleRange),
-      Icon: TrebleClefIcon,
+      glyph: "gClef",
+      glyphSize: 30,
     },
     {
       value: "bass",
       name: intl.formatMessage(messages.bassName),
       range: intl.formatMessage(messages.bassRange),
-      Icon: BassClefIcon,
+      glyph: "fClef",
+      glyphSize: 22,
     },
   ];
 
@@ -108,7 +74,7 @@ export function HomeSessionCardStaffRow({ staff, onStaffChange }: HomeSessionCar
         aria-label={intl.formatMessage(messages.label)}
         className="grid grid-cols-1 gap-2.5 sm:grid-cols-2"
       >
-        {options.map(({ value, name, range, Icon }) => {
+        {options.map(({ value, name, range, glyph, glyphSize }) => {
           const isActive = staff === value;
           return (
             <button
@@ -140,7 +106,7 @@ export function HomeSessionCardStaffRow({ staff, onStaffChange }: HomeSessionCar
                     : { background: "var(--surface-secondary)", color: "var(--foreground)" }
                 }
               >
-                <Icon />
+                <MusicGlyph glyph={glyph} size={glyphSize} />
               </span>
               <span>
                 <span className="block text-sm font-semibold">{name}</span>
