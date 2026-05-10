@@ -39,7 +39,9 @@ export function createPWAConfig(options: PWAViteConfigOptions = {}): UserConfig 
     manifest: {
       background_color: manifest.backgroundColor || "#ffffff",
       display: "standalone",
-      description: manifest.description || "Note Trainer — learn to read sheet music and understand music theory through interactive exercises.",
+      description:
+        manifest.description ||
+        "Note Trainer — learn to read sheet music and understand music theory through interactive exercises.",
       name: manifest.name || "Note Trainer",
       icons: [
         {
@@ -72,7 +74,7 @@ export function createPWAConfig(options: PWAViteConfigOptions = {}): UserConfig 
       short_name: manifest.shortName || "Note Trainer",
       theme_color: manifest.themeColor || "#ffffff",
     },
-    registerType: "autoUpdate",
+    registerType: "prompt",
     workbox: {
       globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
       navigateFallbackDenylist: [/storybook/],
