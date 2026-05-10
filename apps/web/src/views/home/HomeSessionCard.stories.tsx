@@ -1,24 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { HomeView as Component } from "./HomeView";
+import { HomeSessionCard as Component } from "./HomeSessionCard";
 
 const meta: Meta<typeof Component> = {
   component: Component,
-  title: "Views/Home",
-  tags: ["!test"],
+  title: "Views/Home/HomeSessionCard",
+  tags: ["autodocs"],
   parameters: {
-    layout: "fullscreen",
-  },
-  args: {
-    onStart: () => {},
+    layout: "padded",
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Fullscreen: Story = {
-  parameters: { viewport: { value: "full" } },
-};
+export const Default: Story = {};
 
 export const Phone: Story = {
   globals: { viewport: { value: "iphonex" } },
