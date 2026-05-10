@@ -118,7 +118,7 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
           <div className="mt-6 flex flex-col gap-2.5">
             <Button
               aria-label={intl.formatMessage(messages.startButtonAriaLabel)}
-              className="w-full rounded-[16px] py-7 text-[17px] font-bold tracking-tight text-white"
+              className="w-full rounded-4xl py-7 text-[17px] font-bold tracking-tight text-white"
               style={{
                 background: "var(--brand-gradient)",
                 boxShadow: "0 12px 30px -10px color-mix(in oklab, var(--brand-grad-2) 60%, transparent)",
@@ -127,7 +127,7 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
               onPress={onStart}
             >
               {intl.formatMessage(messages.startButton)}
-              <ArrowRightIcon className="h-[22px] w-[22px]" aria-hidden="true" />
+              <ArrowRightIcon className="h-5.5 w-5.5" aria-hidden="true" />
               <kbd
                 className="rounded-md px-1.5 py-0.5 text-[11px] font-semibold tracking-wide"
                 style={{ background: "rgba(255,255,255,0.22)", color: "white" }}
@@ -139,7 +139,7 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
               {intl.formatMessage(messages.loadLastSession)}{" "}
               <button
                 type="button"
-                className="font-medium text-[var(--accent)] underline decoration-[1px] underline-offset-[3px] transition-colors hover:text-[var(--secondary)]"
+                className="text-accent font-medium underline decoration-1 underline-offset-[3px] transition-colors hover:text-(--secondary)"
                 onClick={onStart}
               >
                 {intl.formatMessage(messages.lastSessionLink)}

@@ -238,11 +238,11 @@ function LevelBars({ level, active }: { level: Difficulty; active: boolean }): R
       <span className="block w-0.75 rounded-sm bg-current" style={{ height: 4 }} />
       <span
         className="block w-0.75 rounded-sm bg-current"
-        style={{ height: 8, opacity: level === "low" && !active ? 0.25 : undefined }}
+        style={{ height: 8, opacity: level === "low" ? 0.25 : undefined }}
       />
       <span
         className="block w-0.75 rounded-sm bg-current"
-        style={{ height: 12, opacity: level !== "high" && !active ? 0.25 : undefined }}
+        style={{ height: 12, opacity: level !== "high" ? 0.25 : undefined }}
       />
     </span>
   );

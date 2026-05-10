@@ -32,7 +32,7 @@ export function HomeHero(): ReactElement {
     <section className="pt-2 pb-7 text-center">
       {/* Eyebrow chip */}
       <span
-        className="text-muted inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3.5 py-1.5 text-[11px] tracking-[0.22em] uppercase"
+        className="text-muted border-border bg-surface inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[11px] tracking-[0.22em] uppercase"
         style={{ boxShadow: "0 1px 2px rgba(15,12,30,0.04), 0 2px 8px rgba(15,12,30,0.04)" }}
       >
         <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--brand-gradient)" }} aria-hidden="true" />
@@ -56,7 +56,7 @@ export function HomeHero(): ReactElement {
       </h1>
 
       {/* Tagline */}
-      <p className="text-muted mx-auto mt-2 max-w-[420px] text-[15px] leading-relaxed">
+      <p className="text-muted mx-auto mt-2 max-w-105 text-[15px] leading-relaxed">
         {intl.formatMessage(messages.tagline)}
       </p>
     </section>
