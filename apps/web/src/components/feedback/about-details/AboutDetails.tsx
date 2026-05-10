@@ -5,10 +5,9 @@ import { useIntl } from "react-intl";
 export interface AboutDetailsProps {
   appName: string;
   appVersion: string;
-  serverVersion: string;
 }
 
-export function AboutDetails({ appName, appVersion, serverVersion }: AboutDetailsProps): ReactElement {
+export function AboutDetails({ appName, appVersion }: AboutDetailsProps): ReactElement {
   const intl = useIntl();
 
   return (
@@ -39,16 +38,6 @@ export function AboutDetails({ appName, appVersion, serverVersion }: AboutDetail
                 })}
               </TableCell>
               <TableCell>{appVersion}</TableCell>
-            </TableRow>
-            <TableRow key="3">
-              <TableCell className="font-semibold">
-                {intl.formatMessage({
-                  description: "AboutDetails: label - server version",
-                  defaultMessage: "Server version",
-                  id: "xBAyfF",
-                })}
-              </TableCell>
-              <TableCell>{serverVersion}</TableCell>
             </TableRow>
           </TableBody>
         </TableContent>

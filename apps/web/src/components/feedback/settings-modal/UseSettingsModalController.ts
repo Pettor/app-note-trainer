@@ -13,7 +13,6 @@ export function useSettingsModalController(): SettingsModalProps {
     () => ({
       appName,
       appVersion: import.meta.env.VITE_APP_VERSION,
-      serverVersion: "",
     }),
     [appName]
   );
