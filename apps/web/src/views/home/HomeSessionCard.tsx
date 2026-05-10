@@ -1,11 +1,11 @@
 import type { ReactElement } from "react";
 import { defineMessages, useIntl } from "react-intl";
-import { useHomeSessionCard } from "./UseHomeSessionCard";
 import { HomeSessionCardDifficultyRow } from "./HomeSessionCardDifficultyRow";
-import { HomeSessionCardStaffRow } from "./HomeSessionCardStaffRow";
 import { HomeSessionCardSharpsRow } from "./HomeSessionCardSharpsRow";
-import { HomeSessionCardTimerRow } from "./HomeSessionCardTimerRow";
+import { HomeSessionCardStaffRow } from "./HomeSessionCardStaffRow";
 import { HomeSessionCardSummary } from "./HomeSessionCardSummary";
+import { HomeSessionCardTimerRow } from "./HomeSessionCardTimerRow";
+import { useHomeSessionCard } from "./UseHomeSessionCard";
 
 const messages = defineMessages({
   cardTitle: {

@@ -30,7 +30,7 @@ const messages = defineMessages({
     defaultMessage: "Each note must be answered before the bar runs out.",
   },
   timePerNote: {
-    id: "EW3xAp",
+    id: "11rbaO",
     description: "HomeSessionCard: duration picker aria-label",
     defaultMessage: "Time per note",
   },

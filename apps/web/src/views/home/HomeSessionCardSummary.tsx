@@ -89,12 +89,8 @@ export function HomeSessionCardSummary({
         ? intl.formatMessage(messages.pillDifficultyMedium)
         : intl.formatMessage(messages.pillDifficultyHigh);
 
-  const difficultyPillColor =
-    difficulty === "low"
-      ? "text-[var(--success)]"
-      : difficulty === "medium"
-        ? "text-[var(--accent)]"
-        : "text-[var(--secondary)]";
+  const difficultyDotBg =
+    difficulty === "low" ? "var(--success)" : difficulty === "medium" ? "var(--accent)" : "var(--danger)";
 
   return (
     <div
@@ -105,7 +101,7 @@ export function HomeSessionCardSummary({
         {intl.formatMessage(messages.sectionLabel)}
       </span>
       <SummaryPill>
-        <span className={`inline-block h-1.5 w-1.5 rounded-full ${difficultyPillColor}`} />
+        <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: difficultyDotBg }} />
         {difficultyPillLabel}
       </SummaryPill>
       <SummaryPill>
@@ -122,7 +118,7 @@ export function HomeSessionCardSummary({
       <SummaryPill muted={!timerEnabled}>
         <span
           className="inline-block h-1.5 w-1.5 rounded-full"
-          style={{ background: timerEnabled ? "var(--warning)" : "var(--muted)", opacity: timerEnabled ? 1 : 0.5 }}
+          style={{ background: timerEnabled ? "var(--accent)" : "var(--muted)", opacity: timerEnabled ? 1 : 0.5 }}
         />
         {timerEnabled
           ? intl.formatMessage(messages.pillTimerOn, { duration })
