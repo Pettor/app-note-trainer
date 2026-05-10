@@ -1,0 +1,63 @@
+import type { ReactElement } from "react";
+import { defineMessages, useIntl } from "react-intl";
+import { useSheetMusicStaff } from "./UseSheetMusicStaff";
+import type { Staff } from "~/core/practice-settings/PracticeSettings";
+
+const messages = defineMessages({
+  ariaLabel: {
+    id: "XmVdlT",
+    description: "SheetMusicStaff: SVG aria-label — describes the staff type to screen readers",
+    defaultMessage: "{clefName} clef staff",
+  },
+  trebleClefName: {
+    id: "s99SGX",
+    description: "SheetMusicStaff: treble clef name for aria-label",
+    defaultMessage: "Treble",
+  },
+  bassClefName: {
+    id: "AaZgLh",
+    description: "SheetMusicStaff: bass clef name for aria-label",
+    defaultMessage: "Bass",
+  },
+});
+
+export interface SheetMusicStaffProps {
+  staff: Staff;
+  className?: string;
+}
+
+export function SheetMusicStaff({ staff, className }: SheetMusicStaffProps): ReactElement {
+  const intl = useIntl();
+  const metrics = useSheetMusicStaff(staff);
+
+  const clefName = intl.formatMessage(staff === "treble" ? messages.trebleClefName : messages.bassClefName);
+  const ariaLabel = intl.formatMessage(messages.ariaLabel, { clefName });
+
+  return (
+    <div className={className}>
+      <svg width="100%" viewBox={metrics.viewBox} preserveAspectRatio="xMinYMid meet" role="img" aria-label={ariaLabel}>
+        {metrics.lineYPositions.map((y, i) => (
+          <line
+            key={i}
+            x1={0}
+            x2={metrics.viewBoxWidth}
+            y1={y}
+            y2={y}
+            stroke="currentColor"
+            strokeWidth={metrics.lineThickness}
+          />
+        ))}
+        <text
+          x={metrics.clefX}
+          y={metrics.clefBaselineY}
+          fontFamily="Leland"
+          fontSize={metrics.clefFontSize}
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          {metrics.clefGlyph}
+        </text>
+      </svg>
+    </div>
+  );
+}
