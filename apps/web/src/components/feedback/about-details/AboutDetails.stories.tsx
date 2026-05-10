@@ -15,7 +15,6 @@ type Story = StoryObj<typeof meta>;
 const defaultArgs = {
   appName: "Note Trainer",
   appVersion: "1.0.0",
-  serverVersion: "1.0.0",
 } satisfies Props;
 
 export const Details: Story = {
