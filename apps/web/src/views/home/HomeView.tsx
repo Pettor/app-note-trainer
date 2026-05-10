@@ -135,7 +135,7 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
                 ↵
               </kbd>
             </Button>
-            <p className="text-center text-xs text-[var(--muted)]">
+            <p className="text-muted text-center text-xs">
               {intl.formatMessage(messages.loadLastSession)}{" "}
               <button
                 type="button"

@@ -179,7 +179,7 @@ const DURATIONS: Duration[] = [3, 5, 8, 12];
 function SummaryPill({ children, muted = false }: { children: ReactNode; muted?: boolean }): ReactElement {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-xs font-medium ${muted ? "text-[var(--muted)]" : ""}`}
+      className={`border-border bg-surface inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${muted ? "text-muted" : ""}`}
     >
       {children}
     </span>
@@ -231,17 +231,17 @@ function LevelBars({ level, active }: { level: Difficulty; active: boolean }): R
       : level === "medium"
         ? "text-[var(--accent)]"
         : "text-[var(--secondary)]"
-    : "text-[var(--muted)]";
+    : "text-muted";
 
   return (
-    <span className={`flex items-end gap-[3px] ${activeColor}`} aria-hidden="true">
-      <span className="block w-[3px] rounded-sm bg-current" style={{ height: 4 }} />
+    <span className={`flex items-end gap-0.75 ${activeColor}`} aria-hidden="true">
+      <span className="block w-0.75 rounded-sm bg-current" style={{ height: 4 }} />
       <span
-        className="block w-[3px] rounded-sm bg-current"
+        className="block w-0.75 rounded-sm bg-current"
         style={{ height: 8, opacity: level === "low" && !active ? 0.25 : undefined }}
       />
       <span
-        className="block w-[3px] rounded-sm bg-current"
+        className="block w-0.75 rounded-sm bg-current"
         style={{ height: 12, opacity: level !== "high" && !active ? 0.25 : undefined }}
       />
     </span>
@@ -285,31 +285,29 @@ export function HomeSessionCard(): ReactElement {
 
   return (
     <div
-      className="overflow-hidden rounded-[22px] border border-[var(--border)] bg-[var(--surface)]"
+      className="border-border bg-surface overflow-hidden rounded-[22px] border"
       style={{ boxShadow: "0 6px 16px rgba(15,12,30,0.06), 0 16px 40px rgba(15,12,30,0.06)" }}
     >
       {/* Card header */}
       <div className="flex items-center justify-between px-6 pt-5 pb-3.5">
         <div>
           <p className="text-base font-semibold tracking-tight">{intl.formatMessage(messages.cardTitle)}</p>
-          <p className="text-xs text-[var(--muted)]">{intl.formatMessage(messages.cardSub)}</p>
+          <p className="text-muted text-xs">{intl.formatMessage(messages.cardSub)}</p>
         </div>
       </div>
 
       {/* Settings rows */}
       <div className="px-6 pb-2">
         {/* Difficulty */}
-        <div className="grid grid-cols-1 items-center gap-6 border-t border-[var(--separator)] py-[18px] sm:grid-cols-[180px_1fr]">
+        <div className="border-separator grid grid-cols-1 items-center gap-6 border-t py-4.5 sm:grid-cols-[180px_1fr]">
           <div>
             <p className="text-sm font-semibold">{intl.formatMessage(messages.difficultyLabel)}</p>
-            <p className="mt-0.5 text-xs leading-snug text-[var(--muted)]">
-              {intl.formatMessage(messages.difficultyDesc)}
-            </p>
+            <p className="text-muted mt-0.5 text-xs leading-snug">{intl.formatMessage(messages.difficultyDesc)}</p>
           </div>
           <div
             role="radiogroup"
             aria-label={intl.formatMessage(messages.difficultyLabel)}
-            className="grid grid-cols-3 gap-1 rounded-[14px] border border-[var(--border)] bg-[var(--surface-secondary)] p-1"
+            className="border-border bg-surface-secondary grid grid-cols-3 gap-1 rounded-[14px] border p-1"
           >
             {difficultyOptions.map(({ value, label }) => {
               const isActive = difficulty === value;
@@ -331,7 +329,7 @@ export function HomeSessionCard(): ReactElement {
                   }
                 >
                   <LevelBars level={value} active={isActive} />
-                  <span className={isActive ? "text-foreground" : "text-[var(--muted)]"}>{label}</span>
+                  <span className={isActive ? "text-foreground" : "text-muted"}>{label}</span>
                 </button>
               );
             })}
@@ -339,10 +337,10 @@ export function HomeSessionCard(): ReactElement {
         </div>
 
         {/* Staff */}
-        <div className="grid grid-cols-1 items-center gap-6 border-t border-[var(--separator)] py-[18px] sm:grid-cols-[180px_1fr]">
+        <div className="border-separator grid grid-cols-1 items-center gap-6 border-t py-4.5 sm:grid-cols-[180px_1fr]">
           <div>
             <p className="text-sm font-semibold">{intl.formatMessage(messages.staffLabel)}</p>
-            <p className="mt-0.5 text-xs leading-snug text-[var(--muted)]">{intl.formatMessage(messages.staffDesc)}</p>
+            <p className="text-muted mt-0.5 text-xs leading-snug">{intl.formatMessage(messages.staffDesc)}</p>
           </div>
           <div
             role="radiogroup"
@@ -400,10 +398,10 @@ export function HomeSessionCard(): ReactElement {
                   </span>
                   <span>
                     <span className="block text-sm font-semibold">{name}</span>
-                    <span className="mt-0.5 block text-[11px] text-[var(--muted)]">{range}</span>
+                    <span className="text-muted mt-0.5 block text-[11px]">{range}</span>
                   </span>
                   <span
-                    className="flex h-[22px] w-[22px] items-center justify-center rounded-full border transition-all duration-150"
+                    className="flex h-5.5 w-5.5 items-center justify-center rounded-full border transition-all duration-150"
                     style={
                       isActive
                         ? { background: "var(--accent)", borderColor: "var(--accent)", color: "white" }
@@ -419,17 +417,17 @@ export function HomeSessionCard(): ReactElement {
         </div>
 
         {/* Sharps & flats */}
-        <div className="grid grid-cols-1 items-center gap-6 border-t border-[var(--separator)] py-[18px] sm:grid-cols-[180px_1fr]">
+        <div className="border-separator grid grid-cols-1 items-center gap-6 border-t py-4.5 sm:grid-cols-[180px_1fr]">
           <div>
             <p className="text-sm font-semibold">{intl.formatMessage(messages.sharpsLabel)}</p>
-            <p className="mt-0.5 text-xs leading-snug text-[var(--muted)]">{intl.formatMessage(messages.sharpsDesc)}</p>
+            <p className="text-muted mt-0.5 text-xs leading-snug">{intl.formatMessage(messages.sharpsDesc)}</p>
           </div>
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="text-sm font-medium">
                 {sharps ? intl.formatMessage(messages.sharpsOn) : intl.formatMessage(messages.sharpsOff)}
               </p>
-              <p className="mt-0.5 text-xs text-[var(--muted)]">{intl.formatMessage(messages.sharpsToggleDesc)}</p>
+              <p className="text-muted mt-0.5 text-xs">{intl.formatMessage(messages.sharpsToggleDesc)}</p>
             </div>
             <Switch isSelected={sharps} onChange={onSharpsChange} aria-label={intl.formatMessage(messages.sharpsLabel)}>
               <Switch.Control>
@@ -440,10 +438,10 @@ export function HomeSessionCard(): ReactElement {
         </div>
 
         {/* Time limit */}
-        <div className="grid grid-cols-1 items-start gap-6 border-t border-[var(--separator)] py-[18px] sm:grid-cols-[180px_1fr]">
+        <div className="border-separator grid grid-cols-1 items-start gap-6 border-t py-4.5 sm:grid-cols-[180px_1fr]">
           <div>
             <p className="text-sm font-semibold">{intl.formatMessage(messages.timerLabel)}</p>
-            <p className="mt-0.5 text-xs leading-snug text-[var(--muted)]">{intl.formatMessage(messages.timerDesc)}</p>
+            <p className="text-muted mt-0.5 text-xs leading-snug">{intl.formatMessage(messages.timerDesc)}</p>
           </div>
           <div>
             <div className="flex items-center justify-between gap-4">
@@ -453,7 +451,7 @@ export function HomeSessionCard(): ReactElement {
                     ? intl.formatMessage(messages.timerOn, { duration })
                     : intl.formatMessage(messages.timerOff)}
                 </p>
-                <p className="mt-0.5 text-xs text-[var(--muted)]">{intl.formatMessage(messages.timerToggleDesc)}</p>
+                <p className="text-muted mt-0.5 text-xs">{intl.formatMessage(messages.timerToggleDesc)}</p>
               </div>
               <Switch
                 isSelected={timerEnabled}
@@ -470,7 +468,7 @@ export function HomeSessionCard(): ReactElement {
               <div
                 role="radiogroup"
                 aria-label="Time per note"
-                className="mt-3.5 grid grid-cols-4 gap-1.5 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] p-1"
+                className="border-border bg-surface-secondary mt-3.5 grid grid-cols-4 gap-1.5 overflow-hidden rounded-xl border p-1"
               >
                 {DURATIONS.map((d) => {
                   const isActive = duration === d;
@@ -504,10 +502,10 @@ export function HomeSessionCard(): ReactElement {
 
       {/* Live summary strip */}
       <div
-        className="flex flex-wrap items-center gap-2 border-t border-[var(--separator)] px-6 py-3.5"
+        className="border-separator flex flex-wrap items-center gap-2 border-t px-6 py-3.5"
         style={{ background: "linear-gradient(180deg, var(--surface-secondary), var(--surface))" }}
       >
-        <span className="mr-1 text-[10px] tracking-[0.14em] text-[var(--muted)] uppercase">
+        <span className="text-muted mr-1 text-[10px] tracking-[0.14em] uppercase">
           {intl.formatMessage(messages.summaryLabel)}
         </span>
         <SummaryPill>
@@ -515,7 +513,7 @@ export function HomeSessionCard(): ReactElement {
           {difficultyPillLabel}
         </SummaryPill>
         <SummaryPill>
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--secondary)]" />
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-(--secondary)" />
           {staff === "treble" ? intl.formatMessage(messages.pillTreble) : intl.formatMessage(messages.pillBass)}
         </SummaryPill>
         <SummaryPill muted={!sharps}>
