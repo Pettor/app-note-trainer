@@ -1,4 +1,11 @@
 /* Font */
+@font-face {
+  font-family: "Leland";
+  src: url("./assets/fonts/Leland.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 @import "@fontsource/rubik";
 @import "@fontsource/rubik/300.css";
 @import "@fontsource/rubik/400.css";
