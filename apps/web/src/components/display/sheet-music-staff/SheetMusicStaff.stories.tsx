@@ -36,3 +36,28 @@ export const BassPhone: Story = {
   args: { staff: "bass" } satisfies Props,
   globals: { viewport: { value: "iphonex" } },
 };
+
+// slot 4 = middle line (B4 treble / D3 bass) — whole note
+export const WithNote: Story = {
+  args: { staff: "treble", notes: [{ slot: 4, type: "whole" }] } satisfies Props,
+};
+
+// slot -2 = first ledger line below (middle C for treble) — whole note with ledger
+export const WithLedgerNote: Story = {
+  args: { staff: "treble", notes: [{ slot: -2, type: "whole" }] } satisfies Props,
+};
+
+// slot 2 = G4 (second line), below middle — stem up
+export const QuarterNote: Story = {
+  args: { staff: "treble", notes: [{ slot: 2, type: "quarter" }] } satisfies Props,
+};
+
+// slot 6 = D5 (fourth line), above middle — stem down
+export const QuarterNoteHigh: Story = {
+  args: { staff: "treble", notes: [{ slot: 6, type: "quarter" }] } satisfies Props,
+};
+
+export const PhoneWithNote: Story = {
+  args: { staff: "treble", notes: [{ slot: 2, type: "quarter" }] } satisfies Props,
+  globals: { viewport: { value: "iphonex" } },
+};

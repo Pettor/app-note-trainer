@@ -31,6 +31,20 @@ const CLEF_GLYPH: Record<Staff, string> = {
   bass: MUSIC_GLYPHS.fClef,
 };
 
+export type NoteType = "whole" | "quarter";
+
+// Staff position slot — visual position on the staff:
+//   0 = bottom line (E4 treble / G2 bass)
+//   Each step up = one diatonic position (line or space)
+//   8 = top line (F5 treble / A3 bass)
+//   Negative = below staff (-2 = first ledger line below, i.e. middle C for treble)
+//   >8 = above staff (10 = first ledger line above)
+export interface StaffNoteData {
+  slot: number;
+  type?: NoteType; // defaults to "quarter"
+  x?: number; // SVG user-unit x; auto-placed at first beat position if omitted
+}
+
 export interface StaffMetrics {
   viewBoxWidth: number;
   viewBoxHeight: number;
@@ -42,13 +56,14 @@ export interface StaffMetrics {
   clefX: number;
   clefBaselineY: number;
   clefFontSize: number;
-  // Extension points for future note rendering
   staffSpaceSize: number;
   marginTop: number;
-  // Approximate x after the clef — replace with SVGTextElement.getBBox() when adding notes
+  // Approximate x after the clef — replace with SVGTextElement.getBBox() when adding note layout
   noteAreaStartX: number;
-  // Maps any line index (including negative / >4 for ledger lines) to a y-coordinate
+  // Maps any slot (including negative / >8 for ledger lines) to a y-coordinate
   staffLineY: (lineIndex: number) => number;
+  // Maps a slot position to a y-coordinate (0=bottom line, 8=top line)
+  slotToY: (slot: number) => number;
 }
 
 export function useSheetMusicStaff(staff: Staff): StaffMetrics {
@@ -64,10 +79,17 @@ export function useSheetMusicStaff(staff: Staff): StaffMetrics {
     const viewBoxHeight = marginTop + (LINE_COUNT - 1) * staffSpace + marginBottom;
     const clefFontSize = 4 * staffSpace; // SMuFL: 1 em = 4 staff spaces
 
-    function getY(lineIndex: number): number {
+    function getLineY(lineIndex: number): number {
       return marginTop + lineIndex * staffSpace;
     }
-    const lineYPositions = Array.from({ length: LINE_COUNT }, (_, i) => getY(i));
+
+    // slot 0 = bottom line, slot 8 = top line; each step = half a staff space
+    function getSlotY(slot: number): number {
+      const bottomLineY = marginTop + (LINE_COUNT - 1) * staffSpace;
+      return bottomLineY - (slot * staffSpace) / 2;
+    }
+
+    const lineYPositions = Array.from({ length: LINE_COUNT }, (_, i) => getLineY(i));
 
     return {
       viewBoxWidth: VIEWBOX_WIDTH,
@@ -78,12 +100,14 @@ export function useSheetMusicStaff(staff: Staff): StaffMetrics {
       lineYPositions,
       clefGlyph: CLEF_GLYPH[staff],
       clefX: CLEF_X,
-      clefBaselineY: getY(CLEF_ANCHOR_LINE[staff]),
+      clefBaselineY: getLineY(CLEF_ANCHOR_LINE[staff]),
       clefFontSize,
       staffSpaceSize: staffSpace,
       marginTop,
-      noteAreaStartX: CLEF_X + clefFontSize * 1.2,
-      staffLineY: getY,
+      // gClef/fClef advance width ≈ 2.4 staff spaces (0.6 × fontSize in SMuFL/Leland)
+      noteAreaStartX: CLEF_X + clefFontSize * 0.6,
+      staffLineY: getLineY,
+      slotToY: getSlotY,
     };
   }, [staff, isPhone]);
 }

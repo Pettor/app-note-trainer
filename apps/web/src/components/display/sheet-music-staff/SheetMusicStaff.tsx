@@ -1,6 +1,8 @@
 import type { ReactElement } from "react";
 import { defineMessages, useIntl } from "react-intl";
+import { SheetMusicStaffNote } from "./SheetMusicStaffNote";
 import { useSheetMusicStaff } from "./UseSheetMusicStaff";
+import type { StaffNoteData } from "./UseSheetMusicStaff";
 import type { Staff } from "~/core/practice-settings/PracticeSettings";
 
 const messages = defineMessages({
@@ -23,10 +25,11 @@ const messages = defineMessages({
 
 export interface SheetMusicStaffProps {
   staff: Staff;
+  notes?: StaffNoteData[];
   className?: string;
 }
 
-export function SheetMusicStaff({ staff, className }: SheetMusicStaffProps): ReactElement {
+export function SheetMusicStaff({ staff, notes, className }: SheetMusicStaffProps): ReactElement {
   const intl = useIntl();
   const metrics = useSheetMusicStaff(staff);
 
@@ -54,9 +57,19 @@ export function SheetMusicStaff({ staff, className }: SheetMusicStaffProps): Rea
           fontSize={metrics.clefFontSize}
           fill="currentColor"
           aria-hidden="true"
+          style={{ userSelect: "none" }}
         >
           {metrics.clefGlyph}
         </text>
+        {notes?.map((note, i) => (
+          <SheetMusicStaffNote
+            key={i}
+            slot={note.slot}
+            type={note.type ?? "quarter"}
+            x={note.x ?? metrics.noteAreaStartX + metrics.staffSpaceSize * 2}
+            metrics={metrics}
+          />
+        ))}
       </svg>
     </div>
   );
