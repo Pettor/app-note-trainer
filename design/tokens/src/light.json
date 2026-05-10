@@ -62,7 +62,7 @@
         },
         "muted": {
           "$type": "color",
-          "$value": "oklch(0.555 0.020 285)",
+          "$value": "oklch(0.640 0.016 285)",
           "$description": "Muted / secondary text"
         },
         "default": {
@@ -165,7 +165,7 @@
           },
           "placeholder": {
             "$type": "color",
-            "$value": "oklch(0.555 0.020 285)",
+            "$value": "oklch(0.640 0.016 285)",
             "$description": "Form field placeholder"
           }
         }

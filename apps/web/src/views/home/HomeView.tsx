@@ -135,11 +135,11 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
                 ↵
               </kbd>
             </Button>
-            <p className="text-center text-xs text-[--muted]">
+            <p className="text-center text-xs text-[var(--muted)]">
               {intl.formatMessage(messages.loadLastSession)}{" "}
               <button
                 type="button"
-                className="font-medium text-[--accent] underline decoration-[1px] underline-offset-[3px] transition-colors hover:text-[--secondary]"
+                className="font-medium text-[var(--accent)] underline decoration-[1px] underline-offset-[3px] transition-colors hover:text-[var(--secondary)]"
                 onClick={onStart}
               >
                 {intl.formatMessage(messages.lastSessionLink)}
