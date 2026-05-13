@@ -8,97 +8,111 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root/route'
-import { Route as PublicRouteRouteImport } from './routes/_public/route'
-import { Route as SplatRouteRouteImport } from './routes/$/route'
-import { Route as PublicHomeRouteRouteImport } from './routes/_public/home/route'
+import { Route as rootRouteImport } from "./routes/__root/route";
+import { Route as PublicRouteRouteImport } from "./routes/_public/route";
+import { Route as SplatRouteRouteImport } from "./routes/$/route";
+import { Route as PublicPracticeRouteRouteImport } from "./routes/_public/practice/route";
+import { Route as PublicHomeRouteRouteImport } from "./routes/_public/home/route";
 
 const PublicRouteRoute = PublicRouteRouteImport.update({
-  id: '/_public',
+  id: "/_public",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const SplatRouteRoute = SplatRouteRouteImport.update({
-  id: '/$',
-  path: '/$',
+  id: "/$",
+  path: "/$",
   getParentRoute: () => rootRouteImport,
-} as any)
-const PublicHomeRouteRoute = PublicHomeRouteRouteImport.update({
-  id: '/home',
-  path: '/home',
+} as any);
+const PublicPracticeRouteRoute = PublicPracticeRouteRouteImport.update({
+  id: "/practice",
+  path: "/practice",
   getParentRoute: () => PublicRouteRoute,
-} as any)
+} as any);
+const PublicHomeRouteRoute = PublicHomeRouteRouteImport.update({
+  id: "/home",
+  path: "/home",
+  getParentRoute: () => PublicRouteRoute,
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/$': typeof SplatRouteRoute
-  '/': typeof PublicRouteRouteWithChildren
-  '/home': typeof PublicHomeRouteRoute
+  "/$": typeof SplatRouteRoute;
+  "/": typeof PublicRouteRouteWithChildren;
+  "/home": typeof PublicHomeRouteRoute;
+  "/practice": typeof PublicPracticeRouteRoute;
 }
 export interface FileRoutesByTo {
-  '/$': typeof SplatRouteRoute
-  '/': typeof PublicRouteRouteWithChildren
-  '/home': typeof PublicHomeRouteRoute
+  "/$": typeof SplatRouteRoute;
+  "/": typeof PublicRouteRouteWithChildren;
+  "/home": typeof PublicHomeRouteRoute;
+  "/practice": typeof PublicPracticeRouteRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/$': typeof SplatRouteRoute
-  '/_public': typeof PublicRouteRouteWithChildren
-  '/_public/home': typeof PublicHomeRouteRoute
+  __root__: typeof rootRouteImport;
+  "/$": typeof SplatRouteRoute;
+  "/_public": typeof PublicRouteRouteWithChildren;
+  "/_public/home": typeof PublicHomeRouteRoute;
+  "/_public/practice": typeof PublicPracticeRouteRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/$' | '/' | '/home'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/$' | '/' | '/home'
-  id: '__root__' | '/$' | '/_public' | '/_public/home'
-  fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: "/$" | "/" | "/home" | "/practice";
+  fileRoutesByTo: FileRoutesByTo;
+  to: "/$" | "/" | "/home" | "/practice";
+  id: "__root__" | "/$" | "/_public" | "/_public/home" | "/_public/practice";
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  SplatRouteRoute: typeof SplatRouteRoute
-  PublicRouteRoute: typeof PublicRouteRouteWithChildren
+  SplatRouteRoute: typeof SplatRouteRoute;
+  PublicRouteRoute: typeof PublicRouteRouteWithChildren;
 }
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/_public': {
-      id: '/_public'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof PublicRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/$': {
-      id: '/$'
-      path: '/$'
-      fullPath: '/$'
-      preLoaderRoute: typeof SplatRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_public/home': {
-      id: '/_public/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof PublicHomeRouteRouteImport
-      parentRoute: typeof PublicRouteRoute
-    }
+    "/_public": {
+      id: "/_public";
+      path: "";
+      fullPath: "/";
+      preLoaderRoute: typeof PublicRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/$": {
+      id: "/$";
+      path: "/$";
+      fullPath: "/$";
+      preLoaderRoute: typeof SplatRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/_public/practice": {
+      id: "/_public/practice";
+      path: "/practice";
+      fullPath: "/practice";
+      preLoaderRoute: typeof PublicPracticeRouteRouteImport;
+      parentRoute: typeof PublicRouteRoute;
+    };
+    "/_public/home": {
+      id: "/_public/home";
+      path: "/home";
+      fullPath: "/home";
+      preLoaderRoute: typeof PublicHomeRouteRouteImport;
+      parentRoute: typeof PublicRouteRoute;
+    };
   }
 }
 
 interface PublicRouteRouteChildren {
-  PublicHomeRouteRoute: typeof PublicHomeRouteRoute
+  PublicHomeRouteRoute: typeof PublicHomeRouteRoute;
+  PublicPracticeRouteRoute: typeof PublicPracticeRouteRoute;
 }
 
 const PublicRouteRouteChildren: PublicRouteRouteChildren = {
   PublicHomeRouteRoute: PublicHomeRouteRoute,
-}
+  PublicPracticeRouteRoute: PublicPracticeRouteRoute,
+};
 
-const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(
-  PublicRouteRouteChildren,
-)
+const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(PublicRouteRouteChildren);
 
 const rootRouteChildren: RootRouteChildren = {
   SplatRouteRoute: SplatRouteRoute,
   PublicRouteRoute: PublicRouteRouteWithChildren,
-}
-export const routeTree = rootRouteImport
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+};
+export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>();

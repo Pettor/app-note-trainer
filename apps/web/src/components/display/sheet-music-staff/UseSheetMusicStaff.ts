@@ -4,8 +4,8 @@ import { MUSIC_GLYPHS } from "~/components/display/music-glyph/MusicGlyph";
 import type { Staff } from "~/core/practice-settings/PracticeSettings";
 
 // Desktop layout
-const DESKTOP_STAFF_SPACE = 15;
-const DESKTOP_LINE_THICKNESS = 0.9;
+const DESKTOP_STAFF_SPACE = 30;
+const DESKTOP_LINE_THICKNESS = 2.0;
 const DESKTOP_MARGIN_MULTIPLIER = 2.0;
 
 // Phone layout — STAFF_SPACE=50 targets ~35% of iPhone X viewport height
