@@ -7,12 +7,12 @@ import { usePianoKeyboard } from "./UsePianoKeyboard";
 
 const messages = defineMessages({
   keyboardLabel: {
-    id: "Pk8B7mX",
+    id: "Zr5kRJ",
     description: "PianoKeyboard: aria-label for the piano keyboard container",
     defaultMessage: "Piano keyboard",
   },
   keyLabel: {
-    id: "Qz4Nw9R",
+    id: "opqMR4",
     description: "PianoKeyboard: aria-label for an individual key, {note} e.g. 'C4' or 'C sharp 4'",
     defaultMessage: "{note} key",
   },
@@ -20,6 +20,10 @@ const messages = defineMessages({
 
 function formatNoteAriaLabel(key: PianoKeyData): string {
   return `${key.note.replace("#", " sharp")} ${key.octave}`;
+}
+
+function keyTestId(label: string): string {
+  return `piano-keyboard__key-${label.replace("#", "sharp").toLowerCase()}`;
 }
 
 function getWhiteKeyStyle(isActive: boolean, isHighlighted: boolean): CSSProperties {
@@ -87,6 +91,8 @@ function WhiteKey({
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       onPointerLeave={onPointerLeave}
+      data-testid={keyTestId(keyData.label)}
+      data-highlighted={isHighlighted ? true : undefined}
       className="relative flex-1 cursor-pointer touch-none rounded-b-[5px] border-r border-zinc-300 outline-none select-none last:border-r-0 focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-inset active:scale-[0.99]"
       style={getWhiteKeyStyle(isActive, isHighlighted)}
     >
@@ -129,6 +135,8 @@ function BlackKey({
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       onPointerLeave={onPointerLeave}
+      data-testid={keyTestId(keyData.label)}
+      data-highlighted={isHighlighted ? true : undefined}
       className="absolute top-0 z-10 cursor-pointer touch-none rounded-b-[4px] outline-none select-none focus-visible:ring-2 focus-visible:ring-blue-400"
       style={{
         left: `${keyData.leftPercent}%`,
