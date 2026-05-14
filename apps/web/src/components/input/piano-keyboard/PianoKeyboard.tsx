@@ -29,38 +29,41 @@ function keyTestId(label: string): string {
 function getWhiteKeyStyle(isActive: boolean, isHighlighted: boolean): CSSProperties {
   if (isHighlighted) {
     return {
-      background: "linear-gradient(to bottom, #6ee7b7 0%, #a7f3d0 100%)",
-      boxShadow: "inset 0 -3px 6px rgba(0,0,0,0.08)",
+      background: "linear-gradient(180deg, oklch(0.92 0.10 285) 0%, oklch(0.78 0.18 285) 100%)",
+      boxShadow:
+        "inset 0 -3px 0 oklch(0.55 0.22 285 / .35), inset 0 0 0 1px oklch(0.55 0.22 285 / .5), 0 0 18px oklch(0.55 0.22 285 / .3)",
+      color: "white",
     };
   }
   if (isActive) {
     return {
-      background: "linear-gradient(to bottom, #93c5fd 0%, #dbeafe 100%)",
-      boxShadow: "inset 0 2px 4px rgba(0,0,0,0.08)",
+      background: "linear-gradient(180deg, oklch(0.88 0.12 285) 0%, oklch(0.72 0.18 285) 100%)",
+      boxShadow: "inset 0 1px 3px rgba(0,0,0,0.18), inset 0 -1px 0 rgba(0,0,0,0.05)",
     };
   }
   return {
-    background: "linear-gradient(to bottom, #efefef 0%, #ffffff 18%)",
-    boxShadow: "inset 0 -3px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.1)",
+    background: "linear-gradient(180deg, #fefefe 0%, #f3f1ef 92%, #e5e3df 100%)",
+    boxShadow: "inset 0 -3px 0 rgba(0,0,0,0.06), inset 0 1px 0 #ffffff",
   };
 }
 
 function getBlackKeyStyle(isActive: boolean, isHighlighted: boolean): CSSProperties {
   if (isHighlighted) {
     return {
-      background: "linear-gradient(180deg, #10b981 0%, #059669 100%)",
-      boxShadow: "0 3px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.25)",
+      background: "linear-gradient(180deg, oklch(0.55 0.22 285) 0%, oklch(0.40 0.22 285) 100%)",
+      boxShadow:
+        "inset 0 1px 0 rgba(255,255,255,0.28), 0 0 18px oklch(0.55 0.22 285 / .5), 0 6px 10px -2px rgba(0,0,0,0.5)",
     };
   }
   if (isActive) {
     return {
-      background: "linear-gradient(180deg, #3b5bdb 0%, #1e3a8a 100%)",
-      boxShadow: "0 2px 5px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1)",
+      background: "linear-gradient(180deg, #1e1b2e 0%, #0c0a14 100%)",
+      boxShadow: "inset 0 2px 4px rgba(0,0,0,0.6)",
     };
   }
   return {
-    background: "linear-gradient(180deg, #3f3f46 0%, #18181b 22%, #09090b 80%, #18181b 100%)",
-    boxShadow: "0 6px 12px rgba(0,0,0,0.6), 0 2px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.14)",
+    background: "linear-gradient(180deg, #2a2733 0%, #15131e 80%, #0c0a14 100%)",
+    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -3px 0 rgba(0,0,0,0.4), 0 6px 8px -2px rgba(0,0,0,0.4)",
   };
 }
 
@@ -93,11 +96,12 @@ function WhiteKey({
       onPointerLeave={onPointerLeave}
       data-testid={keyTestId(keyData.label)}
       data-highlighted={isHighlighted ? true : undefined}
-      className="relative flex-1 cursor-pointer touch-none rounded-b-[5px] border-r border-zinc-300 outline-none select-none last:border-r-0 focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-inset active:scale-[0.99]"
+      className="relative flex-1 cursor-pointer touch-none rounded-b-[5px] outline-none select-none focus-visible:ring-2 focus-visible:ring-inset active:scale-[0.99]"
       style={getWhiteKeyStyle(isActive, isHighlighted)}
     >
       <span
-        className="absolute right-0 bottom-1.5 left-0 hidden text-center text-[10px] font-medium tracking-tight text-zinc-400 sm:block"
+        className="absolute right-0 bottom-1.5 left-0 hidden text-center text-[10px] font-medium tracking-tight sm:block"
+        style={{ color: "oklch(0.60 0.008 285)" }}
         aria-hidden="true"
       >
         {keyData.note === "C" ? keyData.label : keyData.note}
@@ -180,16 +184,27 @@ export function PianoKeyboard({ onKeyPress, highlightedKey, className }: PianoKe
       aria-label={intl.formatMessage(messages.keyboardLabel)}
     >
       <div
-        className="overflow-hidden rounded-xl p-2 sm:p-3"
+        className="relative overflow-hidden rounded-xl p-2 sm:p-3"
         style={{
-          background: "linear-gradient(180deg, #1c1c24 0%, #27272f 100%)",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.06)",
+          background: "linear-gradient(180deg, #1a1726 0%, #0c0a14 100%)",
+          boxShadow:
+            "0 20px 40px -20px rgba(15,12,30,0.4), 0 2px 0 rgba(255,255,255,0.04) inset, inset 0 1px 0 rgba(255,255,255,0.08)",
+          border: "1px solid oklch(0.30 0.04 285)",
         }}
       >
+        {/* Brand-gradient hairline at top */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute top-0 right-4 left-4 h-[2px] rounded-full opacity-50"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent, var(--brand-grad-1), var(--brand-grad-2), var(--brand-grad-3), transparent)",
+          }}
+        />
         <div className="overflow-x-auto">
           <div className="relative h-[90px] min-w-[280px] sm:h-[140px]">
             {/* White keys */}
-            <div className="absolute inset-0 flex divide-x divide-zinc-200">
+            <div className="absolute inset-0 flex" style={{ gap: 1 }}>
               {whiteKeys.map((key) => (
                 <WhiteKey
                   key={key.label}
