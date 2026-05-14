@@ -1,7 +1,7 @@
 import type { CSSProperties, PointerEvent, ReactElement } from "react";
 import { useState } from "react";
-import clsx from "clsx";
 import { useMediaQuery } from "@package/react";
+import clsx from "clsx";
 import { defineMessages, useIntl } from "react-intl";
 import type { BlackKeyData, PianoKeyData, WhiteKeyData } from "./UsePianoKeyboard";
 import { usePianoKeyboard } from "./UsePianoKeyboard";
@@ -142,7 +142,7 @@ function BlackKey({
       onPointerLeave={onPointerLeave}
       data-testid={keyTestId(keyData.label)}
       data-highlighted={isHighlighted ? true : undefined}
-      className="absolute top-0 z-10 cursor-pointer touch-none rounded-b-[4px] outline-none select-none focus-visible:ring-2 focus-visible:ring-blue-400"
+      className="absolute top-0 z-10 cursor-pointer touch-none rounded-b-lg outline-none select-none focus-visible:ring-2 focus-visible:ring-blue-400"
       style={{
         left: `${keyData.leftPercent}%`,
         width: `${keyData.widthPercent}%`,
@@ -198,14 +198,14 @@ export function PianoKeyboard({ onKeyPress, highlightedKey, className }: PianoKe
         {/* Brand-gradient hairline at top */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute top-0 right-4 left-4 h-[2px] rounded-full opacity-50"
+          className="pointer-events-none absolute top-0 right-4 left-4 h-0.5 rounded-full opacity-50"
           style={{
             background:
               "linear-gradient(90deg, transparent, var(--brand-grad-1), var(--brand-grad-2), var(--brand-grad-3), transparent)",
           }}
         />
         <div className="overflow-x-auto">
-          <div className="relative h-[90px] min-w-[280px] sm:h-[140px]">
+          <div className="relative h-22.5 min-w-70 sm:h-35">
             {/* White keys */}
             <div className="absolute inset-0 flex" style={{ gap: 1 }}>
               {whiteKeys.map((key) => (

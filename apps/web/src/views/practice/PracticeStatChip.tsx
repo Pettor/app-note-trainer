@@ -19,7 +19,7 @@ export function PracticeStatChip({ icon, label, value, iconColor }: PracticeStat
       }}
     >
       <div
-        className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-[9px]"
+        className="grid h-8.5 w-8.5 shrink-0 place-items-center rounded-[9px]"
         style={{ background: "var(--surface-secondary)", color: iconColor }}
       >
         {icon}

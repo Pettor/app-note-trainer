@@ -37,7 +37,7 @@ export function PracticeNotesProgressChip({ done, total }: PracticeNotesProgress
           <span className="text-muted font-medium">/{total}</span>
         </span>
       </div>
-      <div className="flex gap-[3px]" aria-hidden="true">
+      <div className="flex gap-0.75" aria-hidden="true">
         {cells.map((filled, i) => (
           <div
             key={i}

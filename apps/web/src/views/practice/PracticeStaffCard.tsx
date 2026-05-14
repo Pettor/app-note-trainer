@@ -113,7 +113,7 @@ export function PracticeStaffCard({ staff, keyName, note, countdown }: PracticeS
           aria-live="assertive"
           aria-atomic="true"
         >
-          <div className="relative h-[200px] w-[200px]">
+          <div className="relative h-50 w-50">
             {/* Pulse ring */}
             <div
               className="absolute inset-0 rounded-full"
