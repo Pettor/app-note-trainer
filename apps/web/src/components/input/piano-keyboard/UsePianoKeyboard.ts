@@ -40,19 +40,30 @@ const BLACK_POSITIONS_PER_OCTAVE: Array<{ note: PianoNote; seamAfterWhiteIndex: 
   { note: "A#", seamAfterWhiteIndex: 5 },
 ];
 
-export function usePianoKeyboard(startOctave = 4, octaveCount = 2): PianoKeyboardMetrics {
+export function usePianoKeyboard(startOctave = 4, octaveCount = 2, endNote?: string): PianoKeyboardMetrics {
   return useMemo(() => {
-    const totalWhiteKeys = octaveCount * WHITE_NOTES.length;
-    const blackWidthPercent = (1 / totalWhiteKeys) * 100 * 0.63;
-    const blackKeyHeightPercent = 62;
-
-    const whiteKeys: WhiteKeyData[] = [];
+    const allWhiteKeys: WhiteKeyData[] = [];
     for (let o = 0; o < octaveCount; o++) {
       const octave = startOctave + o;
       for (const note of WHITE_NOTES) {
-        whiteKeys.push({ note, octave, label: `${note}${octave}`, isBlack: false });
+        allWhiteKeys.push({ note, octave, label: `${note}${octave}`, isBlack: false });
       }
     }
+
+    let whiteKeys = allWhiteKeys;
+    if (endNote) {
+      const match = /^([A-G])(\d+)$/.exec(endNote);
+      if (match) {
+        const endNoteStr = match[1] as PianoNote;
+        const endOctave = parseInt(match[2]);
+        const endIdx = allWhiteKeys.findIndex((k) => k.octave === endOctave && k.note === endNoteStr);
+        if (endIdx >= 0) whiteKeys = allWhiteKeys.slice(0, endIdx + 1);
+      }
+    }
+
+    const totalWhiteKeys = whiteKeys.length;
+    const blackWidthPercent = (1 / totalWhiteKeys) * 100 * 0.63;
+    const blackKeyHeightPercent = 62;
 
     const blackKeys: BlackKeyData[] = [];
     for (let o = 0; o < octaveCount; o++) {
@@ -60,6 +71,7 @@ export function usePianoKeyboard(startOctave = 4, octaveCount = 2): PianoKeyboar
       const octaveOffset = o * WHITE_NOTES.length;
       for (const { note, seamAfterWhiteIndex } of BLACK_POSITIONS_PER_OCTAVE) {
         const seamIndex = octaveOffset + seamAfterWhiteIndex + 1;
+        if (seamIndex >= totalWhiteKeys) continue;
         const centerPercent = (seamIndex / totalWhiteKeys) * 100;
         blackKeys.push({
           note,
@@ -73,5 +85,5 @@ export function usePianoKeyboard(startOctave = 4, octaveCount = 2): PianoKeyboar
     }
 
     return { whiteKeys, blackKeys, blackKeyHeightPercent };
-  }, [startOctave, octaveCount]);
+  }, [startOctave, octaveCount, endNote]);
 }

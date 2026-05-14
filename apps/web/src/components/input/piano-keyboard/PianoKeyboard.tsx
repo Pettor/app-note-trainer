@@ -1,6 +1,7 @@
 import type { CSSProperties, PointerEvent, ReactElement } from "react";
 import { useState } from "react";
 import clsx from "clsx";
+import { useMediaQuery } from "@package/react";
 import { defineMessages, useIntl } from "react-intl";
 import type { BlackKeyData, PianoKeyData, WhiteKeyData } from "./UsePianoKeyboard";
 import { usePianoKeyboard } from "./UsePianoKeyboard";
@@ -161,7 +162,9 @@ export interface PianoKeyboardProps {
 
 export function PianoKeyboard({ onKeyPress, highlightedKey, className }: PianoKeyboardProps): ReactElement {
   const intl = useIntl();
-  const { whiteKeys, blackKeys, blackKeyHeightPercent } = usePianoKeyboard();
+  const isPhone = useMediaQuery("(max-width: 639px)");
+  // Phone shows C4–F5 (1.5 octaves = 11 white keys); desktop shows 2 full octaves
+  const { whiteKeys, blackKeys, blackKeyHeightPercent } = usePianoKeyboard(4, 2, isPhone ? "F5" : undefined);
   const [activeKey, setActiveKey] = useState<string | null>(null);
 
   function handlePointerDown(key: PianoKeyData): void {

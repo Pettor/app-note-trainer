@@ -76,7 +76,9 @@ export function PracticeView({
       </main>
 
       <footer className="shrink-0 px-3 pb-3 sm:px-7 sm:pb-6">
-        <PianoKeyboard onKeyPress={onKeyPress} className="w-full" />
+        <div className="mx-auto w-full max-w-3xl">
+          <PianoKeyboard onKeyPress={onKeyPress} className="w-full" />
+        </div>
       </footer>
 
       {isPaused && <PracticePausedOverlay onResume={onPause} onEnd={onExit} />}
