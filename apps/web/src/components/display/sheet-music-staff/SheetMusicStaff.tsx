@@ -87,6 +87,7 @@ export function SheetMusicStaff({ staff, notes, className }: SheetMusicStaffProp
             slot={note.slot}
             type={note.type ?? "quarter"}
             x={note.x ?? metrics.noteAreaStartX + metrics.staffSpaceSize * 4}
+            active={note.active}
             metrics={metrics}
           />
         ))}

@@ -61,3 +61,12 @@ export const PhoneWithNote: Story = {
   args: { staff: "treble", notes: [{ slot: 2, type: "quarter" }] } satisfies Props,
   globals: { viewport: { value: "iphonex" } },
 };
+
+// Active note — pulsating animation marking the current note to guess
+export const ActiveNote: Story = {
+  args: { staff: "treble", notes: [{ slot: 4, type: "quarter", active: true }] } satisfies Props,
+};
+
+export const ActiveNoteLedger: Story = {
+  args: { staff: "treble", notes: [{ slot: -2, type: "whole", active: true }] } satisfies Props,
+};
