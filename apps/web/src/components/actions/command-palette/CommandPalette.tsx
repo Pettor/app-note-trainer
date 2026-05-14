@@ -109,7 +109,7 @@ export function CommandPalette({ isOpen, commands, onClose }: CommandPaletteProp
               defaultMessage: "Command palette",
               id: "dgEdHD",
             })}
-            className="flex h-[480px] flex-col overflow-hidden shadow-2xl"
+            className="flex h-120 flex-col overflow-hidden shadow-2xl"
           >
             <Modal.Header className="shrink-0 border-b p-0">
               <TextField aria-label="command-palette-search" className="w-full">

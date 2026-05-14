@@ -50,6 +50,26 @@ export function SheetMusicStaff({ staff, notes, className }: SheetMusicStaffProp
             strokeWidth={metrics.lineThickness}
           />
         ))}
+        {/* Left bar line */}
+        <line
+          x1={metrics.lineThickness / 2}
+          x2={metrics.lineThickness / 2}
+          y1={metrics.lineYPositions[0]}
+          y2={metrics.lineYPositions[metrics.lineYPositions.length - 1]}
+          stroke="currentColor"
+          strokeWidth={metrics.lineThickness}
+          strokeLinecap="square"
+        />
+        {/* Right bar line */}
+        <line
+          x1={metrics.viewBoxWidth - metrics.lineThickness / 2}
+          x2={metrics.viewBoxWidth - metrics.lineThickness / 2}
+          y1={metrics.lineYPositions[0]}
+          y2={metrics.lineYPositions[metrics.lineYPositions.length - 1]}
+          stroke="currentColor"
+          strokeWidth={metrics.lineThickness}
+          strokeLinecap="square"
+        />
         <text
           x={metrics.clefX}
           y={metrics.clefBaselineY}

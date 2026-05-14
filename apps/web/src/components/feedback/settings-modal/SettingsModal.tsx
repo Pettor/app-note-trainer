@@ -101,7 +101,7 @@ export function SettingsModal({
             </Modal.Header>
             <Modal.Body className="p-0">
               {/* Desktop: vertical tabs with content pane */}
-              <div className="hidden sm:flex sm:min-h-[400px] sm:flex-row">
+              <div className="hidden sm:flex sm:min-h-100 sm:flex-row">
                 <Tabs
                   variant="secondary"
                   orientation="vertical"

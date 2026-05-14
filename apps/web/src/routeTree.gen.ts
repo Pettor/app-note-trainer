@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root/route'
 import { Route as PublicRouteRouteImport } from './routes/_public/route'
 import { Route as SplatRouteRouteImport } from './routes/$/route'
+import { Route as PublicPracticeRouteRouteImport } from './routes/_public/practice/route'
 import { Route as PublicHomeRouteRouteImport } from './routes/_public/home/route'
 
 const PublicRouteRoute = PublicRouteRouteImport.update({
@@ -22,6 +23,11 @@ const SplatRouteRoute = SplatRouteRouteImport.update({
   path: '/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicPracticeRouteRoute = PublicPracticeRouteRouteImport.update({
+  id: '/practice',
+  path: '/practice',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
 const PublicHomeRouteRoute = PublicHomeRouteRouteImport.update({
   id: '/home',
   path: '/home',
@@ -32,24 +38,27 @@ export interface FileRoutesByFullPath {
   '/$': typeof SplatRouteRoute
   '/': typeof PublicRouteRouteWithChildren
   '/home': typeof PublicHomeRouteRoute
+  '/practice': typeof PublicPracticeRouteRoute
 }
 export interface FileRoutesByTo {
   '/$': typeof SplatRouteRoute
   '/': typeof PublicRouteRouteWithChildren
   '/home': typeof PublicHomeRouteRoute
+  '/practice': typeof PublicPracticeRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/$': typeof SplatRouteRoute
   '/_public': typeof PublicRouteRouteWithChildren
   '/_public/home': typeof PublicHomeRouteRoute
+  '/_public/practice': typeof PublicPracticeRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/$' | '/' | '/home'
+  fullPaths: '/$' | '/' | '/home' | '/practice'
   fileRoutesByTo: FileRoutesByTo
-  to: '/$' | '/' | '/home'
-  id: '__root__' | '/$' | '/_public' | '/_public/home'
+  to: '/$' | '/' | '/home' | '/practice'
+  id: '__root__' | '/$' | '/_public' | '/_public/home' | '/_public/practice'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -73,6 +82,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SplatRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_public/practice': {
+      id: '/_public/practice'
+      path: '/practice'
+      fullPath: '/practice'
+      preLoaderRoute: typeof PublicPracticeRouteRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
     '/_public/home': {
       id: '/_public/home'
       path: '/home'
@@ -85,10 +101,12 @@ declare module '@tanstack/react-router' {
 
 interface PublicRouteRouteChildren {
   PublicHomeRouteRoute: typeof PublicHomeRouteRoute
+  PublicPracticeRouteRoute: typeof PublicPracticeRouteRoute
 }
 
 const PublicRouteRouteChildren: PublicRouteRouteChildren = {
   PublicHomeRouteRoute: PublicHomeRouteRoute,
+  PublicPracticeRouteRoute: PublicPracticeRouteRoute,
 }
 
 const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(

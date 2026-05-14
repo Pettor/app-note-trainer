@@ -4,8 +4,8 @@ import { MUSIC_GLYPHS } from "~/components/display/music-glyph/MusicGlyph";
 import type { Staff } from "~/core/practice-settings/PracticeSettings";
 
 // Desktop layout
-const DESKTOP_STAFF_SPACE = 15;
-const DESKTOP_LINE_THICKNESS = 0.9;
+const DESKTOP_STAFF_SPACE = 30;
+const DESKTOP_LINE_THICKNESS = 2.0;
 const DESKTOP_MARGIN_MULTIPLIER = 2.0;
 
 // Phone layout — STAFF_SPACE=50 targets ~35% of iPhone X viewport height
@@ -16,7 +16,7 @@ const PHONE_MARGIN_MULTIPLIER = 2.5;
 
 const VIEWBOX_WIDTH = 600;
 const LINE_COUNT = 5;
-const CLEF_X = 4;
+const CLEF_LEFT_PADDING = 0.4; // staff-space multiplier — gap between bar line and clef
 
 // SMuFL anchor line indices (from top, 0-based):
 // - gClef: anchor at G4 = 3rd line from top = index 3
@@ -78,6 +78,7 @@ export function useSheetMusicStaff(staff: Staff): StaffMetrics {
     const marginBottom = marginMultiplier * staffSpace;
     const viewBoxHeight = marginTop + (LINE_COUNT - 1) * staffSpace + marginBottom;
     const clefFontSize = 4 * staffSpace; // SMuFL: 1 em = 4 staff spaces
+    const clefX = lineThickness + staffSpace * CLEF_LEFT_PADDING;
 
     function getLineY(lineIndex: number): number {
       return marginTop + lineIndex * staffSpace;
@@ -99,13 +100,13 @@ export function useSheetMusicStaff(staff: Staff): StaffMetrics {
       lineThickness,
       lineYPositions,
       clefGlyph: CLEF_GLYPH[staff],
-      clefX: CLEF_X,
+      clefX,
       clefBaselineY: getLineY(CLEF_ANCHOR_LINE[staff]),
       clefFontSize,
       staffSpaceSize: staffSpace,
       marginTop,
       // gClef/fClef advance width ≈ 2.4 staff spaces (0.6 × fontSize in SMuFL/Leland)
-      noteAreaStartX: CLEF_X + clefFontSize * 0.6,
+      noteAreaStartX: clefX + clefFontSize * 0.6,
       staffLineY: getLineY,
       slotToY: getSlotY,
     };
