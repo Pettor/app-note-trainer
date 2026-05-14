@@ -1,10 +1,10 @@
 import type { CSSProperties, PointerEvent, ReactElement } from "react";
 import { useState } from "react";
-import { useMediaQuery } from "@package/react";
 import clsx from "clsx";
 import { defineMessages, useIntl } from "react-intl";
 import type { BlackKeyData, PianoKeyData, WhiteKeyData } from "./UsePianoKeyboard";
 import { usePianoKeyboard } from "./UsePianoKeyboard";
+import { useViewport } from "~/core/UseViewport";
 
 const messages = defineMessages({
   keyboardLabel: {
@@ -162,9 +162,7 @@ export interface PianoKeyboardProps {
 
 export function PianoKeyboard({ onKeyPress, highlightedKey, className }: PianoKeyboardProps): ReactElement {
   const intl = useIntl();
-  const isPhone = useMediaQuery("(max-width: 639px)");
-  // Short viewports (landscape phones ~375px tall) — contract to 1 octave and a smaller frame
-  const isCompact = useMediaQuery("(max-height: 430px)");
+  const { isPhone, isCompact } = useViewport();
   // Compact: 1 octave (C4–B4). Phone portrait: 1.5 octaves (C4–F5). Desktop: 2 full octaves.
   const { whiteKeys, blackKeys, blackKeyHeightPercent } = usePianoKeyboard(
     4,

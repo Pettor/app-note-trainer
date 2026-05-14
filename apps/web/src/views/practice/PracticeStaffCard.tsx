@@ -1,10 +1,10 @@
 import type { ReactElement } from "react";
-import { useMediaQuery } from "@package/react";
 import clsx from "clsx";
 import { defineMessages, useIntl } from "react-intl";
 import { SheetMusicStaff } from "~/components/display/sheet-music-staff/SheetMusicStaff";
 import type { StaffNoteData } from "~/components/display/sheet-music-staff/UseSheetMusicStaff";
 import type { Staff } from "~/core/practice-settings/PracticeSettings";
+import { useViewport } from "~/core/UseViewport";
 
 const messages = defineMessages({
   trebleClef: {
@@ -48,7 +48,7 @@ export interface PracticeStaffCardProps {
 
 export function PracticeStaffCard({ staff, keyName, note, countdown }: PracticeStaffCardProps): ReactElement {
   const intl = useIntl();
-  const isCompact = useMediaQuery("(max-height: 430px)");
+  const { isCompact } = useViewport();
 
   const clefName = intl.formatMessage(staff === "treble" ? messages.trebleClef : messages.bassClef);
   const hasCountdown = countdown != null;

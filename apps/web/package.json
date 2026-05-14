@@ -55,6 +55,7 @@
     "@vitejs/plugin-react": "catalog:vite",
     "babel-plugin-react-compiler": "catalog:react19",
     "cross-env": "catalog:common",
+    "eslint-plugin-tailwind-canonical-classes": "^1.3.3",
     "storybook": "catalog:storybook",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:typescript",
@@ -62,8 +63,7 @@
     "vite-plugin-istanbul": "catalog:coverage",
     "vite-plugin-pwa": "catalog:vite",
     "vitest": "catalog:vitest",
-    "workbox-window": "catalog:common",
-    "eslint-plugin-tailwind-canonical-classes": "^1.3.3"
+    "workbox-window": "catalog:common"
   },
   "jest-junit": {
     "suiteName": "web tests",

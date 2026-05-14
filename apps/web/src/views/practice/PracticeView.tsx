@@ -1,5 +1,4 @@
 import type { ReactElement } from "react";
-import { useMediaQuery } from "@package/react";
 import clsx from "clsx";
 import { PracticeCompactMenu } from "./PracticeCompactMenu";
 import { PracticePausedOverlay } from "./PracticePausedOverlay";
@@ -10,6 +9,7 @@ import type { StaffNoteData } from "~/components/display/sheet-music-staff/UseSh
 import { PianoKeyboard } from "~/components/input/piano-keyboard/PianoKeyboard";
 import type { PianoKeyData } from "~/components/input/piano-keyboard/UsePianoKeyboard";
 import type { PracticeSettings } from "~/core/practice-settings/PracticeSettings";
+import { useViewport } from "~/core/UseViewport";
 
 export interface PracticeViewProps {
   settings: PracticeSettings;
@@ -46,7 +46,7 @@ export function PracticeView({
   countdown = null,
   currentNote = null,
 }: PracticeViewProps): ReactElement {
-  const isCompact = useMediaQuery("(max-height: 430px)");
+  const { isCompact } = useViewport();
 
   return (
     <div className="relative flex h-dvh flex-col overflow-hidden">
