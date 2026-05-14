@@ -54,8 +54,8 @@ export function usePianoKeyboard(startOctave = 4, octaveCount = 2, endNote?: str
     if (endNote) {
       const match = /^([A-G])(\d+)$/.exec(endNote);
       if (match) {
-        const endNoteStr = match[1] as PianoNote;
-        const endOctave = parseInt(match[2]);
+        const endNoteStr = match[1]! as PianoNote;
+        const endOctave = parseInt(match[2]!);
         const endIdx = allWhiteKeys.findIndex((k) => k.octave === endOctave && k.note === endNoteStr);
         if (endIdx >= 0) whiteKeys = allWhiteKeys.slice(0, endIdx + 1);
       }

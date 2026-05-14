@@ -63,7 +63,7 @@ export function PracticePausedOverlay({ onResume, onEnd }: PracticePausedOverlay
         <p className="text-muted mt-1 text-sm">{intl.formatMessage(messages.subtitle)}</p>
 
         <div className="mt-5 flex justify-center gap-2">
-          <Button variant="bordered" size="sm" onPress={onEnd}>
+          <Button variant="outline" size="sm" onPress={onEnd}>
             {intl.formatMessage(messages.end)}
           </Button>
           <Button
