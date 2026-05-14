@@ -31,14 +31,14 @@ type Story = StoryObj<typeof meta>;
 export const Fullscreen: Story = {
   parameters: { viewport: { value: "full" } },
   args: {
-    currentNote: { slot: 4, type: "quarter" },
+    currentNote: { slot: 4, type: "quarter", active: true },
   },
 };
 
 export const Phone: Story = {
   globals: { viewport: { value: "iphonex" } },
   args: {
-    currentNote: { slot: 2, type: "quarter" },
+    currentNote: { slot: 2, type: "quarter", active: true },
   },
 };
 
@@ -47,7 +47,7 @@ export const WithTimer: Story = {
   args: {
     settings: { ...DEFAULT_PRACTICE_SETTINGS, timerEnabled: true, duration: 5 },
     remaining: 3.4,
-    currentNote: { slot: 6, type: "quarter" },
+    currentNote: { slot: 6, type: "quarter", active: true },
   },
 };
 

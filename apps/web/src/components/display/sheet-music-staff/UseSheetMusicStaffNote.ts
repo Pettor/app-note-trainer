@@ -20,10 +20,10 @@ const STEM_UP_THRESHOLD = 4;
 // Dimensions matched to the claude design (headW = spacing*1.05, headH = spacing*0.78):
 //   rx: headW*0.78 → headW*1.05  (spacing * 0.819 → spacing * 1.103)
 //   ry: headH*0.70 → headH*0.95  (spacing * 0.546 → spacing * 0.741)
-const GLOW_RX_START = 0.819; // staff spaces
-const GLOW_RX_END = 1.103; // staff spaces
-const GLOW_RY_START = 0.546; // staff spaces
-const GLOW_RY_END = 0.741; // staff spaces
+const GLOW_RX_START = 1.019; // staff spaces
+const GLOW_RX_END = 1.203; // staff spaces
+const GLOW_RY_START = 0.746; // staff spaces
+const GLOW_RY_END = 0.841; // staff spaces
 const GLOW_BLUR_RATIO = 0.02; // feGaussianBlur stdDeviation as a fraction of staffSpaceSize
 const GLOW_OPACITY_START = 0.18;
 const GLOW_OPACITY_END = 0.32;
