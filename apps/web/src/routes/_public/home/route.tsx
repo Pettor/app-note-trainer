@@ -1,9 +1,11 @@
 import type { ReactElement } from "react";
+import { lazy } from "react";
 import { useDocumentTitle } from "@package/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useHomeRoute } from "./-UseHomeRoute";
 import { RouteError } from "~/core/routes/logic/RouteError";
-import { HomeView } from "~/views/home/HomeView";
+
+const HomeView = lazy(() => import("~/views/home/HomeView").then((m) => ({ default: m.HomeView })));
 
 export const Route = createFileRoute("/_public/home")({
   component: LoginPageRoute,
