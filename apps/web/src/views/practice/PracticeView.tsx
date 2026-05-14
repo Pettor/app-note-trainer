@@ -1,4 +1,7 @@
 import type { ReactElement } from "react";
+import { useMediaQuery } from "@package/react";
+import clsx from "clsx";
+import { PracticeCompactMenu } from "./PracticeCompactMenu";
 import { PracticePausedOverlay } from "./PracticePausedOverlay";
 import { PracticeStaffCard } from "./PracticeStaffCard";
 import { PracticeStatsStrip } from "./PracticeStatsStrip";
@@ -43,6 +46,8 @@ export function PracticeView({
   countdown = null,
   currentNote = null,
 }: PracticeViewProps): ReactElement {
+  const isCompact = useMediaQuery("(max-height: 430px)");
+
   return (
     <div className="relative flex h-dvh flex-col overflow-hidden">
       {/* Gradient bloom background */}
@@ -58,24 +63,56 @@ export function PracticeView({
         }}
       />
 
-      <PracticeTopBar keyName={keyName} scaleType={scaleType} isPaused={isPaused} onPause={onPause} onExit={onExit} />
+      {/* In compact/landscape mode the topbar is hidden — its controls move into PracticeCompactMenu */}
+      {!isCompact && (
+        <PracticeTopBar keyName={keyName} scaleType={scaleType} isPaused={isPaused} onPause={onPause} onExit={onExit} />
+      )}
 
-      <main className="flex min-h-0 flex-1 flex-col gap-3 px-3 pt-3 pb-3 sm:gap-4 sm:px-7 sm:pt-5 sm:pb-4">
-        <PracticeStatsStrip
-          remaining={remaining}
-          totalTime={settings.duration}
-          timerEnabled={settings.timerEnabled}
-          notesCompleted={notesCompleted}
-          totalNotes={totalNotes}
-          correctCount={correctCount}
-          wrongCount={wrongCount}
-          streak={streak}
-        />
+      <main
+        className={clsx(
+          "flex min-h-0 flex-1 flex-col px-3 sm:px-7",
+          isCompact ? "gap-1 pt-1.5 pb-1" : "gap-3 pt-3 pb-3 sm:gap-4 sm:pt-5 sm:pb-4"
+        )}
+      >
+        {isCompact ? (
+          <div className="flex items-center gap-2">
+            <div className="min-w-0 flex-1">
+              <PracticeStatsStrip
+                remaining={remaining}
+                totalTime={settings.duration}
+                timerEnabled={settings.timerEnabled}
+                notesCompleted={notesCompleted}
+                totalNotes={totalNotes}
+                correctCount={correctCount}
+                wrongCount={wrongCount}
+                streak={streak}
+              />
+            </div>
+            <PracticeCompactMenu
+              keyName={keyName}
+              scaleType={scaleType}
+              isPaused={isPaused}
+              onPause={onPause}
+              onExit={onExit}
+            />
+          </div>
+        ) : (
+          <PracticeStatsStrip
+            remaining={remaining}
+            totalTime={settings.duration}
+            timerEnabled={settings.timerEnabled}
+            notesCompleted={notesCompleted}
+            totalNotes={totalNotes}
+            correctCount={correctCount}
+            wrongCount={wrongCount}
+            streak={streak}
+          />
+        )}
 
         <PracticeStaffCard staff={settings.staff} keyName={keyName} note={currentNote} countdown={countdown} />
       </main>
 
-      <footer className="shrink-0 px-3 pb-3 sm:px-7 sm:pb-6">
+      <footer className={clsx("shrink-0", isCompact ? "px-2 pb-1.5" : "px-3 pb-3 sm:px-7 sm:pb-6")}>
         <div className="mx-auto w-full max-w-3xl">
           <PianoKeyboard onKeyPress={onKeyPress} className="w-full" />
         </div>

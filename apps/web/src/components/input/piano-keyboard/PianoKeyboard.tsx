@@ -163,8 +163,14 @@ export interface PianoKeyboardProps {
 export function PianoKeyboard({ onKeyPress, highlightedKey, className }: PianoKeyboardProps): ReactElement {
   const intl = useIntl();
   const isPhone = useMediaQuery("(max-width: 639px)");
-  // Phone shows C4–F5 (1.5 octaves = 11 white keys); desktop shows 2 full octaves
-  const { whiteKeys, blackKeys, blackKeyHeightPercent } = usePianoKeyboard(4, 2, isPhone ? "F5" : undefined);
+  // Short viewports (landscape phones ~375px tall) — contract to 1 octave and a smaller frame
+  const isCompact = useMediaQuery("(max-height: 430px)");
+  // Compact: 1 octave (C4–B4). Phone portrait: 1.5 octaves (C4–F5). Desktop: 2 full octaves.
+  const { whiteKeys, blackKeys, blackKeyHeightPercent } = usePianoKeyboard(
+    4,
+    isCompact ? 1 : 2,
+    !isCompact && isPhone ? "F5" : undefined
+  );
   const [activeKey, setActiveKey] = useState<string | null>(null);
 
   function handlePointerDown(key: PianoKeyData): void {
@@ -187,7 +193,7 @@ export function PianoKeyboard({ onKeyPress, highlightedKey, className }: PianoKe
       aria-label={intl.formatMessage(messages.keyboardLabel)}
     >
       <div
-        className="relative overflow-hidden rounded-xl p-2 sm:p-3"
+        className={clsx("relative overflow-hidden rounded-xl", isCompact ? "p-1.5" : "p-2 sm:p-3")}
         style={{
           background: "linear-gradient(180deg, #1a1726 0%, #0c0a14 100%)",
           boxShadow:
@@ -205,7 +211,7 @@ export function PianoKeyboard({ onKeyPress, highlightedKey, className }: PianoKe
           }}
         />
         <div className="overflow-x-auto">
-          <div className="relative h-22.5 min-w-70 sm:h-35">
+          <div className={clsx("relative", isCompact ? "h-12" : isPhone ? "h-22.5 min-w-70" : "h-35 min-w-70")}>
             {/* White keys */}
             <div className="absolute inset-0 flex" style={{ gap: 1 }}>
               {whiteKeys.map((key) => (

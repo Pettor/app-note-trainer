@@ -37,8 +37,22 @@ export function SheetMusicStaff({ staff, notes, className }: SheetMusicStaffProp
   const ariaLabel = intl.formatMessage(messages.ariaLabel, { clefName });
 
   return (
-    <div className={className}>
-      <svg width="100%" viewBox={metrics.viewBox} preserveAspectRatio="xMinYMid meet" role="img" aria-label={ariaLabel}>
+    // aspect-ratio + maxHeight:"100%" lets the SVG shrink to fit the parent's height in
+    // constrained layouts (e.g. landscape phone) while preserving the correct aspect ratio.
+    // In unconstrained contexts (Storybook, auto-height divs) maxHeight:100% resolves to
+    // none, so the SVG expands naturally via the viewBox aspect ratio as before.
+    <div
+      className={className}
+      style={{ aspectRatio: `${metrics.viewBoxWidth} / ${metrics.viewBoxHeight}`, maxHeight: "100%" }}
+    >
+      <svg
+        width="100%"
+        height="100%"
+        viewBox={metrics.viewBox}
+        preserveAspectRatio="xMidYMid meet"
+        role="img"
+        aria-label={ariaLabel}
+      >
         {metrics.lineYPositions.map((y, i) => (
           <line
             key={i}

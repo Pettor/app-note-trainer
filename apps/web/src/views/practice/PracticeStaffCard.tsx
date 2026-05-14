@@ -1,4 +1,6 @@
 import type { ReactElement } from "react";
+import { useMediaQuery } from "@package/react";
+import clsx from "clsx";
 import { defineMessages, useIntl } from "react-intl";
 import { SheetMusicStaff } from "~/components/display/sheet-music-staff/SheetMusicStaff";
 import type { StaffNoteData } from "~/components/display/sheet-music-staff/UseSheetMusicStaff";
@@ -46,13 +48,14 @@ export interface PracticeStaffCardProps {
 
 export function PracticeStaffCard({ staff, keyName, note, countdown }: PracticeStaffCardProps): ReactElement {
   const intl = useIntl();
+  const isCompact = useMediaQuery("(max-height: 430px)");
 
   const clefName = intl.formatMessage(staff === "treble" ? messages.trebleClef : messages.bassClef);
   const hasCountdown = countdown != null;
 
   return (
     <section
-      className="relative flex flex-1 flex-col overflow-hidden rounded-[18px] sm:rounded-3xl"
+      className="relative flex max-h-80 flex-1 flex-col overflow-hidden rounded-[18px] sm:rounded-3xl"
       style={{
         background: "var(--surface)",
         border: "1px solid var(--border)",
@@ -73,7 +76,10 @@ export function PracticeStaffCard({ staff, keyName, note, countdown }: PracticeS
 
       {/* Header strip */}
       <div
-        className="relative flex items-center justify-between px-4 pt-3.5 pb-0 sm:px-6 sm:pt-5"
+        className={clsx(
+          "relative flex items-center justify-between pb-0",
+          isCompact ? "px-3 pt-2" : "px-4 pt-3.5 sm:px-6 sm:pt-5"
+        )}
         style={{ zIndex: 1 }}
       >
         <span className="text-muted flex items-center gap-2 text-[10px] font-semibold tracking-[0.18em] uppercase sm:text-[11px]">
@@ -91,7 +97,10 @@ export function PracticeStaffCard({ staff, keyName, note, countdown }: PracticeS
 
       {/* Staff */}
       <div
-        className="relative flex min-h-0 flex-1 items-center justify-center px-3 py-2 sm:px-6 sm:py-4"
+        className={clsx(
+          "relative flex min-h-0 flex-1 items-center justify-center overflow-hidden",
+          isCompact ? "px-3 py-1" : "px-3 py-2 sm:px-6 sm:py-4"
+        )}
         style={{ zIndex: 1 }}
       >
         <SheetMusicStaff staff={staff} notes={note ? [note] : undefined} className="w-full max-w-2xl" />
@@ -99,7 +108,10 @@ export function PracticeStaffCard({ staff, keyName, note, countdown }: PracticeS
 
       {/* Tap prompt */}
       <div
-        className="text-muted relative pb-3.5 text-center font-mono text-[10px] sm:pb-5 sm:text-xs"
+        className={clsx(
+          "text-muted relative text-center font-mono text-[10px]",
+          isCompact ? "pb-1.5" : "pb-3.5 sm:pb-5 sm:text-xs"
+        )}
         style={{ zIndex: 1 }}
       >
         {hasCountdown ? intl.formatMessage(messages.countdownPrompt) : intl.formatMessage(messages.identifyPrompt)}
