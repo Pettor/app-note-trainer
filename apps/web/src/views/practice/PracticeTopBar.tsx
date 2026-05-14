@@ -32,13 +32,16 @@ const messages = defineMessages({
   },
 });
 
-export interface PracticeTopBarProps {
+/** Shared by PracticeTopBar and PracticeCompactMenu */
+export interface PracticeSessionControls {
   keyName: string;
   scaleType: string;
   isPaused: boolean;
   onPause: () => void;
   onExit: () => void;
 }
+
+export type PracticeTopBarProps = PracticeSessionControls;
 
 export function PracticeTopBar({ keyName, scaleType, isPaused, onPause, onExit }: PracticeTopBarProps): ReactElement {
   const intl = useIntl();

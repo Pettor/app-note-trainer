@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { useMediaQuery } from "@package/react";
 import { MUSIC_GLYPHS } from "~/components/display/music-glyph/MusicGlyph";
 import type { Staff } from "~/core/practice-settings/PracticeSettings";
+import { useViewport } from "~/core/UseViewport";
 
 // Desktop layout
 const DESKTOP_STAFF_SPACE = 30;
@@ -43,6 +43,7 @@ export interface StaffNoteData {
   slot: number;
   type?: NoteType; // defaults to "quarter"
   x?: number; // SVG user-unit x; auto-placed at first beat position if omitted
+  active?: boolean; // marks this as the current note to guess — shows pulsating animation
 }
 
 export interface StaffMetrics {
@@ -67,7 +68,7 @@ export interface StaffMetrics {
 }
 
 export function useSheetMusicStaff(staff: Staff): StaffMetrics {
-  const isPhone = useMediaQuery("(max-width: 639px)");
+  const { isPhone } = useViewport();
 
   return useMemo<StaffMetrics>(() => {
     const staffSpace = isPhone ? PHONE_STAFF_SPACE : DESKTOP_STAFF_SPACE;
