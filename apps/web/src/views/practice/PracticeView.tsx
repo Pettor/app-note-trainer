@@ -9,6 +9,7 @@ import { PracticeTopBar } from "./PracticeTopBar";
 import type { StaffNoteData } from "~/components/display/sheet-music-staff/UseSheetMusicStaff";
 import { PianoKeyboard } from "~/components/input/piano-keyboard/PianoKeyboard";
 import type { PianoKeyData } from "~/components/input/piano-keyboard/UsePianoKeyboard";
+import { getSlotRange } from "~/core/game/NotePool";
 import type { PracticeSettings } from "~/core/practice-settings/PracticeSettings";
 import { useViewport } from "~/core/UseViewport";
 
@@ -50,6 +51,7 @@ export function PracticeView({
   onFinish,
 }: PracticeViewProps): ReactElement {
   const { isCompact } = useViewport();
+  const [minSlot, maxSlot] = getSlotRange(settings);
 
   return (
     <div className="relative flex h-dvh flex-col overflow-hidden">
@@ -110,7 +112,14 @@ export function PracticeView({
           />
         )}
 
-        <PracticeStaffCard staff={settings.staff} keyName={keyName} note={currentNote} countdown={countdown} />
+        <PracticeStaffCard
+          staff={settings.staff}
+          keyName={keyName}
+          note={currentNote}
+          countdown={countdown}
+          minSlot={minSlot}
+          maxSlot={maxSlot}
+        />
       </main>
 
       <footer className={clsx("shrink-0", isCompact ? "px-2 pb-1.5" : "px-3 pb-3 sm:px-7 sm:pb-6")}>

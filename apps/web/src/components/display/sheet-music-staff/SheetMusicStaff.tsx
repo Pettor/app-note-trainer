@@ -27,11 +27,25 @@ export interface SheetMusicStaffProps {
   staff: Staff;
   notes?: StaffNoteData[];
   className?: string;
+  /** Fixed slot bounds for the viewBox — prevents layout shift when notes change.
+   *  When omitted, bounds are auto-detected from the notes array each render. */
+  minSlot?: number;
+  maxSlot?: number;
 }
 
-export function SheetMusicStaff({ staff, notes, className }: SheetMusicStaffProps): ReactElement {
+export function SheetMusicStaff({
+  staff,
+  notes,
+  className,
+  minSlot: minSlotProp,
+  maxSlot: maxSlotProp,
+}: SheetMusicStaffProps): ReactElement {
   const intl = useIntl();
-  const metrics = useSheetMusicStaff(staff);
+  // Use explicit bounds when provided (stable viewBox); fall back to auto-detection from notes.
+  const slots = notes?.map((n) => n.slot) ?? [];
+  const minSlot = minSlotProp ?? (slots.length > 0 ? Math.min(...slots) : 0);
+  const maxSlot = maxSlotProp ?? (slots.length > 0 ? Math.max(...slots) : 8);
+  const metrics = useSheetMusicStaff(staff, minSlot, maxSlot);
 
   const clefName = intl.formatMessage(staff === "treble" ? messages.trebleClefName : messages.bassClefName);
   const ariaLabel = intl.formatMessage(messages.ariaLabel, { clefName });
