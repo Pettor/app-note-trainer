@@ -52,6 +52,7 @@ function GlyphGalleryStory(): ReactElement {
     noteheadWhole: "Whole",
     noteheadHalf: "Half",
     noteheadBlack: "Quarter",
+    accidentalSharp: "Sharp",
   };
 
   return (

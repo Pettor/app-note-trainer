@@ -44,6 +44,7 @@ export interface StaffNoteData {
   type?: NoteType; // defaults to "quarter"
   x?: number; // SVG user-unit x; auto-placed at first beat position if omitted
   active?: boolean; // marks this as the current note to guess — shows pulsating animation
+  accidental?: "sharp"; // renders a ♯ glyph to the left of the notehead
 }
 
 export interface StaffMetrics {
@@ -67,7 +68,20 @@ export interface StaffMetrics {
   slotToY: (slot: number) => number;
 }
 
-export function useSheetMusicStaff(staff: Staff): StaffMetrics {
+// Extra viewBox space needed for notes that overflow the base margin.
+// The base margin already covers some ledger territory — only add what's missing,
+// plus a 0.75-staff-space notehead/glow buffer.
+// Must exceed GLOW_RY_END (0.841) from UseSheetMusicStaffNote so the pulse animation
+// never clips the viewBox edge. 1.2 gives ~10px headroom on desktop.
+const LEDGER_BUFFER = 1.2;
+
+function extraMargin(slotsOutside: number, marginMultiplier: number, staffSpace: number): number {
+  if (slotsOutside <= 0) return 0;
+  // note extends slotsOutside/2 staff-spaces past the staff edge; base margin covers marginMultiplier
+  return Math.max(0, (slotsOutside / 2 + LEDGER_BUFFER - marginMultiplier) * staffSpace);
+}
+
+export function useSheetMusicStaff(staff: Staff, minSlot = 0, maxSlot = 8): StaffMetrics {
   const { isPhone } = useViewport();
 
   return useMemo<StaffMetrics>(() => {
@@ -75,8 +89,9 @@ export function useSheetMusicStaff(staff: Staff): StaffMetrics {
     const lineThickness = isPhone ? PHONE_LINE_THICKNESS : DESKTOP_LINE_THICKNESS;
     const marginMultiplier = isPhone ? PHONE_MARGIN_MULTIPLIER : DESKTOP_MARGIN_MULTIPLIER;
 
-    const marginTop = marginMultiplier * staffSpace;
-    const marginBottom = marginMultiplier * staffSpace;
+    const baseMargin = marginMultiplier * staffSpace;
+    const marginTop = baseMargin + extraMargin(maxSlot - 8, marginMultiplier, staffSpace);
+    const marginBottom = baseMargin + extraMargin(-minSlot, marginMultiplier, staffSpace);
     const viewBoxHeight = marginTop + (LINE_COUNT - 1) * staffSpace + marginBottom;
     const clefFontSize = 4 * staffSpace; // SMuFL: 1 em = 4 staff spaces
     const clefX = lineThickness + staffSpace * CLEF_LEFT_PADDING;
@@ -111,5 +126,5 @@ export function useSheetMusicStaff(staff: Staff): StaffMetrics {
       staffLineY: getLineY,
       slotToY: getSlotY,
     };
-  }, [staff, isPhone]);
+  }, [staff, isPhone, minSlot, maxSlot]);
 }

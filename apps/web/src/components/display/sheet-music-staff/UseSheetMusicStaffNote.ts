@@ -31,6 +31,12 @@ const GLOW_DURATION = "1.8s";
 // ease-in-out cubic-bezier(0.42, 0, 0.58, 1) — two segments for the 0→0.5→1 keyTimes
 const GLOW_EASE_IN_OUT = "0.42 0 0.58 1;0.42 0 0.58 1";
 
+// ─── Accidental ──────────────────────────────────────────────────────────────
+// SMuFL accidentals render at 0.4× clefFontSize; width ≈ 0.55 staff spaces
+const ACCIDENTAL_FONT_SIZE_RATIO = 0.4; // relative to clefFontSize
+const ACCIDENTAL_WIDTH_RATIO = 0.55; // staff spaces — advance width of ♯ in Leland
+const ACCIDENTAL_GAP_RATIO = 0.1; // staff spaces — gap between accidental and notehead
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface SheetMusicStaffNoteLayout {
@@ -48,6 +54,10 @@ export interface SheetMusicStaffNoteLayout {
   stemY1: number;
   stemY2: number;
   stemWidth: number;
+  // Accidental (sharp)
+  accidentalGlyph: string | null;
+  accidentalX: number;
+  accidentalFontSize: number;
   // Glow animation
   glowCx: number;
   glowCy: number;
@@ -78,9 +88,10 @@ export function useSheetMusicStaffNote(
   slot: number,
   type: NoteType,
   x: number,
-  metrics: StaffMetrics
+  metrics: StaffMetrics,
+  accidental?: "sharp"
 ): SheetMusicStaffNoteLayout {
-  const { staffSpaceSize, slotToY } = metrics;
+  const { staffSpaceSize, slotToY, clefFontSize } = metrics;
 
   return useMemo<SheetMusicStaffNoteLayout>(() => {
     const noteY = slotToY(slot);
@@ -98,6 +109,11 @@ export function useSheetMusicStaffNote(
     const glowCx = x + (NOTEHEAD_WIDTH_RATIO / 2) * staffSpaceSize;
     const glowCy = noteY;
 
+    const accidentalFontSize = clefFontSize * ACCIDENTAL_FONT_SIZE_RATIO;
+    const accidentalWidth = ACCIDENTAL_WIDTH_RATIO * staffSpaceSize;
+    const accidentalGap = ACCIDENTAL_GAP_RATIO * staffSpaceSize;
+    const accidentalX = x - accidentalWidth - accidentalGap;
+
     return {
       noteY,
       noteheadWidth,
@@ -110,6 +126,9 @@ export function useSheetMusicStaffNote(
       stemY1,
       stemY2,
       stemWidth,
+      accidentalGlyph: accidental === "sharp" ? MUSIC_GLYPHS.accidentalSharp : null,
+      accidentalX,
+      accidentalFontSize,
       glowCx,
       glowCy,
       glowRxStart: GLOW_RX_START * staffSpaceSize,
@@ -122,5 +141,5 @@ export function useSheetMusicStaffNote(
       glowDuration: GLOW_DURATION,
       glowEaseInOut: GLOW_EASE_IN_OUT,
     };
-  }, [slot, type, x, staffSpaceSize, slotToY]);
+  }, [slot, type, x, staffSpaceSize, slotToY, clefFontSize, accidental]);
 }

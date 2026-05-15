@@ -7,12 +7,20 @@ interface SheetMusicStaffNoteProps {
   type: NoteType;
   x: number;
   active?: boolean;
+  accidental?: "sharp";
   metrics: StaffMetrics;
 }
 
-export function SheetMusicStaffNote({ slot, type, x, active, metrics }: SheetMusicStaffNoteProps): ReactElement {
+export function SheetMusicStaffNote({
+  slot,
+  type,
+  x,
+  active,
+  accidental,
+  metrics,
+}: SheetMusicStaffNoteProps): ReactElement {
   const { clefFontSize, lineThickness, slotToY } = metrics;
-  const n = useSheetMusicStaffNote(slot, type, x, metrics);
+  const n = useSheetMusicStaffNote(slot, type, x, metrics, accidental);
 
   return (
     <g aria-hidden="true">
@@ -73,6 +81,18 @@ export function SheetMusicStaffNote({ slot, type, x, active, metrics }: SheetMus
           strokeWidth={lineThickness}
         />
       ))}
+      {n.accidentalGlyph && (
+        <text
+          x={n.accidentalX}
+          y={n.noteY}
+          fontFamily="Leland"
+          fontSize={n.accidentalFontSize}
+          fill="currentColor"
+          style={{ userSelect: "none" }}
+        >
+          {n.accidentalGlyph}
+        </text>
+      )}
       <text
         x={x}
         y={n.noteY}

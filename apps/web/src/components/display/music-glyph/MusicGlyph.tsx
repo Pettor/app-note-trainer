@@ -6,6 +6,7 @@ export const MUSIC_GLYPHS = {
   noteheadWhole: "",
   noteheadHalf: "",
   noteheadBlack: "",
+  accidentalSharp: "",
 } as const;
 
 export type MusicGlyphName = keyof typeof MUSIC_GLYPHS;
@@ -17,6 +18,7 @@ const GLYPH_HEIGHT_RATIO: Record<MusicGlyphName, number> = {
   noteheadWhole: 0.27,
   noteheadHalf: 0.265,
   noteheadBlack: 0.265,
+  accidentalSharp: 0.56,
 };
 
 const GLYPH_ASCENT_RATIO: Record<MusicGlyphName, number> = {
@@ -25,6 +27,7 @@ const GLYPH_ASCENT_RATIO: Record<MusicGlyphName, number> = {
   noteheadWhole: 0.136,
   noteheadHalf: 0.132,
   noteheadBlack: 0.132,
+  accidentalSharp: 0.36,
 };
 
 interface MusicGlyphProps {

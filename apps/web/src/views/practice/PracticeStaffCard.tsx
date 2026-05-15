@@ -44,9 +44,18 @@ export interface PracticeStaffCardProps {
   keyName: string;
   note?: StaffNoteData | null;
   countdown?: number | null;
+  minSlot?: number;
+  maxSlot?: number;
 }
 
-export function PracticeStaffCard({ staff, keyName, note, countdown }: PracticeStaffCardProps): ReactElement {
+export function PracticeStaffCard({
+  staff,
+  keyName,
+  note,
+  countdown,
+  minSlot,
+  maxSlot,
+}: PracticeStaffCardProps): ReactElement {
   const intl = useIntl();
   const { isCompact } = useViewport();
 
@@ -55,7 +64,7 @@ export function PracticeStaffCard({ staff, keyName, note, countdown }: PracticeS
 
   return (
     <section
-      className="relative flex max-h-80 flex-1 flex-col overflow-hidden rounded-[18px] sm:rounded-3xl"
+      className="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-[18px] sm:rounded-3xl"
       style={{
         background: "var(--surface)",
         border: "1px solid var(--border)",
@@ -103,7 +112,13 @@ export function PracticeStaffCard({ staff, keyName, note, countdown }: PracticeS
         )}
         style={{ zIndex: 1 }}
       >
-        <SheetMusicStaff staff={staff} notes={note ? [note] : undefined} className="w-full max-w-2xl" />
+        <SheetMusicStaff
+          staff={staff}
+          notes={note ? [note] : undefined}
+          minSlot={minSlot}
+          maxSlot={maxSlot}
+          className="w-full max-w-2xl"
+        />
       </div>
 
       {/* Tap prompt */}

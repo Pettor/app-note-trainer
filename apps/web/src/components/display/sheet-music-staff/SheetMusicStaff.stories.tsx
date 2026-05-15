@@ -70,3 +70,41 @@ export const ActiveNote: Story = {
 export const ActiveNoteLedger: Story = {
   args: { staff: "treble", notes: [{ slot: -2, type: "whole", active: true }] } satisfies Props,
 };
+
+// Extreme ledger notes — slot -6 (F3 treble / A1 bass) and slot 14 (E6 treble / G4 bass)
+export const TrebleLedgerLowest: Story = {
+  args: { staff: "treble", notes: [{ slot: -6, type: "quarter", active: true }] } satisfies Props,
+};
+
+export const TrebleLedgerHighest: Story = {
+  args: { staff: "treble", notes: [{ slot: 14, type: "quarter", active: true }] } satisfies Props,
+};
+
+export const BassLedgerLowest: Story = {
+  args: { staff: "bass", notes: [{ slot: -6, type: "quarter", active: true }] } satisfies Props,
+};
+
+export const BassLedgerHighest: Story = {
+  args: { staff: "bass", notes: [{ slot: 14, type: "quarter", active: true }] } satisfies Props,
+};
+
+// Phone viewport — extreme ledger notes
+export const PhoneTrebleLedgerLowest: Story = {
+  args: { staff: "treble", notes: [{ slot: -6, type: "quarter", active: true }] } satisfies Props,
+  globals: { viewport: { value: "iphonex" } },
+};
+
+export const PhoneTrebleLedgerHighest: Story = {
+  args: { staff: "treble", notes: [{ slot: 14, type: "quarter", active: true }] } satisfies Props,
+  globals: { viewport: { value: "iphonex" } },
+};
+
+// Sharp accidental rendering
+export const SharpNote: Story = {
+  args: { staff: "treble", notes: [{ slot: 1, type: "quarter", accidental: "sharp", active: true }] } satisfies Props,
+};
+
+export const PhoneSharpNote: Story = {
+  args: { staff: "treble", notes: [{ slot: 1, type: "quarter", accidental: "sharp", active: true }] } satisfies Props,
+  globals: { viewport: { value: "iphonex" } },
+};
