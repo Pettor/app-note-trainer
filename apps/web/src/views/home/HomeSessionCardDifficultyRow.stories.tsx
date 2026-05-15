@@ -17,3 +17,5 @@ export const Low: Story = { args: { difficulty: "low" } };
 export const Medium: Story = { args: { difficulty: "medium" } };
 
 export const High: Story = { args: { difficulty: "high" } };
+
+export const Custom: Story = { args: { difficulty: "custom" } };

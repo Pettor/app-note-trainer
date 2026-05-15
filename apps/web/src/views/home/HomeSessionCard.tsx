@@ -1,6 +1,11 @@
+import { useState } from "react";
 import type { ReactElement } from "react";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { defineMessages, useIntl } from "react-intl";
 import { HomeSessionCardDifficultyRow } from "./HomeSessionCardDifficultyRow";
+import { HomeSessionCardGuessScaleRow } from "./HomeSessionCardGuessScaleRow";
+import { HomeSessionCardLedgerRow } from "./HomeSessionCardLedgerRow";
+import { HomeSessionCardNoteRangeRow } from "./HomeSessionCardNoteRangeRow";
 import { HomeSessionCardSharpsRow } from "./HomeSessionCardSharpsRow";
 import { HomeSessionCardStaffRow } from "./HomeSessionCardStaffRow";
 import { HomeSessionCardSummary } from "./HomeSessionCardSummary";
@@ -14,25 +19,44 @@ const messages = defineMessages({
     defaultMessage: "Session setup",
   },
   cardSub: {
-    id: "W+SA5i",
+    id: "nPmGCP",
     description: "HomeSessionCard: card subtitle",
-    defaultMessage: "Adjust to match where you're at today.",
+    defaultMessage: "Pick a preset, or customize.",
+  },
+  customizeOpen: {
+    id: "m9QTl8",
+    description: "HomeSessionCard: customize disclosure trigger label (collapsed)",
+    defaultMessage: "Customize individual settings",
+  },
+  customizeClose: {
+    id: "f9wPcc",
+    description: "HomeSessionCard: customize disclosure trigger label (expanded)",
+    defaultMessage: "Hide individual settings",
   },
 });
 
 export function HomeSessionCard(): ReactElement {
   const intl = useIntl();
+  const [customizeOpen, setCustomizeOpen] = useState(false);
   const {
     difficulty,
     staff,
+    noteRange,
+    ledgerLines,
+    ledgerDepth,
     sharps,
     timerEnabled,
     duration,
+    guessScaleFirst,
     onDifficultyChange,
     onStaffChange,
+    onNoteRangeChange,
+    onLedgerLinesChange,
+    onLedgerDepthChange,
     onSharpsChange,
     onTimerChange,
     onDurationChange,
+    onGuessScaleFirstChange,
   } = useHomeSessionCard();
 
   return (
@@ -50,21 +74,82 @@ export function HomeSessionCard(): ReactElement {
       <div className="px-6 pb-2">
         <HomeSessionCardDifficultyRow difficulty={difficulty} onDifficultyChange={onDifficultyChange} />
         <HomeSessionCardStaffRow staff={staff} onStaffChange={onStaffChange} />
-        <HomeSessionCardSharpsRow sharps={sharps} onSharpsChange={onSharpsChange} />
-        <HomeSessionCardTimerRow
-          timerEnabled={timerEnabled}
-          duration={duration}
-          onTimerChange={onTimerChange}
-          onDurationChange={onDurationChange}
+      </div>
+
+      {/* Customize disclosure trigger */}
+      <button
+        type="button"
+        aria-expanded={customizeOpen}
+        onClick={() => setCustomizeOpen((prev) => !prev)}
+        className="text-muted mx-6 mb-4.5 flex w-[calc(100%-48px)] cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed px-4 py-3 text-xs font-medium transition-all duration-150"
+        style={{ borderColor: "var(--border)", background: "transparent" }}
+        onMouseEnter={(e) => {
+          const el = e.currentTarget;
+          el.style.color = "var(--foreground)";
+          el.style.borderColor = "color-mix(in oklab, var(--accent) 40%, var(--border))";
+          el.style.background = "var(--surface-secondary)";
+        }}
+        onMouseLeave={(e) => {
+          const el = e.currentTarget;
+          el.style.color = "";
+          el.style.borderColor = "var(--border)";
+          el.style.background = "transparent";
+        }}
+      >
+        {customizeOpen ? intl.formatMessage(messages.customizeClose) : intl.formatMessage(messages.customizeOpen)}
+        <ChevronDownIcon
+          className="h-3.5 w-3.5 transition-transform duration-250"
+          style={{ transform: customizeOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+          aria-hidden="true"
         />
+      </button>
+
+      {/* Customize panel */}
+      <div
+        style={{
+          maxHeight: customizeOpen ? 1400 : 0,
+          opacity: customizeOpen ? 1 : 0,
+          overflow: "hidden",
+          transition: "max-height 0.35s ease, opacity 0.25s ease",
+        }}
+      >
+        <div
+          className="border-separator px-6 pb-2"
+          style={{
+            borderTop: "1px solid var(--separator)",
+            background: "linear-gradient(180deg, var(--surface-secondary), var(--surface) 40px)",
+          }}
+        >
+          <HomeSessionCardNoteRangeRow noteRange={noteRange} onNoteRangeChange={onNoteRangeChange} />
+          <HomeSessionCardLedgerRow
+            ledgerLines={ledgerLines}
+            ledgerDepth={ledgerDepth}
+            onLedgerLinesChange={onLedgerLinesChange}
+            onLedgerDepthChange={onLedgerDepthChange}
+          />
+          <HomeSessionCardTimerRow
+            timerEnabled={timerEnabled}
+            duration={duration}
+            onTimerChange={onTimerChange}
+            onDurationChange={onDurationChange}
+          />
+          <HomeSessionCardSharpsRow sharps={sharps} onSharpsChange={onSharpsChange} />
+          <HomeSessionCardGuessScaleRow
+            guessScaleFirst={guessScaleFirst}
+            onGuessScaleFirstChange={onGuessScaleFirstChange}
+          />
+        </div>
       </div>
 
       <HomeSessionCardSummary
-        difficulty={difficulty}
         staff={staff}
+        noteRange={noteRange}
+        ledgerLines={ledgerLines}
+        ledgerDepth={ledgerDepth}
         sharps={sharps}
         timerEnabled={timerEnabled}
         duration={duration}
+        guessScaleFirst={guessScaleFirst}
       />
     </div>
   );

@@ -9,9 +9,9 @@ const messages = defineMessages({
     defaultMessage: "Difficulty",
   },
   desc: {
-    id: "YsKhx9",
+    id: "FjL/tQ",
     description: "HomeSessionCard: difficulty row description",
-    defaultMessage: "Range of notes & ledger lines.",
+    defaultMessage: "Sets all parameters below in one tap.",
   },
   low: {
     id: "Yc0s9X",
@@ -28,10 +28,15 @@ const messages = defineMessages({
     description: "HomeSessionCard: difficulty high option",
     defaultMessage: "High",
   },
+  custom: {
+    id: "n3MIZw",
+    description: "HomeSessionCard: difficulty custom option",
+    defaultMessage: "Custom",
+  },
 });
 
 interface LevelBarsProps {
-  level: Difficulty;
+  level: "low" | "medium" | "high";
   active: boolean;
 }
 
@@ -59,6 +64,16 @@ function LevelBars({ level, active }: LevelBarsProps): ReactElement {
   );
 }
 
+function CustomIcon({ active }: { active: boolean }): ReactElement {
+  return (
+    <span
+      className="flex h-3 w-3 items-center justify-center rounded-lg border-[1.5px] border-dashed"
+      style={{ borderColor: active ? "var(--foreground)" : "currentColor", opacity: active ? 1 : 0.7 }}
+      aria-hidden="true"
+    />
+  );
+}
+
 export interface HomeSessionCardDifficultyRowProps {
   difficulty: Difficulty;
   onDifficultyChange: (value: Difficulty) => void;
@@ -70,7 +85,7 @@ export function HomeSessionCardDifficultyRow({
 }: HomeSessionCardDifficultyRowProps): ReactElement {
   const intl = useIntl();
 
-  const options: { value: Difficulty; label: string }[] = [
+  const presetOptions: { value: "low" | "medium" | "high"; label: string }[] = [
     { value: "low", label: intl.formatMessage(messages.low) },
     { value: "medium", label: intl.formatMessage(messages.medium) },
     { value: "high", label: intl.formatMessage(messages.high) },
@@ -85,9 +100,9 @@ export function HomeSessionCardDifficultyRow({
       <div
         role="radiogroup"
         aria-label={intl.formatMessage(messages.label)}
-        className="border-border bg-surface-secondary grid grid-cols-3 gap-1 rounded-[14px] border p-1"
+        className="border-border bg-surface-secondary grid grid-cols-4 gap-1 rounded-[14px] border p-1"
       >
-        {options.map(({ value, label }) => {
+        {presetOptions.map(({ value, label }) => {
           const isActive = difficulty === value;
           return (
             <button
@@ -96,7 +111,7 @@ export function HomeSessionCardDifficultyRow({
               role="radio"
               aria-checked={isActive}
               onClick={() => onDifficultyChange(value)}
-              className="flex cursor-pointer flex-col items-center gap-1 rounded-[10px] px-2 py-2.5 text-xs font-medium transition-all duration-150"
+              className="flex cursor-pointer flex-col items-center gap-1.25 rounded-[10px] px-1.5 py-2.5 text-xs font-medium transition-all duration-150"
               style={
                 isActive
                   ? {
@@ -111,6 +126,30 @@ export function HomeSessionCardDifficultyRow({
             </button>
           );
         })}
+        {/* Custom option */}
+        {(() => {
+          const isActive = difficulty === "custom";
+          return (
+            <button
+              type="button"
+              role="radio"
+              aria-checked={isActive}
+              onClick={() => onDifficultyChange("custom")}
+              className="flex cursor-pointer flex-col items-center gap-1.25 rounded-[10px] px-1.5 py-2.5 text-xs font-medium transition-all duration-150"
+              style={
+                isActive
+                  ? {
+                      background: "var(--surface)",
+                      boxShadow: "0 1px 2px rgba(15,12,30,0.04), 0 4px 10px rgba(15,12,30,0.06)",
+                    }
+                  : undefined
+              }
+            >
+              <CustomIcon active={isActive} />
+              <span className={isActive ? "text-foreground" : "text-muted"}>{intl.formatMessage(messages.custom)}</span>
+            </button>
+          );
+        })()}
       </div>
     </div>
   );
