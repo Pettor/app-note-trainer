@@ -21,7 +21,7 @@ export function NavbarLayout({
   children,
 }: NavbarLayoutProps): ReactElement {
   return (
-    <Surface className="relative flex min-h-screen flex-col" variant="default">
+    <Surface className="relative flex min-h-dvh flex-col" variant="default">
       {backgroundElement}
       {navbarElement}
       <main className="container mx-auto flex-1 p-4">{children}</main>
