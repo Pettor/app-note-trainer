@@ -21,7 +21,6 @@ const meta: Meta<typeof Component> = {
     totalNotes: 25,
     correctCount: 6,
     wrongCount: 1,
-    streak: 4,
   },
 };
 

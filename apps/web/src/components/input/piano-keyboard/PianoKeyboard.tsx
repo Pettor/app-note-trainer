@@ -34,14 +34,12 @@ export interface PianoKeyboardProps {
 
 export function PianoKeyboard({ onKeyPress, highlightedKey, className }: PianoKeyboardProps): ReactElement {
   const intl = useIntl();
-  const { isPhone, isCompact } = useViewport();
-  // Compact: 1 octave (C4–B4). Phone portrait: 1.5 octaves (C4–F5). Desktop: 2 full octaves.
-  const { whiteKeys, blackKeys, blackKeyHeightPercent } = usePianoKeyboard(
-    4,
-    isCompact ? 1 : 2,
-    !isCompact && isPhone ? "F5" : undefined
-  );
+  const { isPhone, isCompact, isMinimal } = useViewport();
+  // Narrow/compact viewports: 1 octave (C4–B4). Desktop: 2 full octaves.
+  const { whiteKeys, blackKeys, blackKeyHeightPercent } = usePianoKeyboard(4, isCompact || isPhone ? 1 : 2);
   const { activeKey, handlePointerDown, handlePointerUp, handlePointerLeave } = usePianoKeyboardInteraction(onKeyPress);
+
+  const keyboardSize = isMinimal ? "h-12" : isCompact ? "h-30" : isPhone ? "h-22.5" : "h-35 min-w-70";
 
   return (
     <div
@@ -68,7 +66,7 @@ export function PianoKeyboard({ onKeyPress, highlightedKey, className }: PianoKe
           }}
         />
         <div className="overflow-x-auto">
-          <div className={clsx("relative", isCompact ? "h-12" : isPhone ? "h-22.5 min-w-70" : "h-35 min-w-70")}>
+          <div className={clsx("relative", keyboardSize)}>
             {/* White keys */}
             <div className="absolute inset-0 flex" style={{ gap: 1 }}>
               {whiteKeys.map((key) => (
