@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { CheckIcon, StarIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { defineMessages, useIntl } from "react-intl";
 import { PracticeCompactScoreChip } from "./PracticeCompactScoreChip";
 import { PracticeNotesProgressChip } from "./PracticeNotesProgressChip";
@@ -33,7 +33,6 @@ export interface PracticeStatsStripProps {
   totalNotes: number;
   correctCount: number;
   wrongCount: number;
-  streak: number;
 }
 
 export function PracticeStatsStrip({
@@ -44,7 +43,6 @@ export function PracticeStatsStrip({
   totalNotes,
   correctCount,
   wrongCount,
-  streak,
 }: PracticeStatsStripProps): ReactElement {
   const intl = useIntl();
   const urgent = timerEnabled && remaining < 2;
@@ -57,22 +55,15 @@ export function PracticeStatsStrip({
         <PracticeNotesProgressChip done={notesCompleted} total={totalNotes} />
         <PracticeCompactScoreChip correct={correctCount} wrong={wrongCount} />
       </div>
-
       {/* Desktop strip */}
       <div className="hidden items-stretch gap-2.5 sm:flex">
         {timerEnabled && <PracticeTimeRing remaining={remaining} total={totalTime} urgent={urgent} />}
+        <PracticeNotesProgressChip done={notesCompleted} total={totalNotes} />
         <PracticeStatChip
           icon={<CheckIcon className="h-3.5 w-3.5" />}
           label={intl.formatMessage(messages.correct)}
           value={String(correctCount)}
           iconColor="var(--success)"
-        />
-        <PracticeNotesProgressChip done={notesCompleted} total={totalNotes} />
-        <PracticeStatChip
-          icon={<StarIcon className="h-3.5 w-3.5" />}
-          label={intl.formatMessage(messages.streak)}
-          value={`${streak}×`}
-          iconColor="var(--warning)"
         />
         <PracticeStatChip
           icon={<XMarkIcon className="h-3.5 w-3.5" />}

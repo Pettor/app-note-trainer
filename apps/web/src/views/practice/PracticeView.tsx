@@ -24,7 +24,6 @@ export interface PracticeViewProps {
   totalNotes?: number;
   correctCount?: number;
   wrongCount?: number;
-  streak?: number;
   countdown?: number | null;
   currentNote?: StaffNoteData | null;
 }
@@ -42,7 +41,6 @@ export function PracticeView({
   totalNotes = 20,
   correctCount = 0,
   wrongCount = 0,
-  streak = 0,
   countdown = null,
   currentNote = null,
 }: PracticeViewProps): ReactElement {
@@ -85,7 +83,6 @@ export function PracticeView({
                 totalNotes={totalNotes}
                 correctCount={correctCount}
                 wrongCount={wrongCount}
-                streak={streak}
               />
             </div>
             <PracticeCompactMenu
@@ -105,7 +102,6 @@ export function PracticeView({
             totalNotes={totalNotes}
             correctCount={correctCount}
             wrongCount={wrongCount}
-            streak={streak}
           />
         )}
 
