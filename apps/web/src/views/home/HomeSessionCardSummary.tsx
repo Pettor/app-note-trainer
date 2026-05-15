@@ -1,6 +1,6 @@
 import type { ReactElement, ReactNode } from "react";
 import { defineMessages, useIntl } from "react-intl";
-import type { Difficulty, Duration, Staff } from "~/core/practice-settings/PracticeSettings";
+import type { Duration, LedgerDepth, NoteRange, Staff } from "~/core/practice-settings/PracticeSettings";
 
 const messages = defineMessages({
   sectionLabel: {
@@ -9,19 +9,24 @@ const messages = defineMessages({
     defaultMessage: "Session",
   },
   pillDifficultyLow: {
-    id: "wDm3MK",
+    id: "Dim8Mk",
     description: "HomeSessionCard: summary pill for low difficulty",
-    defaultMessage: "Low difficulty",
+    defaultMessage: "Low",
   },
   pillDifficultyMedium: {
-    id: "lYyts3",
+    id: "oVM0cE",
     description: "HomeSessionCard: summary pill for medium difficulty",
-    defaultMessage: "Medium difficulty",
+    defaultMessage: "Medium",
   },
   pillDifficultyHigh: {
-    id: "phAboe",
+    id: "7zvIiG",
     description: "HomeSessionCard: summary pill for high difficulty",
-    defaultMessage: "High difficulty",
+    defaultMessage: "High",
+  },
+  pillDifficultyCustom: {
+    id: "NYXAR8",
+    description: "HomeSessionCard: summary pill for custom difficulty",
+    defaultMessage: "Custom",
   },
   pillTreble: {
     id: "xlRH0i",
@@ -33,10 +38,45 @@ const messages = defineMessages({
     description: "HomeSessionCard: summary pill for bass clef",
     defaultMessage: "Bass clef",
   },
+  pillRangeNarrow: {
+    id: "I/4oDo",
+    description: "HomeSessionCard: summary pill for narrow note range",
+    defaultMessage: "Narrow range",
+  },
+  pillRangeStandard: {
+    id: "RuI0qJ",
+    description: "HomeSessionCard: summary pill for standard note range",
+    defaultMessage: "Standard range",
+  },
+  pillRangeWide: {
+    id: "JF2KUH",
+    description: "HomeSessionCard: summary pill for wide note range",
+    defaultMessage: "Wide range",
+  },
+  pillRangeExtended: {
+    id: "4gGhl1",
+    description: "HomeSessionCard: summary pill for extended note range",
+    defaultMessage: "Extended range",
+  },
+  pillLedger1: {
+    id: "zogfAR",
+    description: "HomeSessionCard: summary pill for 1 ledger line",
+    defaultMessage: "1 ledger line",
+  },
+  pillLedger3: {
+    id: "DVruhr",
+    description: "HomeSessionCard: summary pill for 2-3 ledger lines",
+    defaultMessage: "2–3 ledger lines",
+  },
+  pillNoLedger: {
+    id: "coeNeo",
+    description: "HomeSessionCard: summary pill when ledger lines off",
+    defaultMessage: "No ledger",
+  },
   pillSharpsOn: {
-    id: "AhBx6f",
+    id: "LhtHYr",
     description: "HomeSessionCard: summary pill when sharps are on",
-    defaultMessage: "With sharps & flats",
+    defaultMessage: "With ♯/♭",
   },
   pillSharpsOff: {
     id: "VQj49g",
@@ -53,6 +93,16 @@ const messages = defineMessages({
     description: "HomeSessionCard: summary pill when timer is off",
     defaultMessage: "No timer",
   },
+  pillScaleOn: {
+    id: "UTYxfe",
+    description: "HomeSessionCard: summary pill when guess scale first is on",
+    defaultMessage: "Guess scale first",
+  },
+  pillScaleOff: {
+    id: "1ARBHa",
+    description: "HomeSessionCard: summary pill when guess scale first is off",
+    defaultMessage: "No scale guess",
+  },
 });
 
 function SummaryPill({ children, muted = false }: { children: ReactNode; muted?: boolean }): ReactElement {
@@ -65,32 +115,47 @@ function SummaryPill({ children, muted = false }: { children: ReactNode; muted?:
   );
 }
 
+function Dot({ color }: { color: string }): ReactElement {
+  return <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: color }} />;
+}
+
 export interface HomeSessionCardSummaryProps {
-  difficulty: Difficulty;
   staff: Staff;
+  noteRange: NoteRange;
+  ledgerLines: boolean;
+  ledgerDepth: LedgerDepth;
   sharps: boolean;
   timerEnabled: boolean;
   duration: Duration;
+  guessScaleFirst: boolean;
 }
 
 export function HomeSessionCardSummary({
-  difficulty,
   staff,
+  noteRange,
+  ledgerLines,
+  ledgerDepth,
   sharps,
   timerEnabled,
   duration,
+  guessScaleFirst,
 }: HomeSessionCardSummaryProps): ReactElement {
   const intl = useIntl();
 
-  const difficultyPillLabel =
-    difficulty === "low"
-      ? intl.formatMessage(messages.pillDifficultyLow)
-      : difficulty === "medium"
-        ? intl.formatMessage(messages.pillDifficultyMedium)
-        : intl.formatMessage(messages.pillDifficultyHigh);
+  const rangeLabel =
+    noteRange === "narrow"
+      ? intl.formatMessage(messages.pillRangeNarrow)
+      : noteRange === "standard"
+        ? intl.formatMessage(messages.pillRangeStandard)
+        : noteRange === "wide"
+          ? intl.formatMessage(messages.pillRangeWide)
+          : intl.formatMessage(messages.pillRangeExtended);
 
-  const difficultyDotBg =
-    difficulty === "low" ? "var(--success)" : difficulty === "medium" ? "var(--accent)" : "var(--danger)";
+  const ledgerLabel = ledgerLines
+    ? ledgerDepth === 1
+      ? intl.formatMessage(messages.pillLedger1)
+      : intl.formatMessage(messages.pillLedger3)
+    : intl.formatMessage(messages.pillNoLedger);
 
   return (
     <div
@@ -102,12 +167,28 @@ export function HomeSessionCardSummary({
       </span>
       <div className="grid grid-cols-2 justify-items-start gap-2 sm:flex sm:flex-wrap sm:items-center">
         <SummaryPill>
-          <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: difficultyDotBg }} />
-          {difficultyPillLabel}
+          <Dot color="var(--secondary)" />
+          {staff === "treble" ? intl.formatMessage(messages.pillTreble) : intl.formatMessage(messages.pillBass)}
         </SummaryPill>
         <SummaryPill>
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-(--secondary)" />
-          {staff === "treble" ? intl.formatMessage(messages.pillTreble) : intl.formatMessage(messages.pillBass)}
+          <Dot color="var(--accent)" />
+          {rangeLabel}
+        </SummaryPill>
+        <SummaryPill muted={!ledgerLines}>
+          <span
+            className="inline-block h-1.5 w-1.5 rounded-full"
+            style={{ background: ledgerLines ? "var(--accent)" : "var(--muted)", opacity: ledgerLines ? 1 : 0.5 }}
+          />
+          {ledgerLabel}
+        </SummaryPill>
+        <SummaryPill muted={!timerEnabled}>
+          <span
+            className="inline-block h-1.5 w-1.5 rounded-full"
+            style={{ background: timerEnabled ? "var(--warning)" : "var(--muted)", opacity: timerEnabled ? 1 : 0.5 }}
+          />
+          {timerEnabled
+            ? intl.formatMessage(messages.pillTimerOn, { duration })
+            : intl.formatMessage(messages.pillTimerOff)}
         </SummaryPill>
         <SummaryPill muted={!sharps}>
           <span
@@ -116,14 +197,15 @@ export function HomeSessionCardSummary({
           />
           {sharps ? intl.formatMessage(messages.pillSharpsOn) : intl.formatMessage(messages.pillSharpsOff)}
         </SummaryPill>
-        <SummaryPill muted={!timerEnabled}>
+        <SummaryPill muted={!guessScaleFirst}>
           <span
             className="inline-block h-1.5 w-1.5 rounded-full"
-            style={{ background: timerEnabled ? "var(--accent)" : "var(--muted)", opacity: timerEnabled ? 1 : 0.5 }}
+            style={{
+              background: guessScaleFirst ? "var(--secondary)" : "var(--muted)",
+              opacity: guessScaleFirst ? 1 : 0.5,
+            }}
           />
-          {timerEnabled
-            ? intl.formatMessage(messages.pillTimerOn, { duration })
-            : intl.formatMessage(messages.pillTimerOff)}
+          {guessScaleFirst ? intl.formatMessage(messages.pillScaleOn) : intl.formatMessage(messages.pillScaleOff)}
         </SummaryPill>
       </div>
     </div>

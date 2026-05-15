@@ -18,10 +18,9 @@ const messages = defineMessages({
     defaultMessage: "note reading",
   },
   tagline: {
-    id: "ZXufX9",
+    id: "/vt3fS",
     description: "HomeHero: tagline below heading",
-    defaultMessage:
-      "Set the staff, the difficulty, and how forgiving the timer is. Your last settings stick — start in one tap next time.",
+    defaultMessage: "Pick a difficulty preset — or expand to dial in each setting yourself. Your last session sticks.",
   },
 });
 
