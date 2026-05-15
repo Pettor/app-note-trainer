@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 import clsx from "clsx";
 import { PracticeCompactMenu } from "./PracticeCompactMenu";
 import { PracticePausedOverlay } from "./PracticePausedOverlay";
+import { PracticeResultsOverlay } from "./PracticeResultsOverlay";
 import { PracticeStaffCard } from "./PracticeStaffCard";
 import { PracticeStatsStrip } from "./PracticeStatsStrip";
 import { PracticeTopBar } from "./PracticeTopBar";
@@ -26,6 +27,8 @@ export interface PracticeViewProps {
   wrongCount?: number;
   countdown?: number | null;
   currentNote?: StaffNoteData | null;
+  isFinished?: boolean;
+  onFinish?: () => void;
 }
 
 export function PracticeView({
@@ -43,6 +46,8 @@ export function PracticeView({
   wrongCount = 0,
   countdown = null,
   currentNote = null,
+  isFinished = false,
+  onFinish,
 }: PracticeViewProps): ReactElement {
   const { isCompact } = useViewport();
 
@@ -115,6 +120,14 @@ export function PracticeView({
       </footer>
 
       {isPaused && <PracticePausedOverlay onResume={onPause} onEnd={onExit} />}
+      {isFinished && (
+        <PracticeResultsOverlay
+          totalNotes={totalNotes}
+          correctCount={correctCount}
+          wrongCount={wrongCount}
+          onExit={onFinish ?? onExit}
+        />
+      )}
 
       {/* Countdown pulse-ring animation */}
       <style>{`
