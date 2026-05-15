@@ -173,6 +173,17 @@ describe("gameReducer — KEY_PRESS", () => {
     });
     expect(next).toBe(pausedState);
   });
+
+  it("counts correct when the correct note is pressed in a different octave", () => {
+    const next = gameReducer(playingState, {
+      type: "KEY_PRESS",
+      key: pressKey("C", 5),
+      timerEnabled: false,
+      noteDuration: 5,
+    });
+    expect(next.correctCount).toBe(1);
+    expect(next.wrongCount).toBe(0);
+  });
 });
 
 describe("gameReducer — NOTE_TIMER_TICK", () => {

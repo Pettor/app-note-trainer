@@ -15,6 +15,6 @@ export function pitchToLabel(pitch: GameNotePitch): string {
 }
 
 export function matchesPianoKey(pitch: GameNotePitch, key: PianoKeyData): boolean {
-  const expected = pitchToLabel(pitch);
-  return key.label === expected;
+  const expectedNote = pitch.step + (pitch.accidental === "sharp" ? "#" : "");
+  return key.note === expectedNote;
 }

@@ -43,9 +43,9 @@ describe("matchesPianoKey", () => {
     expect(matchesPianoKey(pitch, key("A4"))).toBe(false);
   });
 
-  it("returns false when the octave differs", () => {
+  it("returns true when the octave differs", () => {
     const pitch: GameNotePitch = { step: "C", accidental: "natural", octave: 4 };
-    expect(matchesPianoKey(pitch, key("C5"))).toBe(false);
+    expect(matchesPianoKey(pitch, key("C5"))).toBe(true);
   });
 
   it("returns false when a natural pitch is matched against its sharp", () => {
@@ -56,5 +56,10 @@ describe("matchesPianoKey", () => {
   it("returns false when a sharp pitch is matched against the natural", () => {
     const pitch: GameNotePitch = { step: "F", accidental: "sharp", octave: 4 };
     expect(matchesPianoKey(pitch, key("F4"))).toBe(false);
+  });
+
+  it("returns true for a matching sharp note in a different octave", () => {
+    const pitch: GameNotePitch = { step: "F", accidental: "sharp", octave: 4 };
+    expect(matchesPianoKey(pitch, key("F#5"))).toBe(true);
   });
 });
