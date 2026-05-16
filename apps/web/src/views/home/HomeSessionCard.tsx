@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { ReactElement } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { Accordion } from "@heroui/react";
 import { defineMessages, useIntl } from "react-intl";
 import { HomeSessionCardDifficultyRow } from "./HomeSessionCardDifficultyRow";
 import { HomeSessionCardGuessScaleRow } from "./HomeSessionCardGuessScaleRow";
@@ -76,70 +77,50 @@ export function HomeSessionCard(): ReactElement {
         <HomeSessionCardStaffRow staff={staff} onStaffChange={onStaffChange} />
       </div>
 
-      {/* Customize disclosure trigger */}
-      <button
-        type="button"
-        aria-expanded={customizeOpen}
-        onClick={() => setCustomizeOpen((prev) => !prev)}
-        className="text-muted mx-6 mb-4.5 flex w-[calc(100%-48px)] cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed px-4 py-3 text-xs font-medium transition-all duration-150"
-        style={{ borderColor: "var(--border)", background: "transparent" }}
-        onMouseEnter={(e) => {
-          const el = e.currentTarget;
-          el.style.color = "var(--foreground)";
-          el.style.borderColor = "color-mix(in oklab, var(--accent) 40%, var(--border))";
-          el.style.background = "var(--surface-secondary)";
-        }}
-        onMouseLeave={(e) => {
-          const el = e.currentTarget;
-          el.style.color = "";
-          el.style.borderColor = "var(--border)";
-          el.style.background = "transparent";
-        }}
-      >
-        {customizeOpen ? intl.formatMessage(messages.customizeClose) : intl.formatMessage(messages.customizeOpen)}
-        <ChevronDownIcon
-          className="h-3.5 w-3.5 transition-transform duration-250"
-          style={{ transform: customizeOpen ? "rotate(180deg)" : "rotate(0deg)" }}
-          aria-hidden="true"
-        />
-      </button>
-
-      {/* Customize panel */}
-      <div
-        style={{
-          maxHeight: customizeOpen ? 1400 : 0,
-          opacity: customizeOpen ? 1 : 0,
-          overflow: "hidden",
-          transition: "max-height 0.35s ease, opacity 0.25s ease",
-        }}
-      >
-        <div
-          className="border-separator px-6 pb-2"
-          style={{
-            borderTop: "1px solid var(--separator)",
-            background: "linear-gradient(180deg, var(--surface-secondary), var(--surface) 40px)",
-          }}
-        >
-          <HomeSessionCardNoteRangeRow noteRange={noteRange} onNoteRangeChange={onNoteRangeChange} />
-          <HomeSessionCardLedgerRow
-            ledgerLines={ledgerLines}
-            ledgerDepth={ledgerDepth}
-            onLedgerLinesChange={onLedgerLinesChange}
-            onLedgerDepthChange={onLedgerDepthChange}
-          />
-          <HomeSessionCardTimerRow
-            timerEnabled={timerEnabled}
-            duration={duration}
-            onTimerChange={onTimerChange}
-            onDurationChange={onDurationChange}
-          />
-          <HomeSessionCardSharpsRow sharps={sharps} onSharpsChange={onSharpsChange} />
-          <HomeSessionCardGuessScaleRow
-            guessScaleFirst={guessScaleFirst}
-            onGuessScaleFirstChange={onGuessScaleFirstChange}
-          />
-        </div>
-      </div>
+      {/* Customize disclosure trigger + panel */}
+      <Accordion hideSeparator className="p-0 shadow-none">
+        <Accordion.Item id="customize" isExpanded={customizeOpen} onExpandedChange={setCustomizeOpen} className="p-0">
+          <Accordion.Heading className="mx-6 mb-4.5 p-0">
+            <Accordion.Trigger
+              className="text-muted flex w-full items-center justify-center gap-2 rounded-xl border border-dashed bg-transparent px-4 py-3 text-xs font-medium transition-all duration-150 hover:bg-(--surface-secondary) hover:text-(--foreground)"
+              style={{ borderColor: "var(--border)" }}
+            >
+              {customizeOpen ? intl.formatMessage(messages.customizeClose) : intl.formatMessage(messages.customizeOpen)}
+              <Accordion.Indicator>
+                <ChevronDownIcon className="h-3.5 w-3.5" aria-hidden="true" />
+              </Accordion.Indicator>
+            </Accordion.Trigger>
+          </Accordion.Heading>
+          <Accordion.Panel>
+            <div
+              className="px-6 pb-2"
+              style={{
+                borderTop: "1px solid var(--separator)",
+                background: "linear-gradient(180deg, var(--surface-secondary), var(--surface) 40px)",
+              }}
+            >
+              <HomeSessionCardNoteRangeRow noteRange={noteRange} onNoteRangeChange={onNoteRangeChange} />
+              <HomeSessionCardLedgerRow
+                ledgerLines={ledgerLines}
+                ledgerDepth={ledgerDepth}
+                onLedgerLinesChange={onLedgerLinesChange}
+                onLedgerDepthChange={onLedgerDepthChange}
+              />
+              <HomeSessionCardTimerRow
+                timerEnabled={timerEnabled}
+                duration={duration}
+                onTimerChange={onTimerChange}
+                onDurationChange={onDurationChange}
+              />
+              <HomeSessionCardSharpsRow sharps={sharps} onSharpsChange={onSharpsChange} />
+              <HomeSessionCardGuessScaleRow
+                guessScaleFirst={guessScaleFirst}
+                onGuessScaleFirstChange={onGuessScaleFirstChange}
+              />
+            </div>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
 
       <HomeSessionCardSummary
         staff={staff}
