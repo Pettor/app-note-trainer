@@ -18,6 +18,8 @@ test.describe("home", () => {
     await expect(page.getByText("Session setup")).toBeVisible();
     await expect(page.getByText("Difficulty", { exact: true })).toBeVisible();
     await expect(page.getByText("Staff", { exact: true })).toBeVisible();
+
+    await page.getByTestId("customize-settings-trigger").click();
     await expect(page.getByText("Sharps & flats")).toBeVisible();
     await expect(page.getByText("Time limit")).toBeVisible();
   });

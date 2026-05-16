@@ -82,7 +82,8 @@ export function HomeSessionCard(): ReactElement {
         <Accordion.Item id="customize" isExpanded={customizeOpen} onExpandedChange={setCustomizeOpen} className="p-0">
           <Accordion.Heading className="mx-6 mb-4.5 p-0">
             <Accordion.Trigger
-              className="text-muted flex w-full items-center justify-center gap-2 rounded-xl border border-dashed bg-transparent px-4 py-3 text-xs font-medium transition-all duration-150 hover:bg-(--surface-secondary) hover:text-(--foreground)"
+              data-testid="customize-settings-trigger"
+              className="text-muted hover:bg-surface-secondary flex w-full items-center justify-center gap-2 rounded-xl border border-dashed bg-transparent px-4 py-3 text-xs font-medium transition-all duration-150 hover:text-(--foreground)"
               style={{ borderColor: "var(--border)" }}
             >
               {customizeOpen ? intl.formatMessage(messages.customizeClose) : intl.formatMessage(messages.customizeOpen)}
