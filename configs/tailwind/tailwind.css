@@ -42,17 +42,6 @@
   --font-weight-black: var(--typography-font-weight-black);
 }
 
-html,
-body {
-  height: 100%;
-}
-
 body {
   font-family: var(--typography-font-family-primary);
-}
-
-#root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
 }
