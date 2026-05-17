@@ -28,11 +28,11 @@ catalogs:
       specifier: 11.1.8
       version: 11.1.8
     jotai:
-      specifier: 2.19.1
-      version: 2.19.1
+      specifier: 2.20.0
+      version: 2.20.0
     jotai-effect:
-      specifier: 2.2.3
-      version: 2.2.3
+      specifier: 2.3.1
+      version: 2.3.1
     move-cli:
       specifier: 2.0.0
       version: 2.0.0
@@ -440,10 +440,10 @@ importers:
         version: 11.1.8
       jotai:
         specifier: catalog:common
-        version: 2.19.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.6)
+        version: 2.20.0(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.6)
       jotai-effect:
         specifier: catalog:common
-        version: 2.2.3(jotai@2.19.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.6))
+        version: 2.3.1(jotai@2.20.0(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.6))
       react:
         specifier: 19.2.6
         version: 19.2.6
@@ -684,7 +684,7 @@ importers:
         version: 12.38.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       jotai:
         specifier: catalog:common
-        version: 2.19.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.6)
+        version: 2.20.0(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.6)
       react:
         specifier: 19.2.6
         version: 19.2.6
@@ -2277,7 +2277,7 @@ packages:
     resolution: {integrity: sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==}
     engines: {node: '>= 8.0.0'}
     peerDependencies:
-      rollup: ^4.59.0
+      rollup: ^4.0.0
 
   '@rollup/pluginutils@5.2.0':
     resolution: {integrity: sha512-qWJ2ZTbmumwiLFomfzTyt5Kng4hwPi9rwCYN4SHb6eaRU1KNO4ccxINHr/VhH4GgPlt1XfSTLX2LBTme8ne4Zw==}
@@ -2503,7 +2503,7 @@ packages:
     resolution: {integrity: sha512-9kBf7VRdRqTSIYo+rPtVn5yjYYyK8kP2QhEYx3oiXvfwy4RexmbJnhk/tXa/lNiTqukA1TqaWQ2+5MqF4fu6YQ==}
     peerDependencies:
       esbuild: '*'
-      rollup: ^4.0.0
+      rollup: ^4.59.0
       storybook: ^10.3.6
       vite: '*'
       webpack: '*'
@@ -4548,14 +4548,14 @@ packages:
     resolution: {integrity: sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==}
     hasBin: true
 
-  jotai-effect@2.2.3:
-    resolution: {integrity: sha512-MKw5eUydU6aL+fGtrMbdWLB+KFHc4R1AfQcCnXYpvc2AN+tiE/qS0yZwuL2HEBQoEm6quGPb5M1Uib6viK2Eeg==}
+  jotai-effect@2.3.1:
+    resolution: {integrity: sha512-FBBVXDM2podbbxJsZ19+uDv45LxeXoVA5yh6CfkQ35AVCuRHj7Lanlcjiea3b67Q7+/MMGXWf8+GeB73JcbeMg==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
-      jotai: '>=2.16.0'
+      jotai: '>=2.20.0'
 
-  jotai@2.19.1:
-    resolution: {integrity: sha512-sqm9lVZiqBHZH8aSRk32DSiZDHY3yUIlulXYn9GQj7/LvoUdYXSMti7ZPJGo+6zjzKFt5a25k/I6iBCi43PJcw==}
+  jotai@2.20.0:
+    resolution: {integrity: sha512-b5GAqgmXmXzB4WPaTH26ppk9Sl7AA9WSQX7yfdM+gJ1rFROiWcVbi97gFuN/yVCojOcbcvop2sfLL+fjxW0JVg==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       '@babel/core': '>=7.0.0'
@@ -10368,11 +10368,11 @@ snapshots:
 
   jiti@2.6.1: {}
 
-  jotai-effect@2.2.3(jotai@2.19.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.6)):
+  jotai-effect@2.3.1(jotai@2.20.0(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.6)):
     dependencies:
-      jotai: 2.19.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.6)
+      jotai: 2.20.0(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.6)
 
-  jotai@2.19.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.6):
+  jotai@2.20.0(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.6):
     optionalDependencies:
       '@babel/core': 7.29.0
       '@babel/template': 7.28.6
