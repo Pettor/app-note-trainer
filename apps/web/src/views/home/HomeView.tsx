@@ -35,6 +35,11 @@ const messages = defineMessages({
     description: "HomeView: footer credit text",
     defaultMessage: "Made with ♪ by Petter Hancock",
   },
+  footerCopyright: {
+    id: "BESlDU",
+    description: "HomeView: footer copyright text",
+    defaultMessage: "© {year} Petter Hancock — All rights reserved",
+  },
   footerGitHub: {
     id: "RLY9CG",
     description: "HomeView: GitHub link aria-label",
@@ -59,10 +64,10 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
   const intl = useIntl();
 
   useEventListener(typeof document !== "undefined" ? document : null, "keydown", (e: Event) => {
-    const ke = e as KeyboardEvent;
-    const target = ke.target as HTMLElement;
+    const keyEvent = e as KeyboardEvent;
+    const target = keyEvent.target as HTMLElement;
     const isInteractive = target.matches("input, textarea, button, select, [role=radio], [role=switch]");
-    if (ke.key === "Enter" && !isInteractive) {
+    if (keyEvent.key === "Enter" && !isInteractive) {
       onStart();
     }
   });
@@ -74,7 +79,7 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
         navbarElement={<NavbarContentController />}
         footer
         footerText={intl.formatMessage(messages.footerText)}
-        footerCopyright={`© ${FOOTER_YEAR} Petter Hancock — All rights reserved`}
+        footerCopyright={intl.formatMessage(messages.footerCopyright, { year: FOOTER_YEAR })}
         footerContent={
           <div className="flex items-center gap-4">
             <a
@@ -82,7 +87,7 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
               target="_blank"
               rel="noreferrer"
               aria-label={intl.formatMessage(messages.footerGitHub)}
-              className="text-muted hover:text-foreground h-5 w-5 transition-colors"
+              className="text-muted hover:text-foreground h-5 w-5 transition-colors dark:fill-white"
             >
               <GithubIcon />
             </a>
@@ -91,7 +96,7 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
               target="_blank"
               rel="noreferrer"
               aria-label={intl.formatMessage(messages.footerLinkedIn)}
-              className="text-muted hover:text-foreground h-5 w-5 transition-colors"
+              className="text-muted hover:text-foreground h-5 w-5 transition-colors dark:fill-white"
             >
               <LinkedInIcon />
             </a>
