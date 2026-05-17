@@ -7,7 +7,6 @@ import type { StaffNoteData } from "~/components/display/sheet-music-staff/UseSh
 import type { PianoKeyData } from "~/components/input/piano-keyboard/UsePianoKeyboard";
 import type { PracticeSettings } from "~/core/practice-settings/PracticeSettings";
 
-const TOTAL_NOTES = 25;
 const COUNTDOWN_INTERVAL_MS = 1000;
 const TIMER_TICK_MS = 100;
 const TIMER_TICK_DELTA = TIMER_TICK_MS / 1000;
@@ -120,8 +119,8 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
     phase: state.phase,
     countdown: state.countdown,
     currentNote,
-    notesCompleted: Math.min(state.currentNoteIndex, TOTAL_NOTES),
-    totalNotes: TOTAL_NOTES,
+    notesCompleted: Math.min(state.currentNoteIndex, state.noteQueue.length),
+    totalNotes: state.noteQueue.length,
     correctCount: state.correctCount,
     wrongCount: state.wrongCount,
     noteSecondsRemaining: state.noteSecondsRemaining,

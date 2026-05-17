@@ -98,7 +98,19 @@ function shuffle<T>(arr: T[]): T[] {
   return out;
 }
 
+// Deterministic 3-note queue used only when VITE_E2E_MODE=true so E2E tests can
+// press a known correct key, a known wrong key, and let the timer expire.
+const E2E_NOTE_QUEUE: GameNote[] = [
+  { pitch: { step: "C", accidental: "natural", octave: 4 }, slot: -2 },
+  { pitch: { step: "E", accidental: "natural", octave: 4 }, slot: 0 },
+  { pitch: { step: "G", accidental: "natural", octave: 4 }, slot: 2 },
+];
+
 export function buildNoteQueue(settings: PracticeSettings, scale: Scale): GameNote[] {
+  if (import.meta.env.VITE_E2E_MODE === "true") {
+    return E2E_NOTE_QUEUE;
+  }
+
   const [minSlot, maxSlot] = getSlotRange(settings);
   const slotMap = settings.staff === "treble" ? TREBLE_SLOT_NOTES : BASS_SLOT_NOTES;
   const sharpenedSet = new Set<NoteStep>(scale.sharpenedSteps);
