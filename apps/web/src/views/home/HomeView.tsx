@@ -35,6 +35,11 @@ const messages = defineMessages({
     description: "HomeView: footer credit text",
     defaultMessage: "Made with ♪ by Petter Hancock",
   },
+  footerCopyright: {
+    id: "BESlDU",
+    description: "HomeView: footer copyright text",
+    defaultMessage: "© {year} Petter Hancock — All rights reserved",
+  },
   footerGitHub: {
     id: "RLY9CG",
     description: "HomeView: GitHub link aria-label",
@@ -74,7 +79,7 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
         navbarElement={<NavbarContentController />}
         footer
         footerText={intl.formatMessage(messages.footerText)}
-        footerCopyright={`© ${FOOTER_YEAR} Petter Hancock — All rights reserved`}
+        footerCopyright={intl.formatMessage(messages.footerCopyright, { year: FOOTER_YEAR })}
         footerContent={
           <div className="flex items-center gap-4">
             <a
