@@ -44,7 +44,7 @@ function formatCorrectNote(miss: MissRecord): string {
   return `${miss.correctStep}${acc}${miss.correctOctave}`;
 }
 
-function toStaffNote(miss: MissRecord) {
+function toStaffNote(miss: MissRecord): { slot: number; type: "quarter"; active: boolean; accidental?: "sharp" } {
   return {
     slot: miss.slot,
     type: "quarter" as const,

@@ -173,7 +173,7 @@ export function ScoreView({
       <footer className="shrink-0 px-3 pb-3 sm:px-7 sm:pb-5" style={{ borderTop: "1px solid var(--border)" }}>
         <div className={`mx-auto flex max-w-3xl gap-2.5 pt-3 ${isPhone ? "flex-col" : "justify-end"}`}>
           <Button
-            variant="bordered"
+            variant="outline"
             onPress={onExit}
             className="rounded-xl font-semibold"
             style={{ borderColor: "var(--border)", background: "var(--surface)", color: "var(--foreground)" }}
@@ -189,23 +189,21 @@ export function ScoreView({
               border: "none",
               boxShadow: "0 10px 24px -10px oklch(0.66 0.235 15 / 0.7)",
             }}
-            startContent={
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <polyline points="23 4 23 10 17 10" />
-                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
-              </svg>
-            }
           >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="23 4 23 10 17 10" />
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+            </svg>
             {intl.formatMessage(messages.practiceAgain)}
           </Button>
         </div>

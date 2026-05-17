@@ -71,6 +71,7 @@ describe("gameReducer — COUNTDOWN_TICK", () => {
       wrongCount: 0,
       noteSecondsRemaining: 5,
       scale: { root: "C", mode: "major", sharpenedSteps: [] },
+      misses: [],
     };
   }
 
@@ -110,6 +111,7 @@ describe("gameReducer — KEY_PRESS", () => {
     wrongCount: 0,
     noteSecondsRemaining: 5,
     scale: { root: "C", mode: "major", sharpenedSteps: [] },
+    misses: [],
   };
 
   it("increments correctCount on a correct key press", () => {
@@ -118,6 +120,7 @@ describe("gameReducer — KEY_PRESS", () => {
       key: pressKey("C", 4),
       timerEnabled: false,
       noteDuration: 5,
+      timeTaken: 0,
     });
     expect(next.correctCount).toBe(1);
     expect(next.wrongCount).toBe(0);
@@ -129,6 +132,7 @@ describe("gameReducer — KEY_PRESS", () => {
       key: pressKey("G", 4),
       timerEnabled: false,
       noteDuration: 5,
+      timeTaken: 0,
     });
     expect(next.wrongCount).toBe(1);
     expect(next.correctCount).toBe(0);
@@ -140,6 +144,7 @@ describe("gameReducer — KEY_PRESS", () => {
       key: pressKey("C", 4),
       timerEnabled: false,
       noteDuration: 5,
+      timeTaken: 0,
     });
     expect(next.currentNoteIndex).toBe(1);
   });
@@ -147,7 +152,7 @@ describe("gameReducer — KEY_PRESS", () => {
   it("resets noteSecondsRemaining to noteDuration when timerEnabled", () => {
     const next = gameReducer(
       { ...playingState, noteSecondsRemaining: 1 },
-      { type: "KEY_PRESS", key: pressKey("C", 4), timerEnabled: true, noteDuration: 8 }
+      { type: "KEY_PRESS", key: pressKey("C", 4), timerEnabled: true, noteDuration: 8, timeTaken: 0 }
     );
     expect(next.noteSecondsRemaining).toBe(8);
   });
@@ -159,6 +164,7 @@ describe("gameReducer — KEY_PRESS", () => {
       key: pressKey("E", 4),
       timerEnabled: false,
       noteDuration: 5,
+      timeTaken: 0,
     });
     expect(next.phase).toBe("finished");
   });
@@ -170,6 +176,7 @@ describe("gameReducer — KEY_PRESS", () => {
       key: pressKey("C", 4),
       timerEnabled: false,
       noteDuration: 5,
+      timeTaken: 0,
     });
     expect(next).toBe(pausedState);
   });
@@ -180,6 +187,7 @@ describe("gameReducer — KEY_PRESS", () => {
       key: pressKey("C", 5),
       timerEnabled: false,
       noteDuration: 5,
+      timeTaken: 0,
     });
     expect(next.correctCount).toBe(1);
     expect(next.wrongCount).toBe(0);
@@ -196,6 +204,7 @@ describe("gameReducer — NOTE_TIMER_TICK", () => {
     wrongCount: 0,
     noteSecondsRemaining: 5,
     scale: { root: "C", mode: "major", sharpenedSteps: [] },
+    misses: [],
   };
 
   it("decrements noteSecondsRemaining by the delta", () => {
@@ -222,33 +231,34 @@ describe("gameReducer — NOTE_TIMEOUT", () => {
     wrongCount: 0,
     noteSecondsRemaining: 0,
     scale: { root: "C", mode: "major", sharpenedSteps: [] },
+    misses: [],
   };
 
   it("increments wrongCount", () => {
-    const next = gameReducer(playingState, { type: "NOTE_TIMEOUT", noteDuration: 5 });
+    const next = gameReducer(playingState, { type: "NOTE_TIMEOUT", noteDuration: 5, timeTaken: 0 });
     expect(next.wrongCount).toBe(1);
     expect(next.correctCount).toBe(0);
   });
 
   it("advances to the next note", () => {
-    const next = gameReducer(playingState, { type: "NOTE_TIMEOUT", noteDuration: 5 });
+    const next = gameReducer(playingState, { type: "NOTE_TIMEOUT", noteDuration: 5, timeTaken: 0 });
     expect(next.currentNoteIndex).toBe(1);
   });
 
   it("resets noteSecondsRemaining to noteDuration", () => {
-    const next = gameReducer(playingState, { type: "NOTE_TIMEOUT", noteDuration: 8 });
+    const next = gameReducer(playingState, { type: "NOTE_TIMEOUT", noteDuration: 8, timeTaken: 0 });
     expect(next.noteSecondsRemaining).toBe(8);
   });
 
   it("transitions to finished when timing out on the last note", () => {
     const lastState: GameState = { ...playingState, currentNoteIndex: noteQueue.length - 1 };
-    const next = gameReducer(lastState, { type: "NOTE_TIMEOUT", noteDuration: 5 });
+    const next = gameReducer(lastState, { type: "NOTE_TIMEOUT", noteDuration: 5, timeTaken: 0 });
     expect(next.phase).toBe("finished");
   });
 
   it("is a no-op when not in playing phase", () => {
     const pausedState: GameState = { ...playingState, phase: "paused" };
-    const next = gameReducer(pausedState, { type: "NOTE_TIMEOUT", noteDuration: 5 });
+    const next = gameReducer(pausedState, { type: "NOTE_TIMEOUT", noteDuration: 5, timeTaken: 0 });
     expect(next).toBe(pausedState);
   });
 });
@@ -263,6 +273,7 @@ describe("gameReducer — PAUSE / RESUME", () => {
     wrongCount: 0,
     noteSecondsRemaining: 5,
     scale: { root: "C", mode: "major", sharpenedSteps: [] },
+    misses: [],
   };
 
   it("transitions from playing to paused", () => {
