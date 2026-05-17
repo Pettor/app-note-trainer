@@ -106,7 +106,7 @@ export function ScoreMissDetail({ miss, staff, keyName, isMobile }: ScoreMissDet
           style={{
             fontSize: 11,
             color: "var(--muted)",
-            background: "var(--surface2, oklch(0.96 0.005 285))",
+            background: "var(--surface-secondary)",
             border: "1px solid var(--border)",
             whiteSpace: "nowrap",
           }}
@@ -120,7 +120,7 @@ export function ScoreMissDetail({ miss, staff, keyName, isMobile }: ScoreMissDet
       <div
         className="flex justify-center rounded-xl p-3"
         style={{
-          background: "oklch(0.99 0.005 90)",
+          background: "var(--surface-secondary)",
           border: "1px solid var(--border)",
         }}
       >

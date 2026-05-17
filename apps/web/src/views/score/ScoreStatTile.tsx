@@ -37,7 +37,7 @@ export function ScoreStatTile({ label, value, sub, tone = "default", icon }: Sco
           style={{
             width: 22,
             height: 22,
-            background: "var(--surface2, oklch(0.96 0.005 285))",
+            background: "var(--surface-secondary)",
             color: iconColor,
           }}
         >

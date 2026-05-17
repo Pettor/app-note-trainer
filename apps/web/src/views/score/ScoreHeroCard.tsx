@@ -92,7 +92,7 @@ export function ScoreHeroCard({ correctCount, totalNotes, perfect }: ScoreHeroCa
             cy={dialSize / 2}
             r={r}
             fill="none"
-            stroke="var(--surface3, oklch(0.93 0.01 285))"
+            stroke="var(--surface-tertiary)"
             strokeWidth={strokeWidth}
           />
           {/* Progress arc */}

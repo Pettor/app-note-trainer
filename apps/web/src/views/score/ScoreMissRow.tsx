@@ -25,7 +25,7 @@ export function ScoreMissRow({ miss, index, selected, onSelect }: ScoreMissRowPr
       onClick={() => onSelect(index)}
       className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors"
       style={{
-        background: selected ? "var(--surface2, oklch(0.96 0.005 285))" : "transparent",
+        background: selected ? "var(--surface-secondary)" : "transparent",
         border: `1px solid ${selected ? "var(--border)" : "transparent"}`,
         font: "inherit",
         color: "inherit",
@@ -39,7 +39,7 @@ export function ScoreMissRow({ miss, index, selected, onSelect }: ScoreMissRowPr
           width: 28,
           height: 28,
           fontSize: 12,
-          background: selected ? "var(--brand-gradient)" : "var(--surface3, oklch(0.93 0.01 285))",
+          background: selected ? "var(--brand-gradient)" : "var(--surface-tertiary)",
           color: selected ? "white" : "var(--muted)",
         }}
       >
