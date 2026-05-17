@@ -1,12 +1,23 @@
 import { matchesPianoKey } from "./MusicNote";
+import type { Accidental, NoteStep } from "./MusicNote";
 import type { Scale } from "./MusicScale";
 import { pickRandomScale } from "./MusicScale";
 import type { GameNote } from "./NotePool";
 import { buildNoteQueue } from "./NotePool";
-import type { PianoKeyData } from "~/components/input/piano-keyboard/UsePianoKeyboard";
+import type { PianoKeyData, PianoNote } from "~/components/input/piano-keyboard/UsePianoKeyboard";
 import type { Duration, PracticeSettings } from "~/core/practice-settings/PracticeSettings";
 
 export type GamePhase = "countdown" | "playing" | "paused" | "finished";
+
+export interface MissRecord {
+  slot: number;
+  correctStep: NoteStep;
+  correctAccidental: Accidental;
+  correctOctave: number;
+  guessNote: PianoNote | null;
+  guessOctave: number | null;
+  timeTaken: number;
+}
 
 export interface GameState {
   phase: GamePhase;
@@ -17,13 +28,14 @@ export interface GameState {
   wrongCount: number;
   noteSecondsRemaining: number;
   scale: Scale;
+  misses: MissRecord[];
 }
 
 export type GameAction =
   | { type: "COUNTDOWN_TICK" }
-  | { type: "KEY_PRESS"; key: PianoKeyData; timerEnabled: boolean; noteDuration: Duration }
+  | { type: "KEY_PRESS"; key: PianoKeyData; timerEnabled: boolean; noteDuration: Duration; timeTaken: number }
   | { type: "NOTE_TIMER_TICK"; delta: number }
-  | { type: "NOTE_TIMEOUT"; noteDuration: Duration }
+  | { type: "NOTE_TIMEOUT"; noteDuration: Duration; timeTaken: number }
   | { type: "PAUSE" }
   | { type: "RESUME" };
 
@@ -39,6 +51,7 @@ export function createInitialState(settings: PracticeSettings): GameState {
     wrongCount: 0,
     noteSecondsRemaining: settings.duration,
     scale,
+    misses: [],
   };
 }
 
@@ -66,15 +79,26 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       const current = state.noteQueue[state.currentNoteIndex];
       if (!current) return state;
       const isCorrect = matchesPianoKey(current.pitch, action.key);
-      const next = advanceNote(
+      const miss: MissRecord | null = isCorrect
+        ? null
+        : {
+            slot: current.slot,
+            correctStep: current.pitch.step,
+            correctAccidental: current.pitch.accidental,
+            correctOctave: current.pitch.octave,
+            guessNote: action.key.note,
+            guessOctave: action.key.octave,
+            timeTaken: action.timeTaken,
+          };
+      return advanceNote(
         {
           ...state,
           correctCount: isCorrect ? state.correctCount + 1 : state.correctCount,
           wrongCount: isCorrect ? state.wrongCount : state.wrongCount + 1,
+          misses: miss ? [...state.misses, miss] : state.misses,
         },
         action.timerEnabled ? action.noteDuration : state.noteSecondsRemaining
       );
-      return next;
     }
 
     case "NOTE_TIMER_TICK": {
@@ -84,7 +108,26 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
 
     case "NOTE_TIMEOUT": {
       if (state.phase !== "playing") return state;
-      return advanceNote({ ...state, wrongCount: state.wrongCount + 1 }, action.noteDuration);
+      const timedOut = state.noteQueue[state.currentNoteIndex];
+      const timeoutMiss: MissRecord | undefined = timedOut
+        ? {
+            slot: timedOut.slot,
+            correctStep: timedOut.pitch.step,
+            correctAccidental: timedOut.pitch.accidental,
+            correctOctave: timedOut.pitch.octave,
+            guessNote: null,
+            guessOctave: null,
+            timeTaken: action.timeTaken,
+          }
+        : undefined;
+      return advanceNote(
+        {
+          ...state,
+          wrongCount: state.wrongCount + 1,
+          misses: timeoutMiss ? [...state.misses, timeoutMiss] : state.misses,
+        },
+        action.noteDuration
+      );
     }
 
     case "PAUSE": {

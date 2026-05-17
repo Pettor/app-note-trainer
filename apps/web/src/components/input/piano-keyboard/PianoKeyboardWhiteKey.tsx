@@ -1,7 +1,23 @@
 import type { CSSProperties, ReactElement } from "react";
 import type { WhiteKeyData } from "./UsePianoKeyboard";
 
-function getStyle(isActive: boolean, isHighlighted: boolean): CSSProperties {
+export type KeyTone = "correct" | "wrong";
+
+function getStyle(isActive: boolean, isHighlighted: boolean, tone?: KeyTone): CSSProperties {
+  if (tone === "correct") {
+    return {
+      background: "linear-gradient(180deg, oklch(0.92 0.10 160) 0%, oklch(0.78 0.18 160) 100%)",
+      boxShadow:
+        "inset 0 -3px 0 oklch(0.55 0.22 160 / .35), inset 0 0 0 1px oklch(0.55 0.22 160 / .5), 0 0 18px oklch(0.55 0.22 160 / .3)",
+    };
+  }
+  if (tone === "wrong") {
+    return {
+      background: "linear-gradient(180deg, oklch(0.92 0.10 25) 0%, oklch(0.78 0.18 25) 100%)",
+      boxShadow:
+        "inset 0 -3px 0 oklch(0.55 0.22 25 / .35), inset 0 0 0 1px oklch(0.55 0.22 25 / .5), 0 0 18px oklch(0.55 0.22 25 / .3)",
+    };
+  }
   if (isHighlighted) {
     return {
       background: "linear-gradient(180deg, oklch(0.92 0.10 285) 0%, oklch(0.78 0.18 285) 100%)",
@@ -26,6 +42,7 @@ export interface PianoKeyboardWhiteKeyProps {
   keyData: WhiteKeyData;
   isActive: boolean;
   isHighlighted: boolean;
+  tone?: KeyTone;
   ariaLabel: string;
   onPointerDown: () => void;
   onPointerUp: () => void;
@@ -36,6 +53,7 @@ export function PianoKeyboardWhiteKey({
   keyData,
   isActive,
   isHighlighted,
+  tone,
   ariaLabel,
   onPointerDown,
   onPointerUp,
@@ -52,7 +70,7 @@ export function PianoKeyboardWhiteKey({
       data-testid={`piano-keyboard__key-${keyData.label.toLowerCase()}`}
       data-highlighted={isHighlighted ? true : undefined}
       className="relative flex-1 cursor-pointer touch-none rounded-b-[5px] outline-none select-none focus-visible:ring-2 focus-visible:ring-inset active:scale-[0.99]"
-      style={getStyle(isActive, isHighlighted)}
+      style={getStyle(isActive, isHighlighted, tone)}
     >
       <span
         className="absolute right-0 bottom-1.5 left-0 hidden text-center text-[10px] font-medium tracking-tight sm:block"

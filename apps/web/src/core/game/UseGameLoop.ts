@@ -1,6 +1,7 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import { createInitialState, gameReducer } from "./GameLoop";
-import type { GamePhase } from "./GameLoop";
+import type { GamePhase, MissRecord } from "./GameLoop";
+import { matchesPianoKey } from "./MusicNote";
 import { scaleDisplayName } from "./MusicScale";
 import type { StaffNoteData } from "~/components/display/sheet-music-staff/UseSheetMusicStaff";
 import type { PianoKeyData } from "~/components/input/piano-keyboard/UsePianoKeyboard";
@@ -22,12 +23,20 @@ export interface UseGameLoopResult {
   noteSecondsRemaining: number;
   keyName: string;
   scaleType: string;
+  misses: MissRecord[];
+  totalTime: number;
+  fastestCorrect: number;
   onKeyPress: (key: PianoKeyData) => void;
   onPause: () => void;
 }
 
 export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
   const [state, dispatch] = useReducer(gameReducer, undefined, () => createInitialState(settings));
+
+  const noteStartMs = useRef<number>(Date.now());
+  const gameStartMs = useRef<number | null>(null);
+  const gameTotalTimeSeconds = useRef<number>(0);
+  const fastestCorrectSeconds = useRef<number>(Infinity);
 
   // Countdown: tick every second until playing starts
   useEffect(() => {
@@ -36,6 +45,17 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
       dispatch({ type: "COUNTDOWN_TICK" });
     }, COUNTDOWN_INTERVAL_MS);
     return () => clearInterval(id);
+  }, [state.phase]);
+
+  // Track game start time when phase first becomes "playing"
+  useEffect(() => {
+    if (state.phase === "playing" && gameStartMs.current === null) {
+      gameStartMs.current = Date.now();
+      noteStartMs.current = Date.now();
+    }
+    if (state.phase === "finished" && gameStartMs.current !== null) {
+      gameTotalTimeSeconds.current = (Date.now() - gameStartMs.current) / 1000;
+    }
   }, [state.phase]);
 
   // Per-note timer: tick every 100ms while playing
@@ -51,7 +71,9 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
   useEffect(() => {
     if (!settings.timerEnabled || state.phase !== "playing") return;
     if (state.noteSecondsRemaining <= 0) {
-      dispatch({ type: "NOTE_TIMEOUT", noteDuration: settings.duration });
+      const timeTaken = (Date.now() - noteStartMs.current) / 1000;
+      noteStartMs.current = Date.now();
+      dispatch({ type: "NOTE_TIMEOUT", noteDuration: settings.duration, timeTaken });
     }
   }, [settings.timerEnabled, settings.duration, state.phase, state.noteSecondsRemaining]);
 
@@ -69,7 +91,21 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
   const { keyName, scaleType } = scaleDisplayName(state.scale);
 
   function onKeyPress(key: PianoKeyData): void {
-    dispatch({ type: "KEY_PRESS", key, timerEnabled: settings.timerEnabled, noteDuration: settings.duration });
+    const timeTaken = (Date.now() - noteStartMs.current) / 1000;
+    noteStartMs.current = Date.now();
+
+    const current = state.noteQueue[state.currentNoteIndex];
+    if (current && matchesPianoKey(current.pitch, key) && timeTaken < fastestCorrectSeconds.current) {
+      fastestCorrectSeconds.current = timeTaken;
+    }
+
+    dispatch({
+      type: "KEY_PRESS",
+      key,
+      timerEnabled: settings.timerEnabled,
+      noteDuration: settings.duration,
+      timeTaken,
+    });
   }
 
   function onPause(): void {
@@ -91,6 +127,9 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
     noteSecondsRemaining: state.noteSecondsRemaining,
     keyName,
     scaleType,
+    misses: state.misses,
+    totalTime: gameTotalTimeSeconds.current,
+    fastestCorrect: fastestCorrectSeconds.current,
     onKeyPress,
     onPause,
   };
