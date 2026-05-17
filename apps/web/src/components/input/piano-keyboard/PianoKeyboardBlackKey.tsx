@@ -1,7 +1,22 @@
 import type { CSSProperties, PointerEvent, ReactElement } from "react";
 import type { BlackKeyData } from "./UsePianoKeyboard";
+import type { KeyTone } from "./PianoKeyboardWhiteKey";
 
-function getStyle(isActive: boolean, isHighlighted: boolean): CSSProperties {
+function getStyle(isActive: boolean, isHighlighted: boolean, tone?: KeyTone): CSSProperties {
+  if (tone === "correct") {
+    return {
+      background: "linear-gradient(180deg, oklch(0.55 0.22 160) 0%, oklch(0.40 0.22 160) 100%)",
+      boxShadow:
+        "inset 0 1px 0 rgba(255,255,255,0.28), 0 0 18px oklch(0.55 0.22 160 / .5), 0 6px 10px -2px rgba(0,0,0,0.5)",
+    };
+  }
+  if (tone === "wrong") {
+    return {
+      background: "linear-gradient(180deg, oklch(0.55 0.22 25) 0%, oklch(0.40 0.22 25) 100%)",
+      boxShadow:
+        "inset 0 1px 0 rgba(255,255,255,0.28), 0 0 18px oklch(0.55 0.22 25 / .5), 0 6px 10px -2px rgba(0,0,0,0.5)",
+    };
+  }
   if (isHighlighted) {
     return {
       background: "linear-gradient(180deg, oklch(0.55 0.22 285) 0%, oklch(0.40 0.22 285) 100%)",
@@ -25,6 +40,7 @@ export interface PianoKeyboardBlackKeyProps {
   keyData: BlackKeyData;
   isActive: boolean;
   isHighlighted: boolean;
+  tone?: KeyTone;
   ariaLabel: string;
   blackKeyHeightPercent: number;
   onPointerDown: (e: PointerEvent<HTMLButtonElement>) => void;
@@ -36,6 +52,7 @@ export function PianoKeyboardBlackKey({
   keyData,
   isActive,
   isHighlighted,
+  tone,
   ariaLabel,
   blackKeyHeightPercent,
   onPointerDown,
@@ -57,7 +74,7 @@ export function PianoKeyboardBlackKey({
         left: `${keyData.leftPercent}%`,
         width: `${keyData.widthPercent}%`,
         height: `${blackKeyHeightPercent}%`,
-        ...getStyle(isActive, isHighlighted),
+        ...getStyle(isActive, isHighlighted, tone),
       }}
     />
   );
