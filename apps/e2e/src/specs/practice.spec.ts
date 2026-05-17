@@ -1,8 +1,9 @@
 import { expect, test } from "../fixtures";
 
 // Injected before page load so Jotai's atomWithStorage picks up the overridden settings.
-// timerEnabled + duration:3 gives a short enough timeout for the third note.
-// sharps:false keeps notes natural so they match the E2E_NOTE_QUEUE in NotePool.ts.
+// timerEnabled must be true so the per-note countdown runs; the actual duration is
+// overridden to 1 s by VITE_E2E_MODE inside UseGameLoop, so the timeout test finishes fast.
+// sharps:false keeps notes natural to match the E2E_NOTE_QUEUE in NotePool.ts.
 const E2E_SETTINGS = {
   difficulty: "custom",
   staff: "treble",
@@ -11,7 +12,7 @@ const E2E_SETTINGS = {
   ledgerDepth: 1,
   sharps: false,
   timerEnabled: true,
-  duration: 3,
+  duration: 8,
   guessScaleFirst: false,
 };
 
@@ -41,9 +42,10 @@ test.describe("practice session → score", () => {
     await expect(d4).toBeVisible();
     await d4.click();
 
-    // --- Note 3: G4 — let the 3-second timer expire ---
-    // Wait 4.5 s to give the timer tick loop enough time to dispatch NOTE_TIMEOUT.
-    await page.waitForTimeout(4500);
+    // --- Note 3: G4 — let the timer expire ---
+    // VITE_E2E_MODE overrides the per-note duration to 1 s; 1.5 s gives the tick
+    // loop enough headroom to dispatch NOTE_TIMEOUT without padding the test further.
+    await page.waitForTimeout(1500);
 
     // Game should have finished and navigated to the score view.
     await expect(page).toHaveURL(/#\/score/, { timeout: 5000 });
