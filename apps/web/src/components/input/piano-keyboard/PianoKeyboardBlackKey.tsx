@@ -1,6 +1,6 @@
 import type { CSSProperties, PointerEvent, ReactElement } from "react";
-import type { BlackKeyData } from "./UsePianoKeyboard";
 import type { KeyTone } from "./PianoKeyboardWhiteKey";
+import type { BlackKeyData } from "./UsePianoKeyboard";
 
 function getStyle(isActive: boolean, isHighlighted: boolean, tone?: KeyTone): CSSProperties {
   if (tone === "correct") {

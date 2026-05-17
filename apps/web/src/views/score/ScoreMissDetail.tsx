@@ -2,38 +2,38 @@ import type { ReactElement } from "react";
 import { defineMessages, useIntl } from "react-intl";
 import { ScoreMiniKeyboard } from "./ScoreMiniKeyboard";
 import { SheetMusicStaff } from "~/components/display/sheet-music-staff/SheetMusicStaff";
-import type { MissRecord } from "~/core/game/GameLoop";
 import type { PianoNote } from "~/components/input/piano-keyboard/UsePianoKeyboard";
+import type { MissRecord } from "~/core/game/GameLoop";
 import type { Staff } from "~/core/practice-settings/PracticeSettings";
 
 const messages = defineMessages({
   reviewingMiss: {
-    id: "score.missDetail.reviewing",
+    id: "nPKdAm",
     description: "ScoreMissDetail: eyebrow label",
     defaultMessage: "Reviewing miss",
   },
   vs: {
-    id: "score.missDetail.vs",
+    id: "dG3smU",
     description: "ScoreMissDetail: 'vs' separator between correct and guessed note",
     defaultMessage: "vs",
   },
   took: {
-    id: "score.missDetail.took",
+    id: "43r0OR",
     description: "ScoreMissDetail: time label",
     defaultMessage: "Took",
   },
   timedOut: {
-    id: "score.missDetail.timedOut",
+    id: "fkq8y8",
     description: "ScoreMissDetail: label when note timed out",
     defaultMessage: "Timed out",
   },
   correctKey: {
-    id: "score.missDetail.correctKey",
+    id: "JygkkC",
     description: "ScoreMissDetail: legend label for correct key",
     defaultMessage: "Correct key",
   },
   youPlayed: {
-    id: "score.missDetail.youPlayed",
+    id: "jAItud",
     description: "ScoreMissDetail: legend label for wrong key",
     defaultMessage: "What you played",
   },
@@ -65,7 +65,7 @@ export interface ScoreMissDetailProps {
   isMobile?: boolean;
 }
 
-export function ScoreMissDetail({ miss, staff, keyName, isMobile }: ScoreMissDetailProps): ReactElement {
+export function ScoreMissDetail({ miss, staff, isMobile }: ScoreMissDetailProps): ReactElement {
   const intl = useIntl();
   const correctLabel = formatCorrectNote(miss);
   const guessLabel = miss.guessNote ? `${miss.guessNote}${miss.guessOctave}` : intl.formatMessage(messages.timedOut);
@@ -133,12 +133,7 @@ export function ScoreMissDetail({ miss, staff, keyName, isMobile }: ScoreMissDet
 
       {/* Keyboard + legend */}
       <div className="flex flex-col items-center gap-2">
-        <ScoreMiniKeyboard
-          correctNote={correctPianoNote(miss)}
-          correctOctave={miss.correctOctave}
-          wrongNote={miss.guessNote}
-          wrongOctave={miss.guessOctave}
-        />
+        <ScoreMiniKeyboard correctNote={correctPianoNote(miss)} wrongNote={miss.guessNote} />
         <div className="flex gap-5" style={{ fontSize: 11, color: "var(--muted)", fontWeight: 600 }}>
           <span className="flex items-center gap-1.5">
             <span

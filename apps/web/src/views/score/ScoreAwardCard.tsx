@@ -3,17 +3,17 @@ import { defineMessages, useIntl } from "react-intl";
 
 const messages = defineMessages({
   awardUnlocked: {
-    id: "score.award.unlocked",
+    id: "L6Se3w",
     description: "ScoreAwardCard: eyebrow label",
     defaultMessage: "Award unlocked",
   },
   title: {
-    id: "score.award.title",
+    id: "4Nt1U9",
     description: "ScoreAwardCard: award title",
     defaultMessage: "Note Whisperer",
   },
   subtitle: {
-    id: "score.award.subtitle",
+    id: "RWGoY7",
     description: "ScoreAwardCard: subtitle with fastest time",
     defaultMessage:
       "Every note identified correctly — your fastest was {fastest}s. Try a harder key, or speed up the timer.",

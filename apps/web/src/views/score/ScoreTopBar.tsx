@@ -6,17 +6,17 @@ import { defineMessages, useIntl } from "react-intl";
 
 const messages = defineMessages({
   appName: {
-    id: "score.topbar.appName",
+    id: "+SROuu",
     description: "ScoreTopBar: app name",
     defaultMessage: "Note Trainer",
   },
   sessionComplete: {
-    id: "score.topbar.sessionComplete",
+    id: "Mmy4Qa",
     description: "ScoreTopBar: subtitle section label",
     defaultMessage: "Session complete",
   },
   close: {
-    id: "score.topbar.close",
+    id: "O4jLob",
     description: "ScoreTopBar: close button aria-label",
     defaultMessage: "Close",
   },

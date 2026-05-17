@@ -4,37 +4,37 @@ import { useViewport } from "~/core/UseViewport";
 
 const messages = defineMessages({
   accuracyLabel: {
-    id: "score.hero.accuracy",
+    id: "PO8ok5",
     description: "ScoreHeroCard: accuracy label beneath the percentage",
     defaultMessage: "Accuracy",
   },
   headingPerfect: {
-    id: "score.hero.headingPerfect",
+    id: "9c0c5N",
     description: "ScoreHeroCard: heading for a perfect run",
     defaultMessage: "Perfect run.",
   },
   headingNice: {
-    id: "score.hero.headingNice",
+    id: "BUSKEa",
     description: "ScoreHeroCard: heading for a non-perfect run",
     defaultMessage: "Nice work.",
   },
   subtitlePerfect: {
-    id: "score.hero.subtitlePerfect",
+    id: "rsFvdS",
     description: "ScoreHeroCard: subtitle for a perfect run",
     defaultMessage: "You got <strong>{correct} of {total}</strong> notes. Not a single miss — keep that streak going.",
   },
   subtitleNice: {
-    id: "score.hero.subtitleNice",
+    id: "Tdvn0B",
     description: "ScoreHeroCard: subtitle for a non-perfect run",
     defaultMessage: "You got <strong>{correct} of {total}</strong> notes. Review the misses below to lock them in.",
   },
   flawlessRun: {
-    id: "score.hero.flawlessRun",
+    id: "udCTFL",
     description: "ScoreHeroCard: eyebrow label for a perfect run",
     defaultMessage: "Flawless run",
   },
   sessionComplete: {
-    id: "score.hero.sessionComplete",
+    id: "PwxecQ",
     description: "ScoreHeroCard: eyebrow label for a normal run",
     defaultMessage: "Session complete",
   },

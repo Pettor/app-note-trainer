@@ -5,7 +5,7 @@ import type { MissRecord } from "~/core/game/GameLoop";
 
 const messages = defineMessages({
   header: {
-    id: "score.missList.header",
+    id: "4/iS21",
     description: "ScoreMissList: header label",
     defaultMessage: "Missed notes",
   },
