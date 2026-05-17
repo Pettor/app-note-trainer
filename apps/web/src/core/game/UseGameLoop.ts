@@ -5,10 +5,11 @@ import { matchesPianoKey } from "./MusicNote";
 import { scaleDisplayName } from "./MusicScale";
 import type { StaffNoteData } from "~/components/display/sheet-music-staff/UseSheetMusicStaff";
 import type { PianoKeyData } from "~/components/input/piano-keyboard/UsePianoKeyboard";
-import type { PracticeSettings } from "~/core/practice-settings/PracticeSettings";
+import type { Duration, PracticeSettings } from "~/core/practice-settings/PracticeSettings";
 
-const TOTAL_NOTES = 25;
 const COUNTDOWN_INTERVAL_MS = 1000;
+// 1-second per-note timer when running under VITE_E2E_MODE so timeout tests finish fast.
+const E2E_TIMER_DURATION = 1 as Duration;
 const TIMER_TICK_MS = 100;
 const TIMER_TICK_DELTA = TIMER_TICK_MS / 1000;
 
@@ -31,7 +32,10 @@ export interface UseGameLoopResult {
 }
 
 export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
-  const [state, dispatch] = useReducer(gameReducer, undefined, () => createInitialState(settings));
+  const noteDuration: Duration = import.meta.env.VITE_E2E_MODE === "true" ? E2E_TIMER_DURATION : settings.duration;
+  const [state, dispatch] = useReducer(gameReducer, undefined, () =>
+    createInitialState({ ...settings, duration: noteDuration })
+  );
 
   const noteStartMs = useRef<number>(Date.now());
   const gameStartMs = useRef<number | null>(null);
@@ -73,9 +77,9 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
     if (state.noteSecondsRemaining <= 0) {
       const timeTaken = (Date.now() - noteStartMs.current) / 1000;
       noteStartMs.current = Date.now();
-      dispatch({ type: "NOTE_TIMEOUT", noteDuration: settings.duration, timeTaken });
+      dispatch({ type: "NOTE_TIMEOUT", noteDuration, timeTaken });
     }
-  }, [settings.timerEnabled, settings.duration, state.phase, state.noteSecondsRemaining]);
+  }, [settings.timerEnabled, noteDuration, state.phase, state.noteSecondsRemaining]);
 
   const currentGameNote = state.noteQueue[state.currentNoteIndex];
   const currentNote: StaffNoteData | null =
@@ -103,7 +107,7 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
       type: "KEY_PRESS",
       key,
       timerEnabled: settings.timerEnabled,
-      noteDuration: settings.duration,
+      noteDuration,
       timeTaken,
     });
   }
@@ -120,8 +124,8 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
     phase: state.phase,
     countdown: state.countdown,
     currentNote,
-    notesCompleted: Math.min(state.currentNoteIndex, TOTAL_NOTES),
-    totalNotes: TOTAL_NOTES,
+    notesCompleted: Math.min(state.currentNoteIndex, state.noteQueue.length),
+    totalNotes: state.noteQueue.length,
     correctCount: state.correctCount,
     wrongCount: state.wrongCount,
     noteSecondsRemaining: state.noteSecondsRemaining,
