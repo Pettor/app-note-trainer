@@ -109,23 +109,25 @@ export function ScoreHeroCard({ correctCount, totalNotes, perfect }: ScoreHeroCa
             transform={`rotate(-90 ${dialSize / 2} ${dialSize / 2})`}
           />
         </svg>
-        {/* Center text */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center leading-none">
-          <span
-            className="font-extrabold tabular-nums"
+        {/* Center text — overflow visible so large text isn't clipped by the SVG bounds */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center overflow-visible text-center leading-none">
+          <div
+            className="flex items-baseline font-extrabold tabular-nums"
             style={{
-              fontSize: isPhone ? 32 : 44,
-              letterSpacing: "-0.04em",
               background: "var(--brand-gradient)",
               WebkitBackgroundClip: "text",
               backgroundClip: "text",
               color: "transparent",
+              letterSpacing: "-0.04em",
             }}
           >
-            {accuracy}
-            <span style={{ fontSize: isPhone ? 14 : 18 }}>%</span>
-          </span>
-          <span className="mt-1 font-semibold tracking-widest uppercase" style={{ fontSize: 9, color: "var(--muted)" }}>
+            <span style={{ fontSize: isPhone ? 36 : 48 }}>{accuracy}</span>
+            <span style={{ fontSize: isPhone ? 22 : 28, letterSpacing: "-0.02em", marginLeft: 2 }}>%</span>
+          </div>
+          <span
+            className="mt-1.5 font-semibold tracking-widest uppercase"
+            style={{ fontSize: 9, color: "var(--muted)" }}
+          >
             {intl.formatMessage(messages.accuracyLabel)}
           </span>
         </div>

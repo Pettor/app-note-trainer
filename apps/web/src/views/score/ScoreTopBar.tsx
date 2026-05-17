@@ -1,17 +1,22 @@
 import type { ReactElement } from "react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import { Button } from "@heroui/react";
-import { LogoFull } from "@package/ui";
+import { Logo } from "@package/ui";
 import { defineMessages, useIntl } from "react-intl";
 
 const messages = defineMessages({
-  subtitle: {
-    id: "er4kOS",
-    description: "ScoreTopBar: subtitle shown under the logo (session complete + key info)",
-    defaultMessage: "Session complete · {key} {scale}",
+  appName: {
+    id: "score.topbar.appName",
+    description: "ScoreTopBar: app name",
+    defaultMessage: "Note Trainer",
+  },
+  sessionComplete: {
+    id: "score.topbar.sessionComplete",
+    description: "ScoreTopBar: subtitle section label",
+    defaultMessage: "Session complete",
   },
   close: {
-    id: "O4jLob",
+    id: "score.topbar.close",
     description: "ScoreTopBar: close button aria-label",
     defaultMessage: "Close",
   },
@@ -25,32 +30,65 @@ export interface ScoreTopBarProps {
 
 export function ScoreTopBar({ keyName, scaleType, onExit }: ScoreTopBarProps): ReactElement {
   const intl = useIntl();
+
   return (
     <header
-      className="flex shrink-0 items-center justify-between border-b px-4 py-3 sm:px-6 sm:py-3.5"
-      style={{
-        borderColor: "var(--border)",
-        background: "color-mix(in oklab, var(--background) 75%, transparent)",
-        backdropFilter: "blur(12px)",
-      }}
+      className="border-separator sticky top-0 z-10 flex h-14 shrink-0 items-center justify-between border-b px-4 sm:h-16 sm:px-6"
+      style={{ background: "color-mix(in oklab, var(--background) 80%, transparent)", backdropFilter: "blur(12px)" }}
     >
-      <div className="flex items-center gap-3">
-        <LogoFull className="h-7" />
-        <div className="hidden h-4 w-px sm:block" style={{ background: "var(--border)" }} aria-hidden="true" />
-        <p className="text-muted hidden text-xs font-semibold sm:block">
-          {intl.formatMessage(messages.subtitle, { key: keyName, scale: scaleType })}
-        </p>
+      {/* Left: logo + title/key info */}
+      <div className="flex min-w-0 items-center gap-2.5">
+        <div className="shrink-0">
+          <Logo size="small" />
+        </div>
+
+        {/* Desktop: title + subtitle */}
+        <div className="hidden flex-col leading-tight sm:flex">
+          <span className="text-foreground text-sm font-bold tracking-tight">
+            {intl.formatMessage(messages.appName)}
+          </span>
+          <span className="text-muted flex items-center gap-1.5 text-[11px]">
+            {intl.formatMessage(messages.sessionComplete)}
+            <span aria-hidden="true" className="opacity-40">
+              ·
+            </span>
+            <span
+              className="font-semibold"
+              style={{
+                background: "var(--brand-gradient)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              {keyName} {scaleType}
+            </span>
+          </span>
+        </div>
+
+        {/* Mobile: compact key chip */}
+        <div className="border-border bg-surface flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold sm:hidden">
+          <span
+            className="h-1.5 w-1.5 shrink-0 rounded-full"
+            style={{ background: "var(--brand-gradient)" }}
+            aria-hidden="true"
+          />
+          <span
+            style={{
+              background: "var(--brand-gradient)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            {keyName} {scaleType}
+          </span>
+        </div>
       </div>
-      <Button
-        isIconOnly
-        size="sm"
-        variant="bordered"
-        aria-label={intl.formatMessage(messages.close)}
-        onPress={onExit}
-        className="rounded-xl"
-        style={{ borderColor: "var(--border)", background: "var(--surface)", color: "var(--muted)" }}
-      >
-        <XMarkIcon className="h-4 w-4" />
+
+      {/* Right: close button */}
+      <Button isIconOnly variant="ghost" size="sm" onPress={onExit} aria-label={intl.formatMessage(messages.close)}>
+        <XMarkIcon className="h-5 w-5" />
       </Button>
     </header>
   );
