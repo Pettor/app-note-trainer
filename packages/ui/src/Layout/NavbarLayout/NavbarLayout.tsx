@@ -28,8 +28,8 @@ export function NavbarLayout({
       {footer && (
         <footer className="container mx-auto flex flex-col place-items-center px-12 pb-12">
           <div className="grid place-items-center gap-0.5">
-            <p className="text-base font-bold">{footerText ?? "Made with ☕ by Petter Hancock"}</p>
-            <p>{footerCopyright ?? "Copyright © 2024 - All rights reserved"}</p>
+            <p className="text-base font-bold">{footerText}</p>
+            <p>{footerCopyright}</p>
             {footerContent && <div className="mt-4">{footerContent}</div>}
           </div>
         </footer>

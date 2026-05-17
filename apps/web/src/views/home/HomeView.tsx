@@ -59,10 +59,10 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
   const intl = useIntl();
 
   useEventListener(typeof document !== "undefined" ? document : null, "keydown", (e: Event) => {
-    const ke = e as KeyboardEvent;
-    const target = ke.target as HTMLElement;
+    const keyEvent = e as KeyboardEvent;
+    const target = keyEvent.target as HTMLElement;
     const isInteractive = target.matches("input, textarea, button, select, [role=radio], [role=switch]");
-    if (ke.key === "Enter" && !isInteractive) {
+    if (keyEvent.key === "Enter" && !isInteractive) {
       onStart();
     }
   });
