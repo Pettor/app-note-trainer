@@ -1,9 +1,12 @@
 import type { ReactElement } from "react";
+import { SpeakerWaveIcon, SpeakerXMarkIcon } from "@heroicons/react/20/solid";
 import { Cog6ToothIcon, PauseIcon, PlayIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Button, Popover, Separator } from "@heroui/react";
 import { Logo } from "@package/ui";
+import { useAtom } from "jotai";
 import { defineMessages, useIntl } from "react-intl";
 import type { PracticeSessionControls } from "./PracticeTopBar";
+import { audioEnabledAtom } from "~/core/audio/AudioAtoms";
 
 const messages = defineMessages({
   menuLabel: {
@@ -36,6 +39,16 @@ const messages = defineMessages({
     description: "PracticeCompactMenu: end practice action (shared ID with PracticeTopBar)",
     defaultMessage: "End practice",
   },
+  audioOn: {
+    id: "T81mvO",
+    description: "PracticeCompactMenu: mute audio action",
+    defaultMessage: "Mute audio",
+  },
+  audioOff: {
+    id: "7HWbB9",
+    description: "PracticeCompactMenu: unmute audio action",
+    defaultMessage: "Unmute audio",
+  },
 });
 
 export type PracticeCompactMenuProps = PracticeSessionControls;
@@ -48,6 +61,7 @@ export function PracticeCompactMenu({
   onExit,
 }: PracticeCompactMenuProps): ReactElement {
   const intl = useIntl();
+  const [audioEnabled, setAudioEnabled] = useAtom(audioEnabledAtom);
 
   return (
     <Popover>
@@ -94,6 +108,14 @@ export function PracticeCompactMenu({
 
         {/* Actions */}
         <div className="flex flex-col gap-0.5 p-1.5">
+          <Button variant="ghost" size="sm" onPress={() => setAudioEnabled((v) => !v)} className="w-full justify-start">
+            {audioEnabled ? (
+              <SpeakerWaveIcon className="h-4 w-4" />
+            ) : (
+              <SpeakerXMarkIcon className="h-4 w-4 opacity-50" />
+            )}
+            {intl.formatMessage(audioEnabled ? messages.audioOn : messages.audioOff)}
+          </Button>
           <Button variant="ghost" size="sm" onPress={onPause} className="w-full justify-start">
             {isPaused ? <PlayIcon className="h-4 w-4" /> : <PauseIcon className="h-4 w-4" />}
             {intl.formatMessage(isPaused ? messages.resume : messages.pause)}

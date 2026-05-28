@@ -1,8 +1,10 @@
 import type { ReactElement } from "react";
-import { PauseIcon, PlayIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import { PauseIcon, PlayIcon, SpeakerWaveIcon, SpeakerXMarkIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { Button } from "@heroui/react";
 import { Logo } from "@package/ui";
+import { useAtom } from "jotai";
 import { defineMessages, useIntl } from "react-intl";
+import { audioEnabledAtom } from "~/core/audio/AudioAtoms";
 
 const messages = defineMessages({
   appName: {
@@ -30,6 +32,16 @@ const messages = defineMessages({
     description: "PracticeTopBar: end practice button aria-label",
     defaultMessage: "End practice",
   },
+  audioOn: {
+    id: "/oBozO",
+    description: "PracticeTopBar: mute audio button aria-label",
+    defaultMessage: "Mute audio",
+  },
+  audioOff: {
+    id: "BTGetE",
+    description: "PracticeTopBar: unmute audio button aria-label",
+    defaultMessage: "Unmute audio",
+  },
 });
 
 /** Shared by PracticeTopBar and PracticeCompactMenu */
@@ -45,6 +57,7 @@ export type PracticeTopBarProps = PracticeSessionControls;
 
 export function PracticeTopBar({ keyName, scaleType, isPaused, onPause, onExit }: PracticeTopBarProps): ReactElement {
   const intl = useIntl();
+  const [audioEnabled, setAudioEnabled] = useAtom(audioEnabledAtom);
 
   return (
     <header
@@ -101,8 +114,17 @@ export function PracticeTopBar({ keyName, scaleType, isPaused, onPause, onExit }
         </div>
       </div>
 
-      {/* Right: pause / exit buttons */}
+      {/* Right: audio toggle, pause, exit */}
       <div className="flex items-center gap-1.5">
+        <Button
+          isIconOnly
+          variant="ghost"
+          size="sm"
+          onPress={() => setAudioEnabled((v) => !v)}
+          aria-label={intl.formatMessage(audioEnabled ? messages.audioOn : messages.audioOff)}
+        >
+          {audioEnabled ? <SpeakerWaveIcon className="h-5 w-5" /> : <SpeakerXMarkIcon className="h-5 w-5 opacity-50" />}
+        </Button>
         <Button
           isIconOnly
           variant="ghost"
