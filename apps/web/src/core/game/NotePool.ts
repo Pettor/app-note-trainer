@@ -114,12 +114,15 @@ export function buildNoteQueue(settings: PracticeSettings, scale: Scale): GameNo
   const [minSlot, maxSlot] = getSlotRange(settings);
   const slotMap = settings.staff === "treble" ? TREBLE_SLOT_NOTES : BASS_SLOT_NOTES;
   const sharpenedSet = new Set<NoteStep>(scale.sharpenedSteps);
+  const flattenedSet = new Set<NoteStep>(scale.flattenedSteps);
 
   const pool: GameNote[] = [];
   for (let slot = minSlot; slot <= maxSlot; slot++) {
     const slotNote = slotMap[slot];
     if (!slotNote) continue;
-    const accidental: Accidental = sharpenedSet.has(slotNote.step) ? "sharp" : "natural";
+    let accidental: Accidental = "natural";
+    if (sharpenedSet.has(slotNote.step)) accidental = "sharp";
+    else if (flattenedSet.has(slotNote.step)) accidental = "flat";
     pool.push({ pitch: { step: slotNote.step, accidental, octave: slotNote.octave }, slot });
   }
 

@@ -45,7 +45,16 @@ export const QuarterNote: Story = {
 };
 
 function GlyphGalleryStory(): ReactElement {
-  const glyphs: MusicGlyphName[] = ["gClef", "fClef", "noteheadWhole", "noteheadHalf", "noteheadBlack"];
+  const glyphs: MusicGlyphName[] = [
+    "gClef",
+    "fClef",
+    "noteheadWhole",
+    "noteheadHalf",
+    "noteheadBlack",
+    "accidentalSharp",
+    "accidentalFlat",
+    "accidentalNatural",
+  ];
   const labels: Record<MusicGlyphName, string> = {
     gClef: "G Clef",
     fClef: "F Clef",
@@ -53,6 +62,8 @@ function GlyphGalleryStory(): ReactElement {
     noteheadHalf: "Half",
     noteheadBlack: "Quarter",
     accidentalSharp: "Sharp",
+    accidentalFlat: "Flat",
+    accidentalNatural: "Natural",
   };
 
   return (

@@ -50,6 +50,7 @@ export function usePracticeRoute(): PracticeViewProps {
     isPaused: game.phase === "paused",
     keyName: game.keyName,
     scaleType: game.scaleType,
+    keySignature: game.keySignature,
     remaining: game.noteSecondsRemaining,
     notesCompleted: game.notesCompleted,
     totalNotes: game.totalNotes,

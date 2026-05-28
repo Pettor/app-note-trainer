@@ -4,8 +4,8 @@ import { buildNoteQueue, getSlotRange } from "./NotePool";
 import type { PracticeSettings } from "~/core/practice-settings/PracticeSettings";
 import { DEFAULT_PRACTICE_SETTINGS } from "~/core/practice-settings/PracticeSettings";
 
-const naturalScale: Scale = { root: "C", mode: "major", sharpenedSteps: [] };
-const sharpScale: Scale = { root: "G", mode: "major", sharpenedSteps: ["F"] };
+const naturalScale: Scale = { root: "C", mode: "major", sharpenedSteps: [], flattenedSteps: [] };
+const sharpScale: Scale = { root: "G", mode: "major", sharpenedSteps: ["F"], flattenedSteps: [] };
 
 function settings(overrides: Partial<PracticeSettings> = {}): PracticeSettings {
   return { ...DEFAULT_PRACTICE_SETTINGS, ...overrides };

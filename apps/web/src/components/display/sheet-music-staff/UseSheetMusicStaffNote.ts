@@ -89,7 +89,7 @@ export function useSheetMusicStaffNote(
   type: NoteType,
   x: number,
   metrics: StaffMetrics,
-  accidental?: "sharp"
+  accidental?: "sharp" | "flat"
 ): SheetMusicStaffNoteLayout {
   const { staffSpaceSize, slotToY, clefFontSize } = metrics;
 
@@ -114,6 +114,10 @@ export function useSheetMusicStaffNote(
     const accidentalGap = ACCIDENTAL_GAP_RATIO * staffSpaceSize;
     const accidentalX = x - accidentalWidth - accidentalGap;
 
+    let accidentalGlyph: string | null = null;
+    if (accidental === "sharp") accidentalGlyph = MUSIC_GLYPHS.accidentalSharp;
+    else if (accidental === "flat") accidentalGlyph = MUSIC_GLYPHS.accidentalFlat;
+
     return {
       noteY,
       noteheadWidth,
@@ -126,7 +130,7 @@ export function useSheetMusicStaffNote(
       stemY1,
       stemY2,
       stemWidth,
-      accidentalGlyph: accidental === "sharp" ? MUSIC_GLYPHS.accidentalSharp : null,
+      accidentalGlyph,
       accidentalX,
       accidentalFontSize,
       glowCx,

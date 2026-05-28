@@ -70,7 +70,7 @@ describe("gameReducer — COUNTDOWN_TICK", () => {
       correctCount: 0,
       wrongCount: 0,
       noteSecondsRemaining: 5,
-      scale: { root: "C", mode: "major", sharpenedSteps: [] },
+      scale: { root: "C", mode: "major", sharpenedSteps: [], flattenedSteps: [] },
       misses: [],
     };
   }
@@ -110,7 +110,7 @@ describe("gameReducer — KEY_PRESS", () => {
     correctCount: 0,
     wrongCount: 0,
     noteSecondsRemaining: 5,
-    scale: { root: "C", mode: "major", sharpenedSteps: [] },
+    scale: { root: "C", mode: "major", sharpenedSteps: [], flattenedSteps: [] },
     misses: [],
   };
 
@@ -203,7 +203,7 @@ describe("gameReducer — NOTE_TIMER_TICK", () => {
     correctCount: 0,
     wrongCount: 0,
     noteSecondsRemaining: 5,
-    scale: { root: "C", mode: "major", sharpenedSteps: [] },
+    scale: { root: "C", mode: "major", sharpenedSteps: [], flattenedSteps: [] },
     misses: [],
   };
 
@@ -230,7 +230,7 @@ describe("gameReducer — NOTE_TIMEOUT", () => {
     correctCount: 0,
     wrongCount: 0,
     noteSecondsRemaining: 0,
-    scale: { root: "C", mode: "major", sharpenedSteps: [] },
+    scale: { root: "C", mode: "major", sharpenedSteps: [], flattenedSteps: [] },
     misses: [],
   };
 
@@ -272,7 +272,7 @@ describe("gameReducer — PAUSE / RESUME", () => {
     correctCount: 0,
     wrongCount: 0,
     noteSecondsRemaining: 5,
-    scale: { root: "C", mode: "major", sharpenedSteps: [] },
+    scale: { root: "C", mode: "major", sharpenedSteps: [], flattenedSteps: [] },
     misses: [],
   };
 
