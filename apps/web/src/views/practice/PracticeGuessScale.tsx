@@ -65,15 +65,15 @@ export function PracticeGuessScale({
           const label = scaleLabel(choice);
 
           let colorStyle: React.CSSProperties = {};
-          let variant: "solid" | "ghost" | "flat" = "flat";
+          let variant: "primary" | "ghost" | "outline" = "outline";
 
           if (isResult) {
             if (isCorrect) {
               colorStyle = { background: "var(--success)", color: "var(--success-foreground)" };
-              variant = "solid";
+              variant = "primary";
             } else if (isWrongGuess) {
               colorStyle = { background: "var(--danger)", color: "var(--danger-foreground)" };
-              variant = "solid";
+              variant = "primary";
             } else {
               variant = "ghost";
             }
