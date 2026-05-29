@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useSetAtom } from "jotai";
+import { usePianoAudio } from "~/core/audio/UsePianoAudio";
 import { scoreResultAtom } from "~/core/game/ScoreAtoms";
 import { useGameLoop } from "~/core/game/UseGameLoop";
 import { usePracticeSettings } from "~/core/practice-settings/UsePracticeSettings";
@@ -11,6 +12,8 @@ export function usePracticeRoute(): PracticeViewProps {
   const navigate = useNavigate();
   const setScoreResult = useSetAtom(scoreResultAtom);
   const game = useGameLoop(settings);
+  const { playNote } = usePianoAudio();
+  const gameOnKeyPress = game.onKeyPress;
 
   useEffect(() => {
     if (game.phase !== "finished") return;
@@ -27,13 +30,21 @@ export function usePracticeRoute(): PracticeViewProps {
     void navigate({ to: "/score" });
   }, [game.phase]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const onKeyPress = useCallback<PracticeViewProps["onKeyPress"]>(
+    (key) => {
+      playNote(key.note, key.octave);
+      gameOnKeyPress(key);
+    },
+    [gameOnKeyPress, playNote]
+  );
+
   function onExit(): void {
     void navigate({ to: "/home" });
   }
 
   return {
     settings,
-    onKeyPress: game.onKeyPress,
+    onKeyPress,
     onPause: game.onPause,
     onExit,
     isPaused: game.phase === "paused",
