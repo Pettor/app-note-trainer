@@ -2,8 +2,9 @@ import type { ReactElement } from "react";
 import type { MissRecord } from "~/core/game/GameLoop";
 
 function formatCorrectNote(miss: MissRecord): string {
-  const acc = miss.correctAccidental === "sharp" ? "#" : "";
-  return `${miss.correctStep}${acc}${miss.correctOctave}`;
+  if (miss.correctAccidental === "sharp") return `${miss.correctStep}#${miss.correctOctave}`;
+  if (miss.correctAccidental === "flat") return `${miss.correctStep}b${miss.correctOctave}`;
+  return `${miss.correctStep}${miss.correctOctave}`;
 }
 
 function formatGuessNote(miss: MissRecord): string {

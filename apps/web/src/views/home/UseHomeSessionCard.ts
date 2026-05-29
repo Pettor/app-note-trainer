@@ -16,6 +16,7 @@ export interface HomeSessionCardState {
   ledgerLines: boolean;
   ledgerDepth: LedgerDepth;
   sharps: boolean;
+  naturals: boolean;
   timerEnabled: boolean;
   duration: Duration;
   guessScaleFirst: boolean;
@@ -25,6 +26,7 @@ export interface HomeSessionCardState {
   onLedgerLinesChange: (value: boolean) => void;
   onLedgerDepthChange: (value: LedgerDepth) => void;
   onSharpsChange: (value: boolean) => void;
+  onNaturalsChange: (value: boolean) => void;
   onTimerChange: (value: boolean) => void;
   onDurationChange: (value: Duration) => void;
   onGuessScaleFirstChange: (value: boolean) => void;
@@ -37,6 +39,7 @@ function detectPreset(s: PresetSettings): Difficulty {
       preset.ledgerLines === s.ledgerLines &&
       preset.ledgerDepth === s.ledgerDepth &&
       preset.sharps === s.sharps &&
+      preset.naturals === s.naturals &&
       preset.timerEnabled === s.timerEnabled &&
       preset.duration === s.duration &&
       preset.guessScaleFirst === s.guessScaleFirst
@@ -63,6 +66,7 @@ export function useHomeSessionCard(): HomeSessionCardState {
     ledgerLines: settings.ledgerLines,
     ledgerDepth: settings.ledgerDepth,
     sharps: settings.sharps,
+    naturals: settings.naturals,
     timerEnabled: settings.timerEnabled,
     duration: settings.duration,
     guessScaleFirst: settings.guessScaleFirst,
@@ -78,6 +82,7 @@ export function useHomeSessionCard(): HomeSessionCardState {
     onLedgerLinesChange: (value) => applyIndividualUpdate({ ledgerLines: value }),
     onLedgerDepthChange: (value) => applyIndividualUpdate({ ledgerDepth: value }),
     onSharpsChange: (value) => applyIndividualUpdate({ sharps: value }),
+    onNaturalsChange: (value) => applyIndividualUpdate({ naturals: value }),
     onTimerChange: (value) => applyIndividualUpdate({ timerEnabled: value }),
     onDurationChange: (value) => applyIndividualUpdate({ duration: value }),
     onGuessScaleFirstChange: (value) => applyIndividualUpdate({ guessScaleFirst: value }),

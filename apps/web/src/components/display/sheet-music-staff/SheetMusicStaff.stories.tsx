@@ -108,3 +108,109 @@ export const PhoneSharpNote: Story = {
   args: { staff: "treble", notes: [{ slot: 1, type: "quarter", accidental: "sharp", active: true }] } satisfies Props,
   globals: { viewport: { value: "iphonex" } },
 };
+
+// Flat accidental on individual note
+export const FlatNote: Story = {
+  args: { staff: "treble", notes: [{ slot: 4, type: "quarter", accidental: "flat", active: true }] } satisfies Props,
+};
+
+// ─── Key signature stories ───────────────────────────────────────────────────
+
+// G major (1 sharp: F#)
+export const KeySigOneSharpTreble: Story = {
+  args: {
+    staff: "treble",
+    keySignature: { type: "sharp", count: 1 },
+    notes: [{ slot: 2, type: "quarter", active: true }],
+  } satisfies Props,
+};
+
+// D major (2 sharps: F# C#)
+export const KeySigTwoSharpsTreble: Story = {
+  args: {
+    staff: "treble",
+    keySignature: { type: "sharp", count: 2 },
+    notes: [{ slot: 6, type: "quarter", active: true }],
+  } satisfies Props,
+};
+
+// A major (3 sharps: F# C# G#)
+export const KeySigThreeSharpsTreble: Story = {
+  args: {
+    staff: "treble",
+    keySignature: { type: "sharp", count: 3 },
+    notes: [{ slot: 3, type: "quarter", active: true }],
+  } satisfies Props,
+};
+
+// E major (4 sharps)
+export const KeySigFourSharpsTreble: Story = {
+  args: {
+    staff: "treble",
+    keySignature: { type: "sharp", count: 4 },
+    notes: [{ slot: 7, type: "quarter", active: true }],
+  } satisfies Props,
+};
+
+// F major (1 flat: Bb)
+export const KeySigOneFlatTreble: Story = {
+  args: {
+    staff: "treble",
+    keySignature: { type: "flat", count: 1 },
+    notes: [{ slot: 5, type: "quarter", active: true }],
+  } satisfies Props,
+};
+
+// Bb major (2 flats: Bb Eb)
+export const KeySigTwoFlatsTreble: Story = {
+  args: {
+    staff: "treble",
+    keySignature: { type: "flat", count: 2 },
+    notes: [{ slot: 4, type: "quarter", accidental: "flat", active: true }],
+  } satisfies Props,
+};
+
+// Eb major (3 flats)
+export const KeySigThreeFlatsTreble: Story = {
+  args: {
+    staff: "treble",
+    keySignature: { type: "flat", count: 3 },
+    notes: [{ slot: 7, type: "quarter", accidental: "flat", active: true }],
+  } satisfies Props,
+};
+
+// Ab major (4 flats)
+export const KeySigFourFlatsTreble: Story = {
+  args: {
+    staff: "treble",
+    keySignature: { type: "flat", count: 4 },
+    notes: [{ slot: 3, type: "quarter", accidental: "flat", active: true }],
+  } satisfies Props,
+};
+
+// Bass clef key signatures
+export const KeySigTwoSharpsBass: Story = {
+  args: {
+    staff: "bass",
+    keySignature: { type: "sharp", count: 2 },
+    notes: [{ slot: 4, type: "quarter", active: true }],
+  } satisfies Props,
+};
+
+export const KeySigTwoFlatsBass: Story = {
+  args: {
+    staff: "bass",
+    keySignature: { type: "flat", count: 2 },
+    notes: [{ slot: 3, type: "quarter", active: true }],
+  } satisfies Props,
+};
+
+// Phone — key signature
+export const PhoneKeySignature: Story = {
+  args: {
+    staff: "treble",
+    keySignature: { type: "sharp", count: 3 },
+    notes: [{ slot: 4, type: "quarter", active: true }],
+  } satisfies Props,
+  globals: { viewport: { value: "iphonex" } },
+};

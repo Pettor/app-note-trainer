@@ -103,6 +103,16 @@ const messages = defineMessages({
     description: "HomeSessionCard: summary pill when guess scale first is off",
     defaultMessage: "No scale guess",
   },
+  pillNaturalsOn: {
+    id: "Aq8JZc",
+    description: "HomeSessionCard: summary pill when naturals are on",
+    defaultMessage: "With ♮",
+  },
+  pillNaturalsOff: {
+    id: "TmdIca",
+    description: "HomeSessionCard: summary pill when naturals are off",
+    defaultMessage: "No ♮",
+  },
 });
 
 function SummaryPill({ children, muted = false }: { children: ReactNode; muted?: boolean }): ReactElement {
@@ -125,6 +135,7 @@ export interface HomeSessionCardSummaryProps {
   ledgerLines: boolean;
   ledgerDepth: LedgerDepth;
   sharps: boolean;
+  naturals: boolean;
   timerEnabled: boolean;
   duration: Duration;
   guessScaleFirst: boolean;
@@ -136,6 +147,7 @@ export function HomeSessionCardSummary({
   ledgerLines,
   ledgerDepth,
   sharps,
+  naturals,
   timerEnabled,
   duration,
   guessScaleFirst,
@@ -197,6 +209,15 @@ export function HomeSessionCardSummary({
           />
           {sharps ? intl.formatMessage(messages.pillSharpsOn) : intl.formatMessage(messages.pillSharpsOff)}
         </SummaryPill>
+        {sharps && (
+          <SummaryPill muted={!naturals}>
+            <span
+              className="inline-block h-1.5 w-1.5 rounded-full"
+              style={{ background: naturals ? "var(--warning)" : "var(--muted)", opacity: naturals ? 1 : 0.5 }}
+            />
+            {naturals ? intl.formatMessage(messages.pillNaturalsOn) : intl.formatMessage(messages.pillNaturalsOff)}
+          </SummaryPill>
+        )}
         <SummaryPill muted={!guessScaleFirst}>
           <span
             className="inline-block h-1.5 w-1.5 rounded-full"

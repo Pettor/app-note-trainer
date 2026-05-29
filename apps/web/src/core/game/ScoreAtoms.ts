@@ -1,5 +1,6 @@
 import { atom } from "jotai";
 import type { MissRecord } from "./GameLoop";
+import type { KeySignatureInfo } from "./MusicScale";
 import type { Staff } from "~/core/practice-settings/PracticeSettings";
 
 export interface ScoreResult {
@@ -11,6 +12,7 @@ export interface ScoreResult {
   staff: Staff;
   keyName: string;
   scaleType: string;
+  keySignature: KeySignatureInfo;
 }
 
 export const scoreResultAtom = atom<ScoreResult | null>(null);

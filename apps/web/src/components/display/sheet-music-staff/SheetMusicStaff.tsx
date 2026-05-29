@@ -3,6 +3,7 @@ import { defineMessages, useIntl } from "react-intl";
 import { SheetMusicStaffNote } from "./SheetMusicStaffNote";
 import { useSheetMusicStaff } from "./UseSheetMusicStaff";
 import type { StaffNoteData } from "./UseSheetMusicStaff";
+import type { KeySignatureInfo } from "~/core/game/MusicScale";
 import type { Staff } from "~/core/practice-settings/PracticeSettings";
 
 const messages = defineMessages({
@@ -26,6 +27,7 @@ const messages = defineMessages({
 export interface SheetMusicStaffProps {
   staff: Staff;
   notes?: StaffNoteData[];
+  keySignature?: KeySignatureInfo;
   className?: string;
   /** Fixed slot bounds for the viewBox — prevents layout shift when notes change.
    *  When omitted, bounds are auto-detected from the notes array each render. */
@@ -36,6 +38,7 @@ export interface SheetMusicStaffProps {
 export function SheetMusicStaff({
   staff,
   notes,
+  keySignature,
   className,
   minSlot: minSlotProp,
   maxSlot: maxSlotProp,
@@ -45,7 +48,7 @@ export function SheetMusicStaff({
   const slots = notes?.map((n) => n.slot) ?? [];
   const minSlot = minSlotProp ?? (slots.length > 0 ? Math.min(...slots) : 0);
   const maxSlot = maxSlotProp ?? (slots.length > 0 ? Math.max(...slots) : 8);
-  const metrics = useSheetMusicStaff(staff, minSlot, maxSlot);
+  const metrics = useSheetMusicStaff(staff, minSlot, maxSlot, keySignature);
 
   const clefName = intl.formatMessage(staff === "treble" ? messages.trebleClefName : messages.bassClefName);
   const ariaLabel = intl.formatMessage(messages.ariaLabel, { clefName });
@@ -98,6 +101,7 @@ export function SheetMusicStaff({
           strokeWidth={metrics.lineThickness}
           strokeLinecap="square"
         />
+        {/* Clef */}
         <text
           x={metrics.clefX}
           y={metrics.clefBaselineY}
@@ -109,12 +113,28 @@ export function SheetMusicStaff({
         >
           {metrics.clefGlyph}
         </text>
+        {/* Key signature accidentals */}
+        {metrics.keySigGlyphs.map(({ x, slot }, i) => (
+          <text
+            key={i}
+            x={x}
+            y={metrics.slotToY(slot)}
+            fontFamily="Leland"
+            fontSize={metrics.keySigFontSize}
+            fill="currentColor"
+            aria-hidden="true"
+            style={{ userSelect: "none" }}
+          >
+            {metrics.keySigAccidentalGlyph}
+          </text>
+        ))}
+        {/* Notes */}
         {notes?.map((note, i) => (
           <SheetMusicStaffNote
             key={i}
             slot={note.slot}
             type={note.type ?? "quarter"}
-            x={note.x ?? metrics.noteAreaStartX + metrics.staffSpaceSize * 4}
+            x={note.x ?? metrics.defaultNoteX}
             active={note.active}
             accidental={note.accidental}
             metrics={metrics}

@@ -2,7 +2,8 @@ import { useEffect, useReducer, useRef } from "react";
 import { createInitialState, gameReducer } from "./GameLoop";
 import type { GamePhase, MissRecord } from "./GameLoop";
 import { matchesPianoKey } from "./MusicNote";
-import { scaleDisplayName } from "./MusicScale";
+import { getKeySignature, scaleDisplayName } from "./MusicScale";
+import type { KeySignatureInfo } from "./MusicScale";
 import type { StaffNoteData } from "~/components/display/sheet-music-staff/UseSheetMusicStaff";
 import type { PianoKeyData } from "~/components/input/piano-keyboard/UsePianoKeyboard";
 import type { Duration, PracticeSettings } from "~/core/practice-settings/PracticeSettings";
@@ -24,6 +25,7 @@ export interface UseGameLoopResult {
   noteSecondsRemaining: number;
   keyName: string;
   scaleType: string;
+  keySignature: KeySignatureInfo;
   misses: MissRecord[];
   totalTime: number;
   fastestCorrect: number;
@@ -88,11 +90,20 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
           slot: currentGameNote.slot,
           type: "quarter",
           active: true,
-          accidental: currentGameNote.pitch.accidental === "sharp" ? "sharp" : undefined,
+          accidental:
+            currentGameNote.pitch.accidental === "sharp"
+              ? "sharp"
+              : currentGameNote.pitch.accidental === "flat"
+                ? "flat"
+                : state.scale.sharpenedSteps.includes(currentGameNote.pitch.step) ||
+                    state.scale.flattenedSteps.includes(currentGameNote.pitch.step)
+                  ? "natural"
+                  : undefined,
         }
       : null;
 
   const { keyName, scaleType } = scaleDisplayName(state.scale);
+  const keySignature = getKeySignature(state.scale);
 
   function onKeyPress(key: PianoKeyData): void {
     const timeTaken = (Date.now() - noteStartMs.current) / 1000;
@@ -131,6 +142,7 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
     noteSecondsRemaining: state.noteSecondsRemaining,
     keyName,
     scaleType,
+    keySignature,
     misses: state.misses,
     totalTime: gameTotalTimeSeconds.current,
     fastestCorrect: fastestCorrectSeconds.current,

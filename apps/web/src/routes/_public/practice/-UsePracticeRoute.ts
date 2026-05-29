@@ -26,6 +26,7 @@ export function usePracticeRoute(): PracticeViewProps {
       staff: settings.staff,
       keyName: game.keyName,
       scaleType: game.scaleType,
+      keySignature: game.keySignature,
     });
     void navigate({ to: "/score" });
   }, [game.phase]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -50,6 +51,7 @@ export function usePracticeRoute(): PracticeViewProps {
     isPaused: game.phase === "paused",
     keyName: game.keyName,
     scaleType: game.scaleType,
+    keySignature: game.keySignature,
     remaining: game.noteSecondsRemaining,
     notesCompleted: game.notesCompleted,
     totalNotes: game.totalNotes,

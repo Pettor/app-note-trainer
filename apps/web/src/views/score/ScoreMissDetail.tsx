@@ -2,8 +2,11 @@ import type { ReactElement } from "react";
 import { defineMessages, useIntl } from "react-intl";
 import { ScoreMiniKeyboard } from "./ScoreMiniKeyboard";
 import { SheetMusicStaff } from "~/components/display/sheet-music-staff/SheetMusicStaff";
+import type { StaffNoteData } from "~/components/display/sheet-music-staff/UseSheetMusicStaff";
 import type { PianoNote } from "~/components/input/piano-keyboard/UsePianoKeyboard";
 import type { MissRecord } from "~/core/game/GameLoop";
+import type { NoteStep } from "~/core/game/MusicNote";
+import type { KeySignatureInfo } from "~/core/game/MusicScale";
 import type { Staff } from "~/core/practice-settings/PracticeSettings";
 
 const messages = defineMessages({
@@ -39,35 +42,58 @@ const messages = defineMessages({
   },
 });
 
-function formatCorrectNote(miss: MissRecord): string {
-  const acc = miss.correctAccidental === "sharp" ? "#" : "";
-  return `${miss.correctStep}${acc}${miss.correctOctave}`;
+// Sharp/flat step order (circle of fifths) for determining explicit naturals
+const SHARP_STEPS: NoteStep[] = ["F", "C", "G", "D", "A", "E", "B"];
+const FLAT_STEPS: NoteStep[] = ["B", "E", "A", "D", "G", "C", "F"];
+
+function isStepInKeySignature(step: NoteStep, keySignature: KeySignatureInfo): boolean {
+  const steps = keySignature.type === "sharp" ? SHARP_STEPS : FLAT_STEPS;
+  return steps.slice(0, keySignature.count).includes(step);
 }
 
-function toStaffNote(miss: MissRecord): { slot: number; type: "quarter"; active: boolean; accidental?: "sharp" } {
-  return {
-    slot: miss.slot,
-    type: "quarter" as const,
-    active: false,
-    accidental: miss.correctAccidental === "sharp" ? ("sharp" as const) : undefined,
-  };
+// Flat steps map to their sharp enharmonic for piano keyboard highlighting
+const FLAT_TO_PIANO: Partial<Record<NoteStep, PianoNote>> = {
+  B: "A#",
+  E: "D#",
+  A: "G#",
+  D: "C#",
+  G: "F#",
+  C: "B",
+  F: "E",
+};
+
+function formatCorrectNote(miss: MissRecord, keySignature: KeySignatureInfo): string {
+  if (miss.correctAccidental === "sharp") return `${miss.correctStep}#${miss.correctOctave}`;
+  if (miss.correctAccidental === "flat") return `${miss.correctStep}b${miss.correctOctave}`;
+  if (isStepInKeySignature(miss.correctStep, keySignature)) return `${miss.correctStep}♮${miss.correctOctave}`;
+  return `${miss.correctStep}${miss.correctOctave}`;
+}
+
+function toStaffNote(miss: MissRecord, keySignature: KeySignatureInfo): StaffNoteData {
+  let accidental: StaffNoteData["accidental"];
+  if (miss.correctAccidental === "sharp") accidental = "sharp";
+  else if (miss.correctAccidental === "flat") accidental = "flat";
+  else if (isStepInKeySignature(miss.correctStep, keySignature)) accidental = "natural";
+  return { slot: miss.slot, type: "quarter", active: false, accidental };
 }
 
 function correctPianoNote(miss: MissRecord): PianoNote {
-  const acc = miss.correctAccidental === "sharp" ? "#" : "";
-  return `${miss.correctStep}${acc}` as PianoNote;
+  if (miss.correctAccidental === "sharp") return `${miss.correctStep}#` as PianoNote;
+  if (miss.correctAccidental === "flat") return FLAT_TO_PIANO[miss.correctStep] ?? (miss.correctStep as PianoNote);
+  return miss.correctStep as PianoNote;
 }
 
 export interface ScoreMissDetailProps {
   miss: MissRecord;
   staff: Staff;
   keyName: string;
+  keySignature: KeySignatureInfo;
   isMobile?: boolean;
 }
 
-export function ScoreMissDetail({ miss, staff, isMobile }: ScoreMissDetailProps): ReactElement {
+export function ScoreMissDetail({ miss, staff, keySignature, isMobile }: ScoreMissDetailProps): ReactElement {
   const intl = useIntl();
-  const correctLabel = formatCorrectNote(miss);
+  const correctLabel = formatCorrectNote(miss, keySignature);
   const guessLabel = miss.guessNote ? `${miss.guessNote}${miss.guessOctave}` : intl.formatMessage(messages.timedOut);
 
   return (
@@ -126,7 +152,8 @@ export function ScoreMissDetail({ miss, staff, isMobile }: ScoreMissDetailProps)
       >
         <SheetMusicStaff
           staff={staff}
-          notes={[toStaffNote(miss)]}
+          notes={[toStaffNote(miss, keySignature)]}
+          keySignature={keySignature}
           className={isMobile ? "w-full max-w-xs" : "w-full max-w-md"}
         />
       </div>

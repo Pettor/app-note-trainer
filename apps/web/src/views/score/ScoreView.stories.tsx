@@ -43,6 +43,7 @@ const meta: Meta<typeof Component> = {
     staff: "treble",
     keyName: "G",
     scaleType: "major",
+    keySignature: { type: "sharp", count: 1 },
     totalNotes: 25,
     correctCount: 22,
     misses: sampleMisses,
@@ -89,6 +90,7 @@ export const BassClef: Story = {
   args: {
     staff: "bass",
     keyName: "F",
+    keySignature: { type: "flat", count: 1 },
     correctCount: 19,
     misses: [
       {

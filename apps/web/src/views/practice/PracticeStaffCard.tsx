@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { defineMessages, useIntl } from "react-intl";
 import { SheetMusicStaff } from "~/components/display/sheet-music-staff/SheetMusicStaff";
 import type { StaffNoteData } from "~/components/display/sheet-music-staff/UseSheetMusicStaff";
+import type { KeySignatureInfo } from "~/core/game/MusicScale";
 import type { Staff } from "~/core/practice-settings/PracticeSettings";
 import { useViewport } from "~/core/UseViewport";
 
@@ -42,6 +43,7 @@ const messages = defineMessages({
 export interface PracticeStaffCardProps {
   staff: Staff;
   keyName: string;
+  keySignature?: KeySignatureInfo;
   note?: StaffNoteData | null;
   countdown?: number | null;
   minSlot?: number;
@@ -51,6 +53,7 @@ export interface PracticeStaffCardProps {
 export function PracticeStaffCard({
   staff,
   keyName,
+  keySignature,
   note,
   countdown,
   minSlot,
@@ -115,6 +118,7 @@ export function PracticeStaffCard({
         <SheetMusicStaff
           staff={staff}
           notes={note ? [note] : undefined}
+          keySignature={keySignature}
           minSlot={minSlot}
           maxSlot={maxSlot}
           className="w-full max-w-2xl"

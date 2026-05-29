@@ -4,8 +4,8 @@ import { buildNoteQueue, getSlotRange } from "./NotePool";
 import type { PracticeSettings } from "~/core/practice-settings/PracticeSettings";
 import { DEFAULT_PRACTICE_SETTINGS } from "~/core/practice-settings/PracticeSettings";
 
-const naturalScale: Scale = { root: "C", mode: "major", sharpenedSteps: [] };
-const sharpScale: Scale = { root: "G", mode: "major", sharpenedSteps: ["F"] };
+const naturalScale: Scale = { root: "C", mode: "major", sharpenedSteps: [], flattenedSteps: [] };
+const sharpScale: Scale = { root: "G", mode: "major", sharpenedSteps: ["F"], flattenedSteps: [] };
 
 function settings(overrides: Partial<PracticeSettings> = {}): PracticeSettings {
   return { ...DEFAULT_PRACTICE_SETTINGS, ...overrides };
@@ -116,5 +116,39 @@ describe("buildNoteQueue", () => {
     const bottomNote = queue.find((n) => n.slot === 0);
     expect(bottomNote?.pitch.step).toBe("G");
     expect(bottomNote?.pitch.octave).toBe(2);
+  });
+
+  it("with naturals ON, pool includes natural versions of sharpened steps", () => {
+    const s = settings({ noteRange: "standard", ledgerLines: false, staff: "treble", naturals: true });
+    const queue = buildNoteQueue(s, sharpScale);
+    // G major sharps F — slot 1 = F4, slot 8 = F5
+    const fNaturalNotes = queue.filter((n) => (n.slot === 1 || n.slot === 8) && n.pitch.accidental === "natural");
+    expect(fNaturalNotes.length).toBeGreaterThan(0);
+    for (const note of fNaturalNotes) {
+      expect(note.pitch.step).toBe("F");
+    }
+  });
+
+  it("with naturals ON, sharpened steps still appear as sharp too", () => {
+    const s = settings({ noteRange: "standard", ledgerLines: false, staff: "treble", naturals: true });
+    const queue = buildNoteQueue(s, sharpScale);
+    const fSharpNotes = queue.filter((n) => (n.slot === 1 || n.slot === 8) && n.pitch.accidental === "sharp");
+    expect(fSharpNotes.length).toBeGreaterThan(0);
+  });
+
+  it("with naturals OFF, no explicit natural notes appear at sharpened steps", () => {
+    const s = settings({ noteRange: "standard", ledgerLines: false, staff: "treble", naturals: false });
+    const queue = buildNoteQueue(s, sharpScale);
+    const fNaturalNotes = queue.filter((n) => (n.slot === 1 || n.slot === 8) && n.pitch.accidental === "natural");
+    expect(fNaturalNotes).toHaveLength(0);
+  });
+
+  it("with naturals ON and a natural scale, no explicit natural notes are added", () => {
+    const s = settings({ noteRange: "standard", ledgerLines: false, naturals: true });
+    const queue = buildNoteQueue(s, naturalScale);
+    // Natural scale has no sharpened/flattened steps, so no naturals should be added to the pool
+    for (const note of queue) {
+      expect(note.pitch.accidental).toBe("natural");
+    }
   });
 });

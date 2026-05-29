@@ -31,6 +31,7 @@ export function useScoreRoute(): ScoreViewProps | null {
     staff: result.staff,
     keyName: result.keyName,
     scaleType: result.scaleType,
+    keySignature: result.keySignature,
     totalNotes: result.totalNotes,
     correctCount: result.correctCount,
     misses: result.misses,

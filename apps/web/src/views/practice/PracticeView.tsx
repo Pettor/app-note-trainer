@@ -8,6 +8,7 @@ import { PracticeTopBar } from "./PracticeTopBar";
 import type { StaffNoteData } from "~/components/display/sheet-music-staff/UseSheetMusicStaff";
 import { PianoKeyboard } from "~/components/input/piano-keyboard/PianoKeyboard";
 import type { PianoKeyData } from "~/components/input/piano-keyboard/UsePianoKeyboard";
+import type { KeySignatureInfo } from "~/core/game/MusicScale";
 import { getSlotRange } from "~/core/game/NotePool";
 import type { PracticeSettings } from "~/core/practice-settings/PracticeSettings";
 import { useViewport } from "~/core/UseViewport";
@@ -20,6 +21,7 @@ export interface PracticeViewProps {
   isPaused?: boolean;
   keyName?: string;
   scaleType?: string;
+  keySignature?: KeySignatureInfo;
   remaining?: number;
   notesCompleted?: number;
   totalNotes?: number;
@@ -37,6 +39,7 @@ export function PracticeView({
   isPaused = false,
   keyName = "C",
   scaleType = "major",
+  keySignature,
   remaining = settings.duration,
   notesCompleted = 0,
   totalNotes = 20,
@@ -110,6 +113,7 @@ export function PracticeView({
         <PracticeStaffCard
           staff={settings.staff}
           keyName={keyName}
+          keySignature={keySignature}
           note={currentNote}
           countdown={countdown}
           minSlot={minSlot}

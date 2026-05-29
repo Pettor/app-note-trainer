@@ -21,6 +21,11 @@ describe("pitchToLabel", () => {
     expect(pitchToLabel(pitch)).toBe("F#4");
   });
 
+  it("formats a flat note", () => {
+    const pitch: GameNotePitch = { step: "B", accidental: "flat", octave: 4 };
+    expect(pitchToLabel(pitch)).toBe("Bb4");
+  });
+
   it("includes the octave number", () => {
     const pitch: GameNotePitch = { step: "A", accidental: "natural", octave: 5 };
     expect(pitchToLabel(pitch)).toBe("A5");
@@ -61,5 +66,20 @@ describe("matchesPianoKey", () => {
   it("returns true for a matching sharp note in a different octave", () => {
     const pitch: GameNotePitch = { step: "F", accidental: "sharp", octave: 4 };
     expect(matchesPianoKey(pitch, key("F#5"))).toBe(true);
+  });
+
+  it("returns true when Bb matches A# on the keyboard", () => {
+    const pitch: GameNotePitch = { step: "B", accidental: "flat", octave: 4 };
+    expect(matchesPianoKey(pitch, key("A#4"))).toBe(true);
+  });
+
+  it("returns true when Eb matches D# on the keyboard", () => {
+    const pitch: GameNotePitch = { step: "E", accidental: "flat", octave: 4 };
+    expect(matchesPianoKey(pitch, key("D#4"))).toBe(true);
+  });
+
+  it("returns false when a flat pitch is matched against the wrong key", () => {
+    const pitch: GameNotePitch = { step: "B", accidental: "flat", octave: 4 };
+    expect(matchesPianoKey(pitch, key("B4"))).toBe(false);
   });
 });
