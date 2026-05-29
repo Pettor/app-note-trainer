@@ -77,6 +77,8 @@ export interface ScoreViewProps {
   misses: MissRecord[];
   totalTime: number;
   fastestCorrect: number;
+  minSlot?: number;
+  maxSlot?: number;
   onExit: () => void;
   onPlayAgain: () => void;
 }
@@ -90,6 +92,8 @@ export function ScoreView({
   misses,
   totalTime,
   fastestCorrect,
+  minSlot,
+  maxSlot,
   onExit,
   onPlayAgain,
 }: ScoreViewProps): ReactElement {
@@ -171,6 +175,8 @@ export function ScoreView({
                   keyName={keyName}
                   keySignature={keySignature}
                   isMobile={isPhone}
+                  minSlot={minSlot}
+                  maxSlot={maxSlot}
                 />
               )}
             </div>
