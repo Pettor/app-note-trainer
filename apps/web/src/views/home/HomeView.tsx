@@ -20,11 +20,6 @@ const messages = defineMessages({
     description: "HomeView: start training button aria-label",
     defaultMessage: "Start training session",
   },
-  loadLastSession: {
-    id: "82j49O",
-    description: "HomeView: load last session prompt prefix",
-    defaultMessage: "Or load",
-  },
   lastSessionLink: {
     id: "3nrlSL",
     description: "HomeView: last session link label",
@@ -140,16 +135,6 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
                 ↵
               </kbd>
             </Button>
-            <p className="text-muted text-center text-xs">
-              {intl.formatMessage(messages.loadLastSession)}{" "}
-              <button
-                type="button"
-                className="text-accent font-medium underline decoration-1 underline-offset-[3px] transition-colors hover:text-(--secondary)"
-                onClick={onStart}
-              >
-                {intl.formatMessage(messages.lastSessionLink)}
-              </button>
-            </p>
           </div>
         </div>
       </NavbarLayout>

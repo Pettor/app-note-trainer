@@ -62,12 +62,12 @@ test.describe("practice session → score", () => {
     // Miss list with count and entries
     await expect(page.getByText("Missed notes")).toBeVisible();
 
-    // Miss 1: wrong answer — played D4 instead of E4
-    await expect(page.getByText("Shown E4")).toBeVisible();
+    // Miss 1: wrong answer — played D instead of E
+    await expect(page.getByText("Shown E")).toBeVisible();
     await expect(page.getByText(/You played/)).toBeVisible();
 
-    // Miss 2: timed out on G4
-    await expect(page.getByText("Shown G4")).toBeVisible();
+    // Miss 2: timed out on G
+    await expect(page.getByText("Shown G")).toBeVisible();
     await expect(page.getByText("Timed out")).toBeVisible();
   });
 });

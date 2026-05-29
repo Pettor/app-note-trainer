@@ -23,7 +23,7 @@ export function usePracticeRoute(): PracticeViewProps {
       misses: game.misses,
       totalTime: game.totalTime,
       fastestCorrect: game.fastestCorrect,
-      staff: settings.staff,
+      settings,
       keyName: game.keyName,
       scaleType: game.scaleType,
       keySignature: game.keySignature,

@@ -2,14 +2,14 @@ import type { ReactElement } from "react";
 import type { MissRecord } from "~/core/game/GameLoop";
 
 function formatCorrectNote(miss: MissRecord): string {
-  if (miss.correctAccidental === "sharp") return `${miss.correctStep}#${miss.correctOctave}`;
-  if (miss.correctAccidental === "flat") return `${miss.correctStep}b${miss.correctOctave}`;
-  return `${miss.correctStep}${miss.correctOctave}`;
+  if (miss.correctAccidental === "sharp") return `${miss.correctStep}#`;
+  if (miss.correctAccidental === "flat") return `${miss.correctStep}b`;
+  return miss.correctStep;
 }
 
 function formatGuessNote(miss: MissRecord): string {
   if (miss.guessNote === null) return "—";
-  return `${miss.guessNote}${miss.guessOctave}`;
+  return miss.guessNote;
 }
 
 export interface ScoreMissRowProps {

@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import { type ReactElement, useCallback, useRef } from "react";
 import { BoltIcon, CheckIcon, ClockIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { Button } from "@heroui/react";
 import { defineMessages, useIntl } from "react-intl";
@@ -7,7 +7,6 @@ import { ScoreHeroCard } from "./ScoreHeroCard";
 import { ScoreMissDetail } from "./ScoreMissDetail";
 import { ScoreMissList } from "./ScoreMissList";
 import { ScoreStatTile } from "./ScoreStatTile";
-import { ScoreTopBar } from "./ScoreTopBar";
 import { useScoreView } from "./UseScoreView";
 import type { MissRecord } from "~/core/game/GameLoop";
 import type { KeySignatureInfo } from "~/core/game/MusicScale";
@@ -85,7 +84,6 @@ export interface ScoreViewProps {
 export function ScoreView({
   staff,
   keyName,
-  scaleType,
   keySignature,
   totalNotes,
   correctCount,
@@ -98,6 +96,10 @@ export function ScoreView({
   const intl = useIntl();
   const { isPhone } = useViewport();
   const { selectedMissIndex, setSelectedMissIndex } = useScoreView(misses.length);
+  const reviewSectionRef = useRef<HTMLDivElement>(null);
+  const handleScrollToReview = useCallback(() => {
+    reviewSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
 
   const perfect = misses.length === 0;
   const avgTime = totalTime > 0 ? totalTime / Math.max(1, totalNotes) : 0;
@@ -118,9 +120,6 @@ export function ScoreView({
           `,
         }}
       />
-
-      <ScoreTopBar keyName={keyName} scaleType={scaleType} onExit={onExit} />
-
       <main className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-3 py-3.5 sm:gap-4.5 sm:px-7 sm:py-5">
         <ScoreHeroCard correctCount={correctCount} totalNotes={totalNotes} perfect={perfect} />
 
@@ -146,11 +145,12 @@ export function ScoreView({
             sub={perfect ? intl.formatMessage(messages.missesSubClean) : intl.formatMessage(messages.missesSubReview)}
             tone={perfect ? "success" : "danger"}
             icon={perfect ? <CheckIcon className="h-3 w-3" /> : <XMarkIcon className="h-3 w-3" />}
+            onPress={!perfect ? handleScrollToReview : undefined}
           />
         </div>
 
         {/* Review or award section */}
-        <div className="flex min-h-0 flex-1 flex-col">
+        <div ref={reviewSectionRef} className="flex min-h-0 flex-1 flex-col">
           {perfect ? (
             <ScoreAwardCard fastestCorrect={fastestCorrect} />
           ) : (
@@ -180,7 +180,7 @@ export function ScoreView({
 
       {/* Footer actions */}
       <footer className="shrink-0 px-3 pb-3 sm:px-7 sm:pb-5" style={{ borderTop: "1px solid var(--border)" }}>
-        <div className={`mx-auto flex max-w-3xl gap-2.5 pt-3 ${isPhone ? "flex-col" : "justify-end"}`}>
+        <div className={`mx-auto flex max-w-3xl gap-2.5 pt-3 ${isPhone ? "flex-row" : "justify-end"}`}>
           <Button
             variant="outline"
             onPress={onExit}
