@@ -7,7 +7,7 @@ import { buildNoteQueue } from "./NotePool";
 import type { PianoKeyData, PianoNote } from "~/components/input/piano-keyboard/UsePianoKeyboard";
 import type { Duration, PracticeSettings } from "~/core/practice-settings/PracticeSettings";
 
-export type GamePhase = "countdown" | "playing" | "paused" | "finished";
+export type GamePhase = "countdown" | "guessing-scale" | "scale-result" | "playing" | "paused" | "finished";
 
 export interface MissRecord {
   slot: number;
@@ -29,10 +29,15 @@ export interface GameState {
   noteSecondsRemaining: number;
   scale: Scale;
   misses: MissRecord[];
+  guessScaleFirst: boolean;
+  scaleGuessCorrect: boolean | null;
+  guessedScale: Scale | null;
 }
 
 export type GameAction =
   | { type: "COUNTDOWN_TICK" }
+  | { type: "SCALE_GUESS"; guessedScale: Scale }
+  | { type: "SCALE_RESULT_DONE" }
   | { type: "KEY_PRESS"; key: PianoKeyData; timerEnabled: boolean; noteDuration: Duration; timeTaken: number }
   | { type: "NOTE_TIMER_TICK"; delta: number }
   | { type: "NOTE_TIMEOUT"; noteDuration: Duration; timeTaken: number }
@@ -52,6 +57,9 @@ export function createInitialState(settings: PracticeSettings): GameState {
     noteSecondsRemaining: settings.duration,
     scale,
     misses: [],
+    guessScaleFirst: settings.guessScaleFirst,
+    scaleGuessCorrect: null,
+    guessedScale: null,
   };
 }
 
@@ -69,9 +77,28 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       if (state.phase !== "countdown") return state;
       if (state.countdown === null) return state;
       if (state.countdown === 1) {
-        return { ...state, phase: "playing", countdown: null };
+        const nextPhase = state.guessScaleFirst ? "guessing-scale" : "playing";
+        return { ...state, phase: nextPhase, countdown: null };
       }
       return { ...state, countdown: (state.countdown - 1) as 3 | 2 | 1 };
+    }
+
+    case "SCALE_GUESS": {
+      if (state.phase !== "guessing-scale") return state;
+      const isCorrect = action.guessedScale.root === state.scale.root && action.guessedScale.mode === state.scale.mode;
+      return {
+        ...state,
+        phase: "scale-result",
+        scaleGuessCorrect: isCorrect,
+        guessedScale: action.guessedScale,
+        correctCount: isCorrect ? state.correctCount + 1 : state.correctCount,
+        wrongCount: isCorrect ? state.wrongCount : state.wrongCount + 1,
+      };
+    }
+
+    case "SCALE_RESULT_DONE": {
+      if (state.phase !== "scale-result") return state;
+      return { ...state, phase: "playing" };
     }
 
     case "KEY_PRESS": {

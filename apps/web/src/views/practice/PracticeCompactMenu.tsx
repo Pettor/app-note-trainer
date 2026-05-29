@@ -59,6 +59,7 @@ export function PracticeCompactMenu({
   isPaused,
   onPause,
   onExit,
+  hideScaleInfo = false,
 }: PracticeCompactMenuProps): ReactElement {
   const intl = useIntl();
   const [audioEnabled, setAudioEnabled] = useAtom(audioEnabledAtom);
@@ -86,20 +87,24 @@ export function PracticeCompactMenu({
             <div className="text-foreground text-sm font-bold">{intl.formatMessage(messages.appName)}</div>
             <div className="text-muted flex items-center gap-1 text-[11px]">
               {intl.formatMessage(messages.practiceLabel)}
-              <span aria-hidden="true" className="opacity-40">
-                ·
-              </span>
-              <span
-                className="font-semibold"
-                style={{
-                  background: "var(--brand-gradient)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                {keyName} {scaleType}
-              </span>
+              {!hideScaleInfo && (
+                <>
+                  <span aria-hidden="true" className="opacity-40">
+                    ·
+                  </span>
+                  <span
+                    className="font-semibold"
+                    style={{
+                      background: "var(--brand-gradient)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    {keyName} {scaleType}
+                  </span>
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -58,10 +58,25 @@ describe("createInitialState", () => {
     expect(state.scale).toHaveProperty("root");
     expect(state.scale).toHaveProperty("mode");
   });
+
+  it("initialises guessScaleFirst from settings", () => {
+    const state = createInitialState({ ...settings, guessScaleFirst: true });
+    expect(state.guessScaleFirst).toBe(true);
+  });
+
+  it("initialises scaleGuessCorrect to null", () => {
+    const state = createInitialState(settings);
+    expect(state.scaleGuessCorrect).toBeNull();
+  });
+
+  it("initialises guessedScale to null", () => {
+    const state = createInitialState(settings);
+    expect(state.guessedScale).toBeNull();
+  });
 });
 
 describe("gameReducer — COUNTDOWN_TICK", () => {
-  function countdownState(countdown: 3 | 2 | 1): GameState {
+  function countdownState(countdown: 3 | 2 | 1, guessScaleFirst = false): GameState {
     return {
       phase: "countdown",
       countdown,
@@ -72,6 +87,9 @@ describe("gameReducer — COUNTDOWN_TICK", () => {
       noteSecondsRemaining: 5,
       scale: { root: "C", mode: "major", sharpenedSteps: [], flattenedSteps: [] },
       misses: [],
+      guessScaleFirst,
+      scaleGuessCorrect: null,
+      guessedScale: null,
     };
   }
 
@@ -86,9 +104,15 @@ describe("gameReducer — COUNTDOWN_TICK", () => {
     expect(next.countdown).toBe(1);
   });
 
-  it("transitions to playing when countdown reaches 1", () => {
-    const next = gameReducer(countdownState(1), { type: "COUNTDOWN_TICK" });
+  it("transitions to playing when countdown reaches 1 and guessScaleFirst is false", () => {
+    const next = gameReducer(countdownState(1, false), { type: "COUNTDOWN_TICK" });
     expect(next.phase).toBe("playing");
+    expect(next.countdown).toBeNull();
+  });
+
+  it("transitions to guessing-scale when countdown reaches 1 and guessScaleFirst is true", () => {
+    const next = gameReducer(countdownState(1, true), { type: "COUNTDOWN_TICK" });
+    expect(next.phase).toBe("guessing-scale");
     expect(next.countdown).toBeNull();
   });
 
@@ -96,6 +120,62 @@ describe("gameReducer — COUNTDOWN_TICK", () => {
     const playingState: GameState = { ...countdownState(3), phase: "playing", countdown: null };
     const next = gameReducer(playingState, { type: "COUNTDOWN_TICK" });
     expect(next).toBe(playingState);
+  });
+});
+
+describe("gameReducer — SCALE_GUESS / SCALE_RESULT_DONE", () => {
+  const scale = { root: "G" as const, mode: "major" as const, sharpenedSteps: ["F" as const], flattenedSteps: [] };
+  const guessingState: GameState = {
+    phase: "guessing-scale",
+    countdown: null,
+    noteQueue: [makeNote("G", 4)],
+    currentNoteIndex: 0,
+    correctCount: 0,
+    wrongCount: 0,
+    noteSecondsRemaining: 5,
+    scale,
+    misses: [],
+    guessScaleFirst: true,
+    scaleGuessCorrect: null,
+    guessedScale: null,
+  };
+
+  it("transitions to scale-result on SCALE_GUESS", () => {
+    const next = gameReducer(guessingState, { type: "SCALE_GUESS", guessedScale: scale });
+    expect(next.phase).toBe("scale-result");
+  });
+
+  it("marks correct and increments correctCount on a correct guess", () => {
+    const next = gameReducer(guessingState, { type: "SCALE_GUESS", guessedScale: scale });
+    expect(next.scaleGuessCorrect).toBe(true);
+    expect(next.correctCount).toBe(1);
+    expect(next.wrongCount).toBe(0);
+  });
+
+  it("marks wrong and increments wrongCount on an incorrect guess", () => {
+    const wrongGuess = { root: "D" as const, mode: "major" as const, sharpenedSteps: [], flattenedSteps: [] };
+    const next = gameReducer(guessingState, { type: "SCALE_GUESS", guessedScale: wrongGuess });
+    expect(next.scaleGuessCorrect).toBe(false);
+    expect(next.wrongCount).toBe(1);
+    expect(next.correctCount).toBe(0);
+    expect(next.guessedScale).toBe(wrongGuess);
+  });
+
+  it("SCALE_GUESS is a no-op when not in guessing-scale phase", () => {
+    const playingState: GameState = { ...guessingState, phase: "playing" };
+    const next = gameReducer(playingState, { type: "SCALE_GUESS", guessedScale: scale });
+    expect(next).toBe(playingState);
+  });
+
+  it("SCALE_RESULT_DONE transitions from scale-result to playing", () => {
+    const resultState: GameState = { ...guessingState, phase: "scale-result", scaleGuessCorrect: true };
+    const next = gameReducer(resultState, { type: "SCALE_RESULT_DONE" });
+    expect(next.phase).toBe("playing");
+  });
+
+  it("SCALE_RESULT_DONE is a no-op when not in scale-result phase", () => {
+    const next = gameReducer(guessingState, { type: "SCALE_RESULT_DONE" });
+    expect(next).toBe(guessingState);
   });
 });
 
@@ -112,6 +192,9 @@ describe("gameReducer — KEY_PRESS", () => {
     noteSecondsRemaining: 5,
     scale: { root: "C", mode: "major", sharpenedSteps: [], flattenedSteps: [] },
     misses: [],
+    guessScaleFirst: false,
+    scaleGuessCorrect: null,
+    guessedScale: null,
   };
 
   it("increments correctCount on a correct key press", () => {
@@ -205,6 +288,9 @@ describe("gameReducer — NOTE_TIMER_TICK", () => {
     noteSecondsRemaining: 5,
     scale: { root: "C", mode: "major", sharpenedSteps: [], flattenedSteps: [] },
     misses: [],
+    guessScaleFirst: false,
+    scaleGuessCorrect: null,
+    guessedScale: null,
   };
 
   it("decrements noteSecondsRemaining by the delta", () => {
@@ -232,6 +318,9 @@ describe("gameReducer — NOTE_TIMEOUT", () => {
     noteSecondsRemaining: 0,
     scale: { root: "C", mode: "major", sharpenedSteps: [], flattenedSteps: [] },
     misses: [],
+    guessScaleFirst: false,
+    scaleGuessCorrect: null,
+    guessedScale: null,
   };
 
   it("increments wrongCount", () => {
@@ -274,6 +363,9 @@ describe("gameReducer — PAUSE / RESUME", () => {
     noteSecondsRemaining: 5,
     scale: { root: "C", mode: "major", sharpenedSteps: [], flattenedSteps: [] },
     misses: [],
+    guessScaleFirst: false,
+    scaleGuessCorrect: null,
+    guessedScale: null,
   };
 
   it("transitions from playing to paused", () => {

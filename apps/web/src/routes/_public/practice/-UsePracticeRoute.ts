@@ -43,6 +43,8 @@ export function usePracticeRoute(): PracticeViewProps {
     void navigate({ to: "/home" });
   }
 
+  const isGuessingPhase = game.phase === "guessing-scale" || game.phase === "scale-result";
+
   return {
     settings,
     onKeyPress,
@@ -59,5 +61,10 @@ export function usePracticeRoute(): PracticeViewProps {
     wrongCount: game.wrongCount,
     countdown: game.countdown,
     currentNote: game.currentNote,
+    scale: game.scale,
+    scaleChoices: game.scaleChoices,
+    guessedScale: game.guessedScale,
+    onScaleGuess: game.onScaleGuess,
+    hideScaleInfo: isGuessingPhase,
   };
 }

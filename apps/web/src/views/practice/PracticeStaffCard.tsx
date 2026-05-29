@@ -38,6 +38,11 @@ const messages = defineMessages({
     description: "PracticeStaffCard: prompt shown during countdown",
     defaultMessage: "Get ready — study the key signature",
   },
+  identifyScalePrompt: {
+    id: "VYgcfl",
+    description: "PracticeStaffCard: prompt shown during scale-guessing phase",
+    defaultMessage: "Identify the key signature",
+  },
 });
 
 export interface PracticeStaffCardProps {
@@ -48,6 +53,7 @@ export interface PracticeStaffCardProps {
   countdown?: number | null;
   minSlot?: number;
   maxSlot?: number;
+  hideScaleName?: boolean;
 }
 
 export function PracticeStaffCard({
@@ -58,6 +64,7 @@ export function PracticeStaffCard({
   countdown,
   minSlot,
   maxSlot,
+  hideScaleName = false,
 }: PracticeStaffCardProps): ReactElement {
   const intl = useIntl();
   const { isCompact } = useViewport();
@@ -102,9 +109,11 @@ export function PracticeStaffCard({
           />
           {intl.formatMessage(messages.clefLabel, { name: clefName })}
         </span>
-        <span className="text-muted text-[10px] font-semibold tracking-[0.14em] sm:text-[11px]" tabular-nums="true">
-          {intl.formatMessage(messages.keyOfLabel, { key: keyName })}
-        </span>
+        {!hideScaleName && (
+          <span className="text-muted text-[10px] font-semibold tracking-[0.14em] sm:text-[11px]" tabular-nums="true">
+            {intl.formatMessage(messages.keyOfLabel, { key: keyName })}
+          </span>
+        )}
       </div>
 
       {/* Staff */}
@@ -133,7 +142,11 @@ export function PracticeStaffCard({
         )}
         style={{ zIndex: 1 }}
       >
-        {hasCountdown ? intl.formatMessage(messages.countdownPrompt) : intl.formatMessage(messages.identifyPrompt)}
+        {hasCountdown
+          ? intl.formatMessage(messages.countdownPrompt)
+          : hideScaleName
+            ? intl.formatMessage(messages.identifyScalePrompt)
+            : intl.formatMessage(messages.identifyPrompt)}
       </div>
 
       {/* Countdown overlay */}
