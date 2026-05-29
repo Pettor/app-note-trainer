@@ -60,7 +60,7 @@ export interface StaffNoteData {
   type?: NoteType; // defaults to "quarter"
   x?: number; // SVG user-unit x; auto-placed at first beat position if omitted
   active?: boolean; // marks this as the current note to guess — shows pulsating animation
-  accidental?: "sharp" | "flat"; // renders ♯ or ♭ glyph to the left of the notehead
+  accidental?: "sharp" | "flat" | "natural"; // renders ♯, ♭, or ♮ glyph to the left of the notehead
 }
 
 export interface KeySignatureGlyphPos {

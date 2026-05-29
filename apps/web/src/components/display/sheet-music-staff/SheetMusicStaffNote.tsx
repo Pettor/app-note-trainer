@@ -7,7 +7,7 @@ interface SheetMusicStaffNoteProps {
   type: NoteType;
   x: number;
   active?: boolean;
-  accidental?: "sharp" | "flat";
+  accidental?: "sharp" | "flat" | "natural";
   metrics: StaffMetrics;
 }
 

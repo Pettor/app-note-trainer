@@ -126,6 +126,16 @@ export function buildNoteQueue(settings: PracticeSettings, scale: Scale): GameNo
     pool.push({ pitch: { step: slotNote.step, accidental, octave: slotNote.octave }, slot });
   }
 
+  if (settings.naturals) {
+    for (let slot = minSlot; slot <= maxSlot; slot++) {
+      const slotNote = slotMap[slot];
+      if (!slotNote) continue;
+      if (sharpenedSet.has(slotNote.step) || flattenedSet.has(slotNote.step)) {
+        pool.push({ pitch: { step: slotNote.step, accidental: "natural", octave: slotNote.octave }, slot });
+      }
+    }
+  }
+
   if (pool.length === 0) return [];
 
   const shuffled = shuffle(pool);

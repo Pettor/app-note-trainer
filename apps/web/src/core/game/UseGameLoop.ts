@@ -95,7 +95,10 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
               ? "sharp"
               : currentGameNote.pitch.accidental === "flat"
                 ? "flat"
-                : undefined,
+                : state.scale.sharpenedSteps.includes(currentGameNote.pitch.step) ||
+                    state.scale.flattenedSteps.includes(currentGameNote.pitch.step)
+                  ? "natural"
+                  : undefined,
         }
       : null;
 
