@@ -63,10 +63,10 @@ const FLAT_TO_PIANO: Partial<Record<NoteStep, PianoNote>> = {
 };
 
 function formatCorrectNote(miss: MissRecord, keySignature: KeySignatureInfo): string {
-  if (miss.correctAccidental === "sharp") return `${miss.correctStep}#${miss.correctOctave}`;
-  if (miss.correctAccidental === "flat") return `${miss.correctStep}b${miss.correctOctave}`;
-  if (isStepInKeySignature(miss.correctStep, keySignature)) return `${miss.correctStep}♮${miss.correctOctave}`;
-  return `${miss.correctStep}${miss.correctOctave}`;
+  if (miss.correctAccidental === "sharp") return `${miss.correctStep}#`;
+  if (miss.correctAccidental === "flat") return `${miss.correctStep}b`;
+  if (isStepInKeySignature(miss.correctStep, keySignature)) return `${miss.correctStep}♮`;
+  return miss.correctStep;
 }
 
 function toStaffNote(miss: MissRecord, keySignature: KeySignatureInfo): StaffNoteData {
@@ -94,7 +94,7 @@ export interface ScoreMissDetailProps {
 export function ScoreMissDetail({ miss, staff, keySignature, isMobile }: ScoreMissDetailProps): ReactElement {
   const intl = useIntl();
   const correctLabel = formatCorrectNote(miss, keySignature);
-  const guessLabel = miss.guessNote ? `${miss.guessNote}${miss.guessOctave}` : intl.formatMessage(messages.timedOut);
+  const guessLabel = miss.guessNote ? miss.guessNote : intl.formatMessage(messages.timedOut);
 
   return (
     <div
