@@ -44,6 +44,7 @@ export function usePracticeRoute(): PracticeViewProps {
   }
 
   const isGuessingPhase = game.phase === "guessing-scale" || game.phase === "scale-result";
+  const hideScaleInfo = isGuessingPhase || (game.phase === "countdown" && settings.guessScaleFirst);
 
   return {
     settings,
@@ -62,9 +63,9 @@ export function usePracticeRoute(): PracticeViewProps {
     countdown: game.countdown,
     currentNote: game.currentNote,
     scale: game.scale,
-    scaleChoices: game.scaleChoices,
+    scaleChoices: isGuessingPhase ? game.scaleChoices : undefined,
     guessedScale: game.guessedScale,
     onScaleGuess: game.onScaleGuess,
-    hideScaleInfo: isGuessingPhase,
+    hideScaleInfo,
   };
 }

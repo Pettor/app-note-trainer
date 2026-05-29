@@ -47,7 +47,7 @@ export function PracticeGuessScale({
   const correctId = scaleId(correctScale);
 
   return (
-    <div className={clsx("flex flex-col", isCompact ? "gap-1.5" : "gap-2.5")}>
+    <div className={clsx("flex h-full flex-col justify-center", isCompact ? "gap-1.5" : "gap-2.5")}>
       <p
         className={clsx(
           "text-muted text-center font-mono font-semibold tracking-[0.12em] uppercase",
