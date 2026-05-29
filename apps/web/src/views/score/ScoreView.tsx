@@ -7,7 +7,6 @@ import { ScoreHeroCard } from "./ScoreHeroCard";
 import { ScoreMissDetail } from "./ScoreMissDetail";
 import { ScoreMissList } from "./ScoreMissList";
 import { ScoreStatTile } from "./ScoreStatTile";
-import { ScoreTopBar } from "./ScoreTopBar";
 import { useScoreView } from "./UseScoreView";
 import type { MissRecord } from "~/core/game/GameLoop";
 import type { KeySignatureInfo } from "~/core/game/MusicScale";
@@ -85,7 +84,6 @@ export interface ScoreViewProps {
 export function ScoreView({
   staff,
   keyName,
-  scaleType,
   keySignature,
   totalNotes,
   correctCount,
@@ -118,9 +116,6 @@ export function ScoreView({
           `,
         }}
       />
-
-      <ScoreTopBar keyName={keyName} scaleType={scaleType} onExit={onExit} />
-
       <main className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-3 py-3.5 sm:gap-4.5 sm:px-7 sm:py-5">
         <ScoreHeroCard correctCount={correctCount} totalNotes={totalNotes} perfect={perfect} />
 

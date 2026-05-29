@@ -29,7 +29,7 @@ export function ScoreStatTile({ label, value, sub, tone = "default", icon }: Sco
       }}
     >
       <div
-        className="flex items-center gap-2 font-semibold tracking-[0.14em] uppercase"
+        className="flex h-8 items-center gap-2 font-semibold tracking-[0.14em] uppercase"
         style={{ fontSize: 10, color: "var(--muted)" }}
       >
         <span
