@@ -9,6 +9,7 @@ export interface PresetSettings {
   ledgerLines: boolean;
   ledgerDepth: LedgerDepth;
   sharps: boolean;
+  naturals: boolean;
   timerEnabled: boolean;
   duration: Duration;
   guessScaleFirst: boolean;
@@ -25,6 +26,7 @@ export const DIFFICULTY_PRESETS: Record<"low" | "medium" | "high", PresetSetting
     ledgerLines: false,
     ledgerDepth: 1,
     sharps: false,
+    naturals: false,
     timerEnabled: false,
     duration: 8,
     guessScaleFirst: false,
@@ -34,6 +36,7 @@ export const DIFFICULTY_PRESETS: Record<"low" | "medium" | "high", PresetSetting
     ledgerLines: true,
     ledgerDepth: 1,
     sharps: true,
+    naturals: false,
     timerEnabled: true,
     duration: 8,
     guessScaleFirst: false,
@@ -43,6 +46,7 @@ export const DIFFICULTY_PRESETS: Record<"low" | "medium" | "high", PresetSetting
     ledgerLines: true,
     ledgerDepth: 3,
     sharps: true,
+    naturals: false,
     timerEnabled: true,
     duration: 5,
     guessScaleFirst: true,

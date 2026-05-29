@@ -3,11 +3,10 @@ import type { ReactElement } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { Accordion } from "@heroui/react";
 import { defineMessages, useIntl } from "react-intl";
+import { HomeSessionCardAccidentalsRow } from "./HomeSessionCardAccidentalsRow";
 import { HomeSessionCardDifficultyRow } from "./HomeSessionCardDifficultyRow";
-import { HomeSessionCardGuessScaleRow } from "./HomeSessionCardGuessScaleRow";
 import { HomeSessionCardLedgerRow } from "./HomeSessionCardLedgerRow";
 import { HomeSessionCardNoteRangeRow } from "./HomeSessionCardNoteRangeRow";
-import { HomeSessionCardSharpsRow } from "./HomeSessionCardSharpsRow";
 import { HomeSessionCardStaffRow } from "./HomeSessionCardStaffRow";
 import { HomeSessionCardSummary } from "./HomeSessionCardSummary";
 import { HomeSessionCardTimerRow } from "./HomeSessionCardTimerRow";
@@ -46,6 +45,7 @@ export function HomeSessionCard(): ReactElement {
     ledgerLines,
     ledgerDepth,
     sharps,
+    naturals,
     timerEnabled,
     duration,
     guessScaleFirst,
@@ -55,6 +55,7 @@ export function HomeSessionCard(): ReactElement {
     onLedgerLinesChange,
     onLedgerDepthChange,
     onSharpsChange,
+    onNaturalsChange,
     onTimerChange,
     onDurationChange,
     onGuessScaleFirstChange,
@@ -113,10 +114,13 @@ export function HomeSessionCard(): ReactElement {
                 onTimerChange={onTimerChange}
                 onDurationChange={onDurationChange}
               />
-              <HomeSessionCardSharpsRow sharps={sharps} onSharpsChange={onSharpsChange} />
-              <HomeSessionCardGuessScaleRow
+              <HomeSessionCardAccidentalsRow
+                sharps={sharps}
                 guessScaleFirst={guessScaleFirst}
+                naturals={naturals}
+                onSharpsChange={onSharpsChange}
                 onGuessScaleFirstChange={onGuessScaleFirstChange}
+                onNaturalsChange={onNaturalsChange}
               />
             </div>
           </Accordion.Panel>
@@ -129,6 +133,7 @@ export function HomeSessionCard(): ReactElement {
         ledgerLines={ledgerLines}
         ledgerDepth={ledgerDepth}
         sharps={sharps}
+        naturals={naturals}
         timerEnabled={timerEnabled}
         duration={duration}
         guessScaleFirst={guessScaleFirst}
