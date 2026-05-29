@@ -8,6 +8,7 @@ export interface ScoreStatTileProps {
   sub?: string;
   tone?: ScoreStatTone;
   icon: ReactNode;
+  onPress?: () => void;
 }
 
 const TONE_COLORS: Record<ScoreStatTone, string> = {
@@ -17,11 +18,28 @@ const TONE_COLORS: Record<ScoreStatTone, string> = {
   danger: "var(--danger)",
 };
 
-export function ScoreStatTile({ label, value, sub, tone = "default", icon }: ScoreStatTileProps): ReactElement {
+export function ScoreStatTile({
+  label,
+  value,
+  sub,
+  tone = "default",
+  icon,
+  onPress,
+}: ScoreStatTileProps): ReactElement {
   const iconColor = TONE_COLORS[tone];
   return (
     <div
-      className="flex min-w-0 flex-col gap-1.5 rounded-2xl p-3.5 sm:p-4"
+      className={`flex min-w-0 flex-col gap-1.5 rounded-2xl p-3.5 sm:p-4${onPress ? "cursor-pointer transition-opacity active:opacity-70" : ""}`}
+      role={onPress ? "button" : undefined}
+      tabIndex={onPress ? 0 : undefined}
+      onClick={onPress}
+      onKeyDown={
+        onPress
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") onPress();
+            }
+          : undefined
+      }
       style={{
         background: "var(--surface)",
         border: "1px solid var(--border)",

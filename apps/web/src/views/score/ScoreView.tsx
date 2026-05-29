@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import { type ReactElement, useCallback, useRef } from "react";
 import { BoltIcon, CheckIcon, ClockIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { Button } from "@heroui/react";
 import { defineMessages, useIntl } from "react-intl";
@@ -96,6 +96,10 @@ export function ScoreView({
   const intl = useIntl();
   const { isPhone } = useViewport();
   const { selectedMissIndex, setSelectedMissIndex } = useScoreView(misses.length);
+  const reviewSectionRef = useRef<HTMLDivElement>(null);
+  const handleScrollToReview = useCallback(() => {
+    reviewSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
 
   const perfect = misses.length === 0;
   const avgTime = totalTime > 0 ? totalTime / Math.max(1, totalNotes) : 0;
@@ -141,11 +145,12 @@ export function ScoreView({
             sub={perfect ? intl.formatMessage(messages.missesSubClean) : intl.formatMessage(messages.missesSubReview)}
             tone={perfect ? "success" : "danger"}
             icon={perfect ? <CheckIcon className="h-3 w-3" /> : <XMarkIcon className="h-3 w-3" />}
+            onPress={!perfect ? handleScrollToReview : undefined}
           />
         </div>
 
         {/* Review or award section */}
-        <div className="flex min-h-0 flex-1 flex-col">
+        <div ref={reviewSectionRef} className="flex min-h-0 flex-1 flex-col">
           {perfect ? (
             <ScoreAwardCard fastestCorrect={fastestCorrect} />
           ) : (
