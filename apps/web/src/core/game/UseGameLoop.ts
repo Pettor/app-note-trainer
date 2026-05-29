@@ -1,9 +1,9 @@
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useMemo, useReducer, useRef } from "react";
 import { createInitialState, gameReducer } from "./GameLoop";
 import type { GamePhase, MissRecord } from "./GameLoop";
 import { matchesPianoKey } from "./MusicNote";
-import { getKeySignature, scaleDisplayName } from "./MusicScale";
-import type { KeySignatureInfo } from "./MusicScale";
+import { generateScaleChoices, getKeySignature, scaleDisplayName } from "./MusicScale";
+import type { KeySignatureInfo, Scale } from "./MusicScale";
 import type { StaffNoteData } from "~/components/display/sheet-music-staff/UseSheetMusicStaff";
 import type { PianoKeyData } from "~/components/input/piano-keyboard/UsePianoKeyboard";
 import type { Duration, PracticeSettings } from "~/core/practice-settings/PracticeSettings";
@@ -13,6 +13,7 @@ const COUNTDOWN_INTERVAL_MS = 1000;
 const E2E_TIMER_DURATION = 1 as Duration;
 const TIMER_TICK_MS = 100;
 const TIMER_TICK_DELTA = TIMER_TICK_MS / 1000;
+const SCALE_RESULT_DELAY_MS = 1500;
 
 export interface UseGameLoopResult {
   phase: GamePhase;
@@ -26,11 +27,16 @@ export interface UseGameLoopResult {
   keyName: string;
   scaleType: string;
   keySignature: KeySignatureInfo;
+  scale: Scale;
+  scaleChoices: Scale[];
+  scaleGuessCorrect: boolean | null;
+  guessedScale: Scale | null;
   misses: MissRecord[];
   totalTime: number;
   fastestCorrect: number;
   onKeyPress: (key: PianoKeyData) => void;
   onPause: () => void;
+  onScaleGuess: (scale: Scale) => void;
 }
 
 export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
@@ -44,6 +50,8 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
   const gameTotalTimeSeconds = useRef<number>(0);
   const fastestCorrectSeconds = useRef<number>(Infinity);
 
+  const scaleChoices = useMemo(() => generateScaleChoices(state.scale), [state.scale]);
+
   // Countdown: tick every second until playing starts
   useEffect(() => {
     if (state.phase !== "countdown") return;
@@ -51,6 +59,15 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
       dispatch({ type: "COUNTDOWN_TICK" });
     }, COUNTDOWN_INTERVAL_MS);
     return () => clearInterval(id);
+  }, [state.phase]);
+
+  // Scale result: auto-advance to playing after a short delay
+  useEffect(() => {
+    if (state.phase !== "scale-result") return;
+    const id = setTimeout(() => {
+      dispatch({ type: "SCALE_RESULT_DONE" });
+    }, SCALE_RESULT_DELAY_MS);
+    return () => clearTimeout(id);
   }, [state.phase]);
 
   // Track game start time when phase first becomes "playing"
@@ -131,22 +148,35 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
     }
   }
 
+  function onScaleGuess(scale: Scale): void {
+    dispatch({ type: "SCALE_GUESS", guessedScale: scale });
+  }
+
+  const guessCompleted = state.scaleGuessCorrect !== null ? 1 : 0;
+  const totalNotes = state.noteQueue.length + (settings.guessScaleFirst ? 1 : 0);
+  const notesCompleted = Math.min(state.currentNoteIndex, state.noteQueue.length) + guessCompleted;
+
   return {
     phase: state.phase,
     countdown: state.countdown,
     currentNote,
-    notesCompleted: Math.min(state.currentNoteIndex, state.noteQueue.length),
-    totalNotes: state.noteQueue.length,
+    notesCompleted,
+    totalNotes,
     correctCount: state.correctCount,
     wrongCount: state.wrongCount,
     noteSecondsRemaining: state.noteSecondsRemaining,
     keyName,
     scaleType,
     keySignature,
+    scale: state.scale,
+    scaleChoices,
+    scaleGuessCorrect: state.scaleGuessCorrect,
+    guessedScale: state.guessedScale,
     misses: state.misses,
     totalTime: gameTotalTimeSeconds.current,
     fastestCorrect: fastestCorrectSeconds.current,
     onKeyPress,
     onPause,
+    onScaleGuess,
   };
 }

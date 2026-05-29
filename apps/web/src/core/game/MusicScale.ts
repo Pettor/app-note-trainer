@@ -50,13 +50,38 @@ const FLAT_SCALES: Scale[] = [
   { root: "E", mode: "minor", sharpenedSteps: [], flattenedSteps: ["B", "E", "A", "D", "G", "C"] },
 ];
 
+export const ALL_SCALES: Scale[] = [...NATURAL_SCALES, ...SHARP_SCALES, ...FLAT_SCALES];
+
 function pickRandom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)]!;
 }
 
+function shuffle<T>(arr: T[]): T[] {
+  const out = [...arr];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j]!, out[i]!];
+  }
+  return out;
+}
+
 export function pickRandomScale(sharpsEnabled: boolean): Scale {
-  const pool = sharpsEnabled ? [...NATURAL_SCALES, ...SHARP_SCALES, ...FLAT_SCALES] : NATURAL_SCALES;
+  const pool = sharpsEnabled ? ALL_SCALES : NATURAL_SCALES;
   return pickRandom(pool);
+}
+
+function scaleId(s: Scale): string {
+  const { keyName, scaleType } = scaleDisplayName(s);
+  return `${keyName}-${scaleType}`;
+}
+
+export function generateScaleChoices(correctScale: Scale): Scale[] {
+  const correctId = scaleId(correctScale);
+  const candidates = ALL_SCALES.filter((s) => scaleId(s) !== correctId);
+  const shuffled = shuffle(candidates);
+  const choices = shuffled.slice(0, 3);
+  choices.splice(Math.floor(Math.random() * 4), 0, correctScale);
+  return choices;
 }
 
 export function scaleDisplayName(scale: Scale): { keyName: string; scaleType: string } {

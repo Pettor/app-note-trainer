@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { PracticeView as Component } from "./PracticeView";
+import type { Scale } from "~/core/game/MusicScale";
 import { DEFAULT_PRACTICE_SETTINGS } from "~/core/practice-settings/PracticeSettings";
 
 const meta: Meta<typeof Component> = {
@@ -72,5 +73,45 @@ export const Bass: Story = {
     settings: { ...DEFAULT_PRACTICE_SETTINGS, staff: "bass" },
     keyName: "F",
     currentNote: { slot: 3, type: "quarter" },
+  },
+};
+
+const gMajor: Scale = { root: "G", mode: "major", sharpenedSteps: ["F"], flattenedSteps: [] };
+const scaleChoices: Scale[] = [
+  gMajor,
+  { root: "E", mode: "minor", sharpenedSteps: ["F"], flattenedSteps: [] },
+  { root: "D", mode: "major", sharpenedSteps: ["F", "C"], flattenedSteps: [] },
+  { root: "A", mode: "major", sharpenedSteps: ["F", "C", "G"], flattenedSteps: [] },
+];
+
+export const GuessScale: Story = {
+  parameters: { viewport: { value: "full" } },
+  args: {
+    settings: { ...DEFAULT_PRACTICE_SETTINGS, guessScaleFirst: true },
+    keyName: "G",
+    scaleType: "major",
+    keySignature: { type: "sharp", count: 1 },
+    hideScaleInfo: true,
+    scale: gMajor,
+    scaleChoices,
+    guessedScale: null,
+    currentNote: null,
+    countdown: null,
+  },
+};
+
+export const GuessScaleResult: Story = {
+  parameters: { viewport: { value: "full" } },
+  args: {
+    settings: { ...DEFAULT_PRACTICE_SETTINGS, guessScaleFirst: true },
+    keyName: "G",
+    scaleType: "major",
+    keySignature: { type: "sharp", count: 1 },
+    hideScaleInfo: true,
+    scale: gMajor,
+    scaleChoices,
+    guessedScale: { root: "D", mode: "major", sharpenedSteps: ["F", "C"], flattenedSteps: [] },
+    currentNote: null,
+    countdown: null,
   },
 };

@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import clsx from "clsx";
 import { PracticeCompactMenu } from "./PracticeCompactMenu";
+import { PracticeGuessScale } from "./PracticeGuessScale";
 import { PracticePausedOverlay } from "./PracticePausedOverlay";
 import { PracticeStaffCard } from "./PracticeStaffCard";
 import { PracticeStatsStrip } from "./PracticeStatsStrip";
@@ -8,7 +9,7 @@ import { PracticeTopBar } from "./PracticeTopBar";
 import type { StaffNoteData } from "~/components/display/sheet-music-staff/UseSheetMusicStaff";
 import { PianoKeyboard } from "~/components/input/piano-keyboard/PianoKeyboard";
 import type { PianoKeyData } from "~/components/input/piano-keyboard/UsePianoKeyboard";
-import type { KeySignatureInfo } from "~/core/game/MusicScale";
+import type { KeySignatureInfo, Scale } from "~/core/game/MusicScale";
 import { getSlotRange } from "~/core/game/NotePool";
 import type { PracticeSettings } from "~/core/practice-settings/PracticeSettings";
 import { useViewport } from "~/core/UseViewport";
@@ -29,6 +30,11 @@ export interface PracticeViewProps {
   wrongCount?: number;
   countdown?: number | null;
   currentNote?: StaffNoteData | null;
+  scale?: Scale;
+  scaleChoices?: Scale[];
+  guessedScale?: Scale | null;
+  onScaleGuess?: (scale: Scale) => void;
+  hideScaleInfo?: boolean;
 }
 
 export function PracticeView({
@@ -47,9 +53,18 @@ export function PracticeView({
   wrongCount = 0,
   countdown = null,
   currentNote = null,
+  scale,
+  scaleChoices,
+  guessedScale = null,
+  onScaleGuess,
+  hideScaleInfo = false,
 }: PracticeViewProps): ReactElement {
-  const { isCompact } = useViewport();
+  const { isCompact, isPhone, isMinimal } = useViewport();
   const [minSlot, maxSlot] = getSlotRange(settings);
+
+  // Fixed height that matches PianoKeyboard's total rendered size (keys + container padding),
+  // so the staff card never changes height between note-guessing and scale-guessing states.
+  const pianoTotalHeight = isMinimal ? "h-15" : isCompact ? "h-33" : isPhone ? "h-[106px]" : "h-41";
 
   return (
     <div className="relative flex h-dvh flex-col overflow-hidden">
@@ -68,7 +83,14 @@ export function PracticeView({
 
       {/* In compact/landscape mode the topbar is hidden — its controls move into PracticeCompactMenu */}
       {!isCompact && (
-        <PracticeTopBar keyName={keyName} scaleType={scaleType} isPaused={isPaused} onPause={onPause} onExit={onExit} />
+        <PracticeTopBar
+          keyName={keyName}
+          scaleType={scaleType}
+          isPaused={isPaused}
+          onPause={onPause}
+          onExit={onExit}
+          hideScaleInfo={hideScaleInfo}
+        />
       )}
 
       <main
@@ -96,6 +118,7 @@ export function PracticeView({
               isPaused={isPaused}
               onPause={onPause}
               onExit={onExit}
+              hideScaleInfo={hideScaleInfo}
             />
           </div>
         ) : (
@@ -118,12 +141,22 @@ export function PracticeView({
           countdown={countdown}
           minSlot={minSlot}
           maxSlot={maxSlot}
+          hideScaleName={hideScaleInfo}
         />
       </main>
 
       <footer className={clsx("shrink-0", isCompact ? "px-2 pb-1.5" : "px-3 pb-3 sm:px-7 sm:pb-6")}>
-        <div className="mx-auto w-full max-w-3xl">
-          <PianoKeyboard onKeyPress={onKeyPress} className="w-full" />
+        <div className={clsx("mx-auto w-full max-w-3xl", pianoTotalHeight)}>
+          {hideScaleInfo && scaleChoices && scale ? (
+            <PracticeGuessScale
+              choices={scaleChoices}
+              correctScale={scale}
+              guessedScale={guessedScale}
+              onGuess={onScaleGuess ?? (() => {})}
+            />
+          ) : !hideScaleInfo ? (
+            <PianoKeyboard onKeyPress={onKeyPress} className="w-full" />
+          ) : null}
         </div>
       </footer>
 

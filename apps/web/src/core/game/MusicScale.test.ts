@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { getKeySignature, pickRandomScale, scaleDisplayName } from "./MusicScale";
+import { generateScaleChoices, getKeySignature, pickRandomScale, scaleDisplayName } from "./MusicScale";
+import type { Scale } from "./MusicScale";
+
+function scaleLabel(s: Scale): string {
+  const { keyName, scaleType } = scaleDisplayName(s);
+  return `${keyName}-${scaleType}`;
+}
 
 describe("pickRandomScale", () => {
   it("returns a scale with root, mode, sharpenedSteps, and flattenedSteps", () => {
@@ -101,5 +107,39 @@ describe("getKeySignature", () => {
     const ks = getKeySignature({ root: "B", mode: "major", sharpenedSteps: [], flattenedSteps: ["B", "E"] });
     expect(ks.type).toBe("flat");
     expect(ks.count).toBe(2);
+  });
+});
+
+describe("generateScaleChoices", () => {
+  const gMajor: Scale = { root: "G", mode: "major", sharpenedSteps: ["F"], flattenedSteps: [] };
+
+  it("returns exactly 4 choices", () => {
+    expect(generateScaleChoices(gMajor)).toHaveLength(4);
+  });
+
+  it("always includes the correct scale", () => {
+    for (let i = 0; i < 20; i++) {
+      const choices = generateScaleChoices(gMajor);
+      const found = choices.some((c) => c.root === gMajor.root && c.mode === gMajor.mode);
+      expect(found).toBe(true);
+    }
+  });
+
+  it("has no duplicate display names", () => {
+    for (let i = 0; i < 20; i++) {
+      const choices = generateScaleChoices(gMajor);
+      const names = choices.map(scaleLabel);
+      const unique = new Set(names);
+      expect(unique.size).toBe(4);
+    }
+  });
+
+  it("produces different orderings across runs", () => {
+    const positions = Array.from({ length: 50 }, () => {
+      const choices = generateScaleChoices(gMajor);
+      return choices.findIndex((c) => c.root === gMajor.root && c.mode === gMajor.mode);
+    });
+    const uniquePositions = new Set(positions);
+    expect(uniquePositions.size).toBeGreaterThan(1);
   });
 });

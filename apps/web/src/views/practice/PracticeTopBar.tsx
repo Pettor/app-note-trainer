@@ -51,11 +51,19 @@ export interface PracticeSessionControls {
   isPaused: boolean;
   onPause: () => void;
   onExit: () => void;
+  hideScaleInfo?: boolean;
 }
 
 export type PracticeTopBarProps = PracticeSessionControls;
 
-export function PracticeTopBar({ keyName, scaleType, isPaused, onPause, onExit }: PracticeTopBarProps): ReactElement {
+export function PracticeTopBar({
+  keyName,
+  scaleType,
+  isPaused,
+  onPause,
+  onExit,
+  hideScaleInfo = false,
+}: PracticeTopBarProps): ReactElement {
   const intl = useIntl();
   const [audioEnabled, setAudioEnabled] = useAtom(audioEnabledAtom);
 
@@ -77,11 +85,36 @@ export function PracticeTopBar({ keyName, scaleType, isPaused, onPause, onExit }
           </span>
           <span className="text-muted flex items-center gap-1.5 text-[11px]">
             {intl.formatMessage(messages.practiceLabel)}
-            <span aria-hidden="true" className="opacity-40">
-              ·
-            </span>
+            {!hideScaleInfo && (
+              <>
+                <span aria-hidden="true" className="opacity-40">
+                  ·
+                </span>
+                <span
+                  className="font-semibold"
+                  style={{
+                    background: "var(--brand-gradient)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  {keyName} {scaleType}
+                </span>
+              </>
+            )}
+          </span>
+        </div>
+
+        {/* Mobile: compact key chip */}
+        {!hideScaleInfo && (
+          <div className="border-border bg-surface flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold sm:hidden">
             <span
-              className="font-semibold"
+              className="h-1.5 w-1.5 shrink-0 rounded-full"
+              style={{ background: "var(--brand-gradient)" }}
+              aria-hidden="true"
+            />
+            <span
               style={{
                 background: "var(--brand-gradient)",
                 WebkitBackgroundClip: "text",
@@ -91,27 +124,8 @@ export function PracticeTopBar({ keyName, scaleType, isPaused, onPause, onExit }
             >
               {keyName} {scaleType}
             </span>
-          </span>
-        </div>
-
-        {/* Mobile: compact key chip */}
-        <div className="border-border bg-surface flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold sm:hidden">
-          <span
-            className="h-1.5 w-1.5 shrink-0 rounded-full"
-            style={{ background: "var(--brand-gradient)" }}
-            aria-hidden="true"
-          />
-          <span
-            style={{
-              background: "var(--brand-gradient)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
-            {keyName} {scaleType}
-          </span>
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Right: audio toggle, pause, exit */}
