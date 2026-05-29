@@ -1,4 +1,4 @@
-export type Difficulty = "low" | "medium" | "high" | "custom";
+export type Difficulty = "low" | "medium" | "high" | "nightmare" | "custom";
 export type Staff = "treble" | "bass";
 export type Duration = 3 | 5 | 8 | 12;
 export type NoteRange = "narrow" | "standard" | "wide" | "extended";
@@ -20,7 +20,7 @@ export interface PracticeSettings extends PresetSettings {
   staff: Staff;
 }
 
-export const DIFFICULTY_PRESETS: Record<"low" | "medium" | "high", PresetSettings> = {
+export const DIFFICULTY_PRESETS: Record<"low" | "medium" | "high" | "nightmare", PresetSettings> = {
   low: {
     noteRange: "narrow",
     ledgerLines: false,
@@ -49,6 +49,16 @@ export const DIFFICULTY_PRESETS: Record<"low" | "medium" | "high", PresetSetting
     naturals: false,
     timerEnabled: true,
     duration: 5,
+    guessScaleFirst: true,
+  },
+  nightmare: {
+    noteRange: "extended",
+    ledgerLines: true,
+    ledgerDepth: 3,
+    sharps: true,
+    naturals: true,
+    timerEnabled: true,
+    duration: 3,
     guessScaleFirst: true,
   },
 };

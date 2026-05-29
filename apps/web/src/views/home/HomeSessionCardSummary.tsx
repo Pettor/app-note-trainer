@@ -23,6 +23,11 @@ const messages = defineMessages({
     description: "HomeSessionCard: summary pill for high difficulty",
     defaultMessage: "High",
   },
+  pillDifficultyNightmare: {
+    id: "3zutUC",
+    description: "HomeSessionCard: summary pill for nightmare difficulty",
+    defaultMessage: "Nightmare",
+  },
   pillDifficultyCustom: {
     id: "NYXAR8",
     description: "HomeSessionCard: summary pill for custom difficulty",
