@@ -10,6 +10,7 @@ import { ScoreStatTile } from "./ScoreStatTile";
 import { ScoreTopBar } from "./ScoreTopBar";
 import { useScoreView } from "./UseScoreView";
 import type { MissRecord } from "~/core/game/GameLoop";
+import type { KeySignatureInfo } from "~/core/game/MusicScale";
 import type { Staff } from "~/core/practice-settings/PracticeSettings";
 import { useViewport } from "~/core/UseViewport";
 
@@ -71,6 +72,7 @@ export interface ScoreViewProps {
   staff: Staff;
   keyName: string;
   scaleType: string;
+  keySignature: KeySignatureInfo;
   totalNotes: number;
   correctCount: number;
   misses: MissRecord[];
@@ -84,6 +86,7 @@ export function ScoreView({
   staff,
   keyName,
   scaleType,
+  keySignature,
   totalNotes,
   correctCount,
   misses,
@@ -162,7 +165,13 @@ export function ScoreView({
                 compact={isPhone}
               />
               {selectedMiss && (
-                <ScoreMissDetail miss={selectedMiss} staff={staff} keyName={keyName} isMobile={isPhone} />
+                <ScoreMissDetail
+                  miss={selectedMiss}
+                  staff={staff}
+                  keyName={keyName}
+                  keySignature={keySignature}
+                  isMobile={isPhone}
+                />
               )}
             </div>
           )}
