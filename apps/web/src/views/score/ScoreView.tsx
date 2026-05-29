@@ -180,7 +180,7 @@ export function ScoreView({
 
       {/* Footer actions */}
       <footer className="shrink-0 px-3 pb-3 sm:px-7 sm:pb-5" style={{ borderTop: "1px solid var(--border)" }}>
-        <div className={`mx-auto flex max-w-3xl gap-2.5 pt-3 ${isPhone ? "flex-col" : "justify-end"}`}>
+        <div className={`mx-auto flex max-w-3xl gap-2.5 pt-3 ${isPhone ? "flex-row" : "justify-end"}`}>
           <Button
             variant="outline"
             onPress={onExit}
