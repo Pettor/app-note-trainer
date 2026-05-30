@@ -47,7 +47,7 @@ const messages = defineMessages({
   },
 });
 
-const GITHUB_URL = "https://github.com/Pettor/app-note-trainer";
+const GITHUB_URL = "https://github.com/Pettor";
 const LINKEDIN_URL = "https://www.linkedin.com/in/petter-hancock/";
 const FOOTER_YEAR = new Date().getFullYear();
 
