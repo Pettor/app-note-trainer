@@ -1,24 +1,30 @@
 import type { ReactElement } from "react";
+import { useAtomValue } from "jotai";
 import type { MessageFormatElement } from "react-intl";
 import { IntlProvider } from "react-intl";
+import { localeModeAtom } from "./locale/LocaleAtoms";
+import { LOCALE_CONFIG } from "./locale/LocaleConfig";
+import type { LocaleMode } from "./locale/LocaleMode";
 
 interface Props {
   children: ReactElement;
 }
 
-const locale = navigator.language;
+function loadLocaleData(_locale: LocaleMode): Record<string, MessageFormatElement[]> {
+  switch (_locale) {
+    case "sv":
+    case "en":
+    default:
+      return {};
+  }
+}
 
 export function AppLocales({ children }: Props): ReactElement {
-  function loadLocaleData(): Record<string, MessageFormatElement[]> {
-    switch (locale) {
-      case "en":
-      default:
-        return {};
-    }
-  }
+  const localeMode = useAtomValue(localeModeAtom);
+  const { locale } = LOCALE_CONFIG[localeMode];
 
   return (
-    <IntlProvider locale="en" defaultLocale="en" messages={loadLocaleData()}>
+    <IntlProvider locale={locale} defaultLocale="en" messages={loadLocaleData(localeMode)}>
       {children}
     </IntlProvider>
   );

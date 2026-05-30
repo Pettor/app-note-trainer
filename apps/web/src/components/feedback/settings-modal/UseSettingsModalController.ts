@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import type { SettingsModalProps } from "./SettingsModal";
+import { useLanguageSelector } from "~/components/actions/language-selector/UseLanguageSelector";
 import { useThemeSelector } from "~/components/actions/theme-selector/UseThemeSelector";
 import { useAppInfo } from "~/core/config/UseAppInfo";
 import { useSettingsModal } from "~/core/settings/UseSettingsModal";
@@ -8,6 +9,7 @@ export function useSettingsModalController(): SettingsModalProps {
   const { isOpen, initialSection, sections, close } = useSettingsModal();
   const { appName } = useAppInfo();
   const themeSelector = useThemeSelector();
+  const languageSelector = useLanguageSelector();
 
   const aboutDetails = useMemo(
     () => ({
@@ -24,6 +26,7 @@ export function useSettingsModalController(): SettingsModalProps {
     onClose: close,
     account: undefined,
     appearance: { themeSelector },
+    language: { languageSelector },
     aboutDetails,
   };
 }

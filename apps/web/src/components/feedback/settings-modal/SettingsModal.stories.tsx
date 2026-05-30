@@ -31,7 +31,14 @@ const appearanceArgs = {
   },
 };
 
-const allSections = ["account", "appearance", "about"] as Props["sections"];
+const languageArgs = {
+  languageSelector: {
+    mode: "en" as const,
+    onSelect: (mode: string) => console.log("onSelect", mode),
+  },
+};
+
+const allSections = ["account", "appearance", "language", "about"] as Props["sections"];
 
 const defaultArgs = {
   isOpen: true,
@@ -39,6 +46,7 @@ const defaultArgs = {
   onClose: () => console.log("onClose"),
   account: accountArgs,
   appearance: appearanceArgs,
+  language: languageArgs,
   aboutDetails: aboutArgs,
 } satisfies Props;
 
@@ -57,6 +65,13 @@ export const Appearance: Story = {
   args: {
     ...defaultArgs,
     initialSection: "appearance",
+  },
+};
+
+export const Language: Story = {
+  args: {
+    ...defaultArgs,
+    initialSection: "language",
   },
 };
 
