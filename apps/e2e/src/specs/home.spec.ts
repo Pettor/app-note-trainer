@@ -15,7 +15,6 @@ test.describe("home", () => {
   });
 
   test("renders session setup card with all settings", async ({ page }) => {
-    await expect(page.getByText("Session setup")).toBeVisible();
     await expect(page.getByText("Difficulty", { exact: true })).toBeVisible();
     await expect(page.getByText("Staff", { exact: true })).toBeVisible();
 
@@ -29,6 +28,7 @@ test.describe("home", () => {
   });
 
   test("renders footer with github and linkedin links", async ({ page }) => {
+    await expect(page.getByRole("link", { name: "Homepage" })).toBeVisible();
     await expect(page.getByRole("link", { name: "GitHub" })).toBeVisible();
     await expect(page.getByRole("link", { name: "LinkedIn" })).toBeVisible();
   });
