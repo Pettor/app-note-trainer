@@ -15,7 +15,7 @@ export function useSettingsModal(): UseSettingsModalResult {
   const [state, setState] = useAtom(settingsModalAtom);
 
   const sections = useMemo<SettingsSection[]>(() => {
-    return ["appearance", "about"];
+    return ["appearance", "language", "about"];
   }, []);
 
   const open = useCallback(
