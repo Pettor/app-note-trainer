@@ -30,6 +30,15 @@ const sampleMisses: MissRecord[] = [
     guessOctave: null,
     timeTaken: 5.0,
   },
+  {
+    slot: 12,
+    correctStep: "C",
+    correctAccidental: "natural",
+    correctOctave: 5,
+    guessNote: null,
+    guessOctave: null,
+    timeTaken: 5.0,
+  },
 ];
 
 const meta: Meta<typeof Component> = {
@@ -49,6 +58,8 @@ const meta: Meta<typeof Component> = {
     misses: sampleMisses,
     totalTime: 96.4,
     fastestCorrect: 0.8,
+    minSlot: -2,
+    maxSlot: 14,
     onExit: () => {},
     onPlayAgain: () => {},
   },
@@ -92,6 +103,8 @@ export const BassClef: Story = {
     keyName: "F",
     keySignature: { type: "flat", count: 1 },
     correctCount: 19,
+    minSlot: 0,
+    maxSlot: 8,
     misses: [
       {
         slot: 4,

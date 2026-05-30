@@ -77,6 +77,8 @@ export interface ScoreViewProps {
   misses: MissRecord[];
   totalTime: number;
   fastestCorrect: number;
+  minSlot?: number;
+  maxSlot?: number;
   onExit: () => void;
   onPlayAgain: () => void;
 }
@@ -90,6 +92,8 @@ export function ScoreView({
   misses,
   totalTime,
   fastestCorrect,
+  minSlot,
+  maxSlot,
   onExit,
   onPlayAgain,
 }: ScoreViewProps): ReactElement {
@@ -107,7 +111,10 @@ export function ScoreView({
   const selectedMiss = misses[selectedMissIndex];
 
   return (
-    <div className="relative flex h-dvh flex-col overflow-hidden">
+    <div
+      className="relative flex h-dvh flex-col overflow-hidden"
+      style={{ animation: "score-fade-in 0.4s ease-out both" }}
+    >
       {/* Gradient bloom background */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
@@ -171,6 +178,8 @@ export function ScoreView({
                   keyName={keyName}
                   keySignature={keySignature}
                   isMobile={isPhone}
+                  minSlot={minSlot}
+                  maxSlot={maxSlot}
                 />
               )}
             </div>
@@ -217,6 +226,12 @@ export function ScoreView({
           </Button>
         </div>
       </footer>
+      <style>{`
+        @keyframes score-fade-in {
+          from { opacity: 0; transform: translateY(6px); }
+          to   { opacity: 1; transform: translateY(0);   }
+        }
+      `}</style>
     </div>
   );
 }

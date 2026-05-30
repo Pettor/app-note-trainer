@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAtomValue, useSetAtom } from "jotai";
+import { getSlotRange } from "~/core/game/NotePool";
 import { scoreResultAtom } from "~/core/game/ScoreAtoms";
 import { practiceSettingsAtom } from "~/core/practice-settings/PracticeSettingsAtoms";
 import type { ScoreViewProps } from "~/views/score/ScoreView";
@@ -29,6 +30,8 @@ export function useScoreRoute(): ScoreViewProps | null {
 
   if (!result) return null;
 
+  const [minSlot, maxSlot] = getSlotRange(result.settings);
+
   return {
     staff: result.settings.staff,
     keyName: result.keyName,
@@ -39,6 +42,8 @@ export function useScoreRoute(): ScoreViewProps | null {
     misses: result.misses,
     totalTime: result.totalTime,
     fastestCorrect: result.fastestCorrect,
+    minSlot,
+    maxSlot,
     onExit,
     onPlayAgain,
   };

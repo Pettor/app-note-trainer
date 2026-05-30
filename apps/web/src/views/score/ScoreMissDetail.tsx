@@ -89,9 +89,18 @@ export interface ScoreMissDetailProps {
   keyName: string;
   keySignature: KeySignatureInfo;
   isMobile?: boolean;
+  minSlot?: number;
+  maxSlot?: number;
 }
 
-export function ScoreMissDetail({ miss, staff, keySignature, isMobile }: ScoreMissDetailProps): ReactElement {
+export function ScoreMissDetail({
+  miss,
+  staff,
+  keySignature,
+  isMobile,
+  minSlot,
+  maxSlot,
+}: ScoreMissDetailProps): ReactElement {
   const intl = useIntl();
   const correctLabel = formatCorrectNote(miss, keySignature);
   const guessLabel = miss.guessNote ? miss.guessNote : intl.formatMessage(messages.timedOut);
@@ -155,6 +164,8 @@ export function ScoreMissDetail({ miss, staff, keySignature, isMobile }: ScoreMi
           notes={[toStaffNote(miss, keySignature)]}
           keySignature={keySignature}
           className={isMobile ? "w-full max-w-xs" : "w-full max-w-md"}
+          minSlot={minSlot}
+          maxSlot={maxSlot}
         />
       </div>
 

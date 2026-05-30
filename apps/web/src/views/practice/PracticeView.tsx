@@ -33,6 +33,7 @@ export interface PracticeViewProps {
   scale?: Scale;
   scaleChoices?: Scale[];
   guessedScale?: Scale | null;
+  scaleGuessCorrect?: boolean | null;
   onScaleGuess?: (scale: Scale) => void;
   hideScaleInfo?: boolean;
 }
@@ -56,6 +57,7 @@ export function PracticeView({
   scale,
   scaleChoices,
   guessedScale = null,
+  scaleGuessCorrect,
   onScaleGuess,
   hideScaleInfo = false,
 }: PracticeViewProps): ReactElement {
@@ -67,7 +69,10 @@ export function PracticeView({
   const pianoTotalHeight = isMinimal ? "h-15" : isCompact ? "h-33" : isPhone ? "h-[106px]" : "h-41";
 
   return (
-    <div className="relative flex h-dvh flex-col overflow-hidden">
+    <div
+      className="relative flex h-dvh flex-col overflow-hidden"
+      style={{ animation: "practice-fade-in 0.4s ease-out both" }}
+    >
       {/* Gradient bloom background */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
@@ -110,6 +115,7 @@ export function PracticeView({
                 totalNotes={totalNotes}
                 correctCount={correctCount}
                 wrongCount={wrongCount}
+                scaleGuessCorrect={scaleGuessCorrect}
               />
             </div>
             <PracticeCompactMenu
@@ -130,6 +136,7 @@ export function PracticeView({
             totalNotes={totalNotes}
             correctCount={correctCount}
             wrongCount={wrongCount}
+            scaleGuessCorrect={scaleGuessCorrect}
           />
         )}
 
@@ -164,6 +171,10 @@ export function PracticeView({
 
       {/* Countdown pulse-ring animation */}
       <style>{`
+        @keyframes practice-fade-in {
+          from { opacity: 0; transform: translateY(6px); }
+          to   { opacity: 1; transform: translateY(0);   }
+        }
         @keyframes practice-pulse {
           0%   { transform: scale(0.95); opacity: 0.7; }
           70%  { transform: scale(1.12); opacity: 0;   }

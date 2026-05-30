@@ -12,9 +12,14 @@ const messages = defineMessages({
 export interface PracticeNotesProgressChipProps {
   done: number;
   total: number;
+  scaleGuessCorrect?: boolean | null;
 }
 
-export function PracticeNotesProgressChip({ done, total }: PracticeNotesProgressChipProps): ReactElement {
+export function PracticeNotesProgressChip({
+  done,
+  total,
+  scaleGuessCorrect,
+}: PracticeNotesProgressChipProps): ReactElement {
   const intl = useIntl();
   const cells = Array.from({ length: total }, (_, i) => i < done);
 
@@ -38,13 +43,18 @@ export function PracticeNotesProgressChip({ done, total }: PracticeNotesProgress
         </span>
       </div>
       <div className="flex gap-0.75" aria-hidden="true">
-        {cells.map((filled, i) => (
-          <div
-            key={i}
-            className="h-1 min-w-0 flex-1 rounded-full"
-            style={{ background: filled ? "var(--accent)" : "var(--surface-tertiary)" }}
-          />
-        ))}
+        {cells.map((filled, i) => {
+          const isGolden = filled && i === 0 && scaleGuessCorrect === true;
+          return (
+            <div
+              key={i}
+              className="h-1 min-w-0 flex-1 rounded-full"
+              style={{
+                background: isGolden ? "oklch(0.80 0.16 84)" : filled ? "var(--accent)" : "var(--surface-tertiary)",
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );

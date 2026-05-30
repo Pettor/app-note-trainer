@@ -1,7 +1,7 @@
 import { matchesPianoKey } from "./MusicNote";
 import type { Accidental, NoteStep } from "./MusicNote";
 import type { Scale } from "./MusicScale";
-import { pickRandomScale } from "./MusicScale";
+import { pickRandomScale, scaleId } from "./MusicScale";
 import type { GameNote } from "./NotePool";
 import { buildNoteQueue } from "./NotePool";
 import type { PianoKeyData, PianoNote } from "~/components/input/piano-keyboard/UsePianoKeyboard";
@@ -85,7 +85,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
 
     case "SCALE_GUESS": {
       if (state.phase !== "guessing-scale") return state;
-      const isCorrect = action.guessedScale.root === state.scale.root && action.guessedScale.mode === state.scale.mode;
+      const isCorrect = scaleId(action.guessedScale) === scaleId(state.scale);
       return {
         ...state,
         phase: "scale-result",

@@ -65,6 +65,7 @@ export function usePracticeRoute(): PracticeViewProps {
     scale: game.scale,
     scaleChoices: isGuessingPhase ? game.scaleChoices : undefined,
     guessedScale: game.guessedScale,
+    scaleGuessCorrect: game.scaleGuessCorrect,
     onScaleGuess: game.onScaleGuess,
     hideScaleInfo,
   };

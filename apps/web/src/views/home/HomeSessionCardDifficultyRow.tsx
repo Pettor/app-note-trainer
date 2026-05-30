@@ -1,4 +1,5 @@
 import type { ReactElement } from "react";
+import { FireIcon } from "@heroicons/react/20/solid";
 import { defineMessages, useIntl } from "react-intl";
 import type { Difficulty } from "~/core/practice-settings/PracticeSettings";
 
@@ -27,6 +28,11 @@ const messages = defineMessages({
     id: "FiQKBF",
     description: "HomeSessionCard: difficulty high option",
     defaultMessage: "High",
+  },
+  nightmare: {
+    id: "oUW2k/",
+    description: "HomeSessionCard: difficulty nightmare option",
+    defaultMessage: "Nightmare",
   },
   custom: {
     id: "n3MIZw",
@@ -61,6 +67,16 @@ function LevelBars({ level, active }: LevelBarsProps): ReactElement {
         style={{ height: 12, opacity: level !== "high" ? 0.25 : undefined }}
       />
     </span>
+  );
+}
+
+function NightmareIcon({ active }: { active: boolean }): ReactElement {
+  return (
+    <FireIcon
+      className="h-3 w-3"
+      style={{ color: active ? "var(--danger)" : "currentColor", opacity: active ? 1 : 0.7 }}
+      aria-hidden="true"
+    />
   );
 }
 
@@ -100,7 +116,7 @@ export function HomeSessionCardDifficultyRow({
       <div
         role="radiogroup"
         aria-label={intl.formatMessage(messages.label)}
-        className="border-border bg-surface-secondary grid grid-cols-4 gap-1 rounded-[14px] border p-1"
+        className="border-border bg-surface-secondary grid grid-cols-5 gap-1 rounded-[14px] border p-1"
       >
         {presetOptions.map(({ value, label }) => {
           const isActive = difficulty === value;
@@ -126,6 +142,32 @@ export function HomeSessionCardDifficultyRow({
             </button>
           );
         })}
+        {/* Nightmare option */}
+        {(() => {
+          const isActive = difficulty === "nightmare";
+          return (
+            <button
+              type="button"
+              role="radio"
+              aria-checked={isActive}
+              onClick={() => onDifficultyChange("nightmare")}
+              className="flex cursor-pointer flex-col items-center gap-1.25 rounded-[10px] px-1.5 py-2.5 text-xs font-medium transition-all duration-150"
+              style={
+                isActive
+                  ? {
+                      background: "var(--surface)",
+                      boxShadow: "0 1px 2px rgba(15,12,30,0.04), 0 4px 10px rgba(15,12,30,0.06)",
+                    }
+                  : undefined
+              }
+            >
+              <NightmareIcon active={isActive} />
+              <span style={{ color: isActive ? "var(--danger)" : undefined }} className={isActive ? "" : "text-muted"}>
+                {intl.formatMessage(messages.nightmare)}
+              </span>
+            </button>
+          );
+        })()}
         {/* Custom option */}
         {(() => {
           const isActive = difficulty === "custom";
