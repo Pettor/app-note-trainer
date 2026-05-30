@@ -33,6 +33,7 @@ export interface PracticeStatsStripProps {
   totalNotes: number;
   correctCount: number;
   wrongCount: number;
+  scaleGuessCorrect?: boolean | null;
 }
 
 export function PracticeStatsStrip({
@@ -43,6 +44,7 @@ export function PracticeStatsStrip({
   totalNotes,
   correctCount,
   wrongCount,
+  scaleGuessCorrect,
 }: PracticeStatsStripProps): ReactElement {
   const intl = useIntl();
   const urgent = timerEnabled && remaining < 2;
@@ -52,13 +54,13 @@ export function PracticeStatsStrip({
       {/* Mobile strip */}
       <div className="flex items-stretch gap-2 sm:hidden">
         {timerEnabled && <PracticeTimeRing remaining={remaining} total={totalTime} urgent={urgent} />}
-        <PracticeNotesProgressChip done={notesCompleted} total={totalNotes} />
+        <PracticeNotesProgressChip done={notesCompleted} total={totalNotes} scaleGuessCorrect={scaleGuessCorrect} />
         <PracticeCompactScoreChip correct={correctCount} wrong={wrongCount} />
       </div>
       {/* Desktop strip */}
       <div className="hidden items-stretch gap-2.5 sm:flex">
         {timerEnabled && <PracticeTimeRing remaining={remaining} total={totalTime} urgent={urgent} />}
-        <PracticeNotesProgressChip done={notesCompleted} total={totalNotes} />
+        <PracticeNotesProgressChip done={notesCompleted} total={totalNotes} scaleGuessCorrect={scaleGuessCorrect} />
         <PracticeStatChip
           icon={<CheckIcon className="h-3.5 w-3.5" />}
           label={intl.formatMessage(messages.correct)}

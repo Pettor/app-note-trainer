@@ -33,6 +33,7 @@ export interface PracticeViewProps {
   scale?: Scale;
   scaleChoices?: Scale[];
   guessedScale?: Scale | null;
+  scaleGuessCorrect?: boolean | null;
   onScaleGuess?: (scale: Scale) => void;
   hideScaleInfo?: boolean;
 }
@@ -56,6 +57,7 @@ export function PracticeView({
   scale,
   scaleChoices,
   guessedScale = null,
+  scaleGuessCorrect,
   onScaleGuess,
   hideScaleInfo = false,
 }: PracticeViewProps): ReactElement {
@@ -113,6 +115,7 @@ export function PracticeView({
                 totalNotes={totalNotes}
                 correctCount={correctCount}
                 wrongCount={wrongCount}
+                scaleGuessCorrect={scaleGuessCorrect}
               />
             </div>
             <PracticeCompactMenu
@@ -133,6 +136,7 @@ export function PracticeView({
             totalNotes={totalNotes}
             correctCount={correctCount}
             wrongCount={wrongCount}
+            scaleGuessCorrect={scaleGuessCorrect}
           />
         )}
 
