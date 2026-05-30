@@ -24,7 +24,7 @@ const messages = defineMessages({
     defaultMessage: "High",
   },
   pillDifficultyPro: {
-    id: "3zutUC",
+    id: "0B8Q3a",
     description: "HomeSessionCard: summary pill for pro difficulty",
     defaultMessage: "Pro",
   },

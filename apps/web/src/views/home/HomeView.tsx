@@ -97,7 +97,7 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
               target="_blank"
               rel="noreferrer"
               aria-label={intl.formatMessage(messages.footerGitHub)}
-              className="text-muted hover:text-foreground h-5 w-5 transition-colors dark:fill-white"
+              className="text-muted hover:text-foreground h-5 w-5 transition-colors"
             >
               <GithubIcon />
             </a>
@@ -106,7 +106,7 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
               target="_blank"
               rel="noreferrer"
               aria-label={intl.formatMessage(messages.footerLinkedIn)}
-              className="text-muted hover:text-foreground h-5 w-5 transition-colors dark:fill-white"
+              className="text-muted hover:text-foreground h-5 w-5 transition-colors"
             >
               <LinkedInIcon />
             </a>
