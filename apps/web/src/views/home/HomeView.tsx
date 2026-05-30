@@ -100,7 +100,7 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
       >
         {/* Gradient bloom background decoration */}
         <div
-          className="pointer-events-none fixed inset-0 -z-10"
+          className="pointer-events-none fixed inset-0 z-10"
           aria-hidden="true"
           style={{
             background: `

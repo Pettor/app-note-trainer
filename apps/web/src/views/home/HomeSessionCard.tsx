@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { ReactElement } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { Accordion } from "@heroui/react";
+import { Accordion, Surface } from "@heroui/react";
 import { defineMessages, useIntl } from "react-intl";
 import { HomeSessionCardAccidentalsRow } from "./HomeSessionCardAccidentalsRow";
 import { HomeSessionCardDifficultyRow } from "./HomeSessionCardDifficultyRow";
@@ -13,11 +13,6 @@ import { HomeSessionCardTimerRow } from "./HomeSessionCardTimerRow";
 import { useHomeSessionCard } from "./UseHomeSessionCard";
 
 const messages = defineMessages({
-  cardTitle: {
-    id: "cLcs1f",
-    description: "HomeSessionCard: card heading",
-    defaultMessage: "Session setup",
-  },
   cardSub: {
     id: "nPmGCP",
     description: "HomeSessionCard: card subtitle",
@@ -62,17 +57,11 @@ export function HomeSessionCard(): ReactElement {
   } = useHomeSessionCard();
 
   return (
-    <div
-      className="border-border bg-surface overflow-hidden rounded-[22px] border"
+    <Surface
+      variant="default"
+      className="overflow-hidden rounded-[22px] border"
       style={{ boxShadow: "0 6px 16px rgba(15,12,30,0.06), 0 16px 40px rgba(15,12,30,0.06)" }}
     >
-      <div className="flex items-center justify-between px-6 pt-5 pb-3.5">
-        <div>
-          <p className="text-base font-semibold tracking-tight">{intl.formatMessage(messages.cardTitle)}</p>
-          <p className="text-muted text-xs">{intl.formatMessage(messages.cardSub)}</p>
-        </div>
-      </div>
-
       <div className="px-6 pb-2">
         <HomeSessionCardDifficultyRow difficulty={difficulty} onDifficultyChange={onDifficultyChange} />
         <HomeSessionCardStaffRow staff={staff} onStaffChange={onStaffChange} />
@@ -138,6 +127,6 @@ export function HomeSessionCard(): ReactElement {
         duration={duration}
         guessScaleFirst={guessScaleFirst}
       />
-    </div>
+    </Surface>
   );
 }
