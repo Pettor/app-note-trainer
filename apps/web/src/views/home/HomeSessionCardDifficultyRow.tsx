@@ -29,10 +29,10 @@ const messages = defineMessages({
     description: "HomeSessionCard: difficulty high option",
     defaultMessage: "High",
   },
-  nightmare: {
-    id: "oUW2k/",
-    description: "HomeSessionCard: difficulty nightmare option",
-    defaultMessage: "Nightmare",
+  pro: {
+    id: "x/+oUN",
+    description: "HomeSessionCard: difficulty pro option",
+    defaultMessage: "Pro",
   },
   custom: {
     id: "n3MIZw",
@@ -70,7 +70,7 @@ function LevelBars({ level, active }: LevelBarsProps): ReactElement {
   );
 }
 
-function NightmareIcon({ active }: { active: boolean }): ReactElement {
+function ProIcon({ active }: { active: boolean }): ReactElement {
   return (
     <FireIcon
       className="h-3 w-3"
@@ -142,15 +142,15 @@ export function HomeSessionCardDifficultyRow({
             </button>
           );
         })}
-        {/* Nightmare option */}
+        {/* Pro option */}
         {(() => {
-          const isActive = difficulty === "nightmare";
+          const isActive = difficulty === "pro";
           return (
             <button
               type="button"
               role="radio"
               aria-checked={isActive}
-              onClick={() => onDifficultyChange("nightmare")}
+              onClick={() => onDifficultyChange("pro")}
               className="flex cursor-pointer flex-col items-center gap-1.25 rounded-[10px] px-1.5 py-2.5 text-xs font-medium transition-all duration-150"
               style={
                 isActive
@@ -161,9 +161,9 @@ export function HomeSessionCardDifficultyRow({
                   : undefined
               }
             >
-              <NightmareIcon active={isActive} />
+              <ProIcon active={isActive} />
               <span style={{ color: isActive ? "var(--danger)" : undefined }} className={isActive ? "" : "text-muted"}>
-                {intl.formatMessage(messages.nightmare)}
+                {intl.formatMessage(messages.pro)}
               </span>
             </button>
           );
