@@ -76,10 +76,14 @@ export function useGameLoop(settings: PracticeSettings): UseGameLoopResult {
       gameStartMs.current = Date.now();
       noteStartMs.current = Date.now();
     }
-    if (state.phase === "finished" && gameStartMs.current !== null) {
-      gameTotalTimeSeconds.current = (Date.now() - gameStartMs.current) / 1000;
-    }
   }, [state.phase]);
+
+  // Compute total time synchronously during render so it's available in the
+  // same render cycle that triggers the score-result effect in the route hook.
+  if (state.phase === "finished" && gameStartMs.current !== null) {
+    gameTotalTimeSeconds.current = (Date.now() - gameStartMs.current) / 1000;
+    gameStartMs.current = null;
+  }
 
   // Per-note timer: tick every 100ms while playing
   useEffect(() => {
