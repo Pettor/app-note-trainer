@@ -22,5 +22,5 @@
     }
   ],
   "schedule": ["every weekend"],
-  "separateMajorMinor": true
+  "separateMajorMinor": false
 }
