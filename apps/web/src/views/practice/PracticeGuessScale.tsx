@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { Button } from "@heroui/react";
 import clsx from "clsx";
 import { defineMessages, useIntl } from "react-intl";
-import { scaleDisplayName } from "~/core/game/MusicScale";
+import { scaleDisplayName, scaleId } from "~/core/game/MusicScale";
 import type { Scale } from "~/core/game/MusicScale";
 import { useViewport } from "~/core/UseViewport";
 
@@ -24,10 +24,6 @@ export interface PracticeGuessScaleProps {
   correctScale: Scale;
   guessedScale: Scale | null;
   onGuess: (scale: Scale) => void;
-}
-
-function scaleId(s: Scale): string {
-  return `${s.root}-${s.mode}`;
 }
 
 function scaleLabel(s: Scale): string {

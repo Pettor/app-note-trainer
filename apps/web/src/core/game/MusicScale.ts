@@ -70,7 +70,7 @@ export function pickRandomScale(sharpsEnabled: boolean): Scale {
   return pickRandom(pool);
 }
 
-function scaleId(s: Scale): string {
+export function scaleId(s: Scale): string {
   const { keyName, scaleType } = scaleDisplayName(s);
   return `${keyName}-${scaleType}`;
 }
