@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { ArrowRightIcon, HomeIcon } from "@heroicons/react/24/solid";
 import { Button } from "@heroui/react";
 import { useEventListener } from "@package/react";
 import { GithubIcon, LinkedInIcon, NavbarLayout } from "@package/ui";
@@ -35,6 +35,11 @@ const messages = defineMessages({
     description: "HomeView: footer copyright text",
     defaultMessage: "© {year} Petter Hancock — All rights reserved",
   },
+  footerHomepage: {
+    id: "SQ0GhH",
+    description: "HomeView: Homepage link aria-label",
+    defaultMessage: "Homepage",
+  },
   footerGitHub: {
     id: "RLY9CG",
     description: "HomeView: GitHub link aria-label",
@@ -47,6 +52,7 @@ const messages = defineMessages({
   },
 });
 
+const HOMEPAGE_URL = "https://pettor.github.io/app-home-page/app/";
 const GITHUB_URL = "https://github.com/Pettor";
 const LINKEDIN_URL = "https://www.linkedin.com/in/petter-hancock/";
 const FOOTER_YEAR = new Date().getFullYear();
@@ -77,6 +83,15 @@ export function HomeView({ onStart }: HomeViewProps): ReactElement {
         footerCopyright={intl.formatMessage(messages.footerCopyright, { year: FOOTER_YEAR })}
         footerContent={
           <div className="flex items-center gap-4">
+            <a
+              href={HOMEPAGE_URL}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={intl.formatMessage(messages.footerHomepage)}
+              className="text-muted hover:text-foreground h-5 w-5 transition-colors"
+            >
+              <HomeIcon />
+            </a>
             <a
               href={GITHUB_URL}
               target="_blank"

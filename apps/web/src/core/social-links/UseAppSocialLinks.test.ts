@@ -13,15 +13,32 @@ describe("useAppSocialLinks", () => {
     vi.unstubAllGlobals();
   });
 
-  it("returns onGithubClick and onLinkedInClick handlers", () => {
-    const links = useAppSocialLinks("https://github.com/test", "https://linkedin.com/test");
+  it("returns onHomepageClick, onGithubClick and onLinkedInClick handlers", () => {
+    const links = useAppSocialLinks("https://example.com", "https://github.com/test", "https://linkedin.com/test");
+    expect(links).toHaveProperty("onHomepageClick");
     expect(links).toHaveProperty("onGithubClick");
     expect(links).toHaveProperty("onLinkedInClick");
   });
 
+  describe("onHomepageClick", () => {
+    it("opens the homepage link in a new tab", () => {
+      const { onHomepageClick } = useAppSocialLinks(
+        "https://example.com",
+        "https://github.com/test",
+        "https://linkedin.com/test"
+      );
+      onHomepageClick();
+      expect(windowOpenSpy).toHaveBeenCalledWith("https://example.com", "_blank", "noreferrer");
+    });
+  });
+
   describe("onGithubClick", () => {
     it("opens the github link in a new tab", () => {
-      const { onGithubClick } = useAppSocialLinks("https://github.com/test", "https://linkedin.com/test");
+      const { onGithubClick } = useAppSocialLinks(
+        "https://example.com",
+        "https://github.com/test",
+        "https://linkedin.com/test"
+      );
       onGithubClick();
       expect(windowOpenSpy).toHaveBeenCalledWith("https://github.com/test", "_blank", "noreferrer");
     });
@@ -29,7 +46,11 @@ describe("useAppSocialLinks", () => {
 
   describe("onLinkedInClick", () => {
     it("opens the linkedin link in a new tab", () => {
-      const { onLinkedInClick } = useAppSocialLinks("https://github.com/test", "https://linkedin.com/test");
+      const { onLinkedInClick } = useAppSocialLinks(
+        "https://example.com",
+        "https://github.com/test",
+        "https://linkedin.com/test"
+      );
       onLinkedInClick();
       expect(windowOpenSpy).toHaveBeenCalledWith("https://linkedin.com/test", "_blank", "noreferrer");
     });
