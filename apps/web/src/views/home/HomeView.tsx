@@ -52,7 +52,7 @@ const messages = defineMessages({
   },
 });
 
-const HOMEPAGE_URL = "https://pettor.github.io/app-home-page/app/";
+const HOMEPAGE_URL = "https://petter.madebyhancock.com";
 const GITHUB_URL = "https://github.com/Pettor";
 const LINKEDIN_URL = "https://www.linkedin.com/in/petter-hancock/";
 const FOOTER_YEAR = new Date().getFullYear();
