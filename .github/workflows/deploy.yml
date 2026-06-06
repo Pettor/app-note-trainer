@@ -76,6 +76,12 @@ jobs:
           </html>
           EOF
 
+      - name: Create CNAME file for custom domain
+        run: |
+          cat > output/deployment/CNAME << 'EOF'
+          note.madebyhancock.com
+          EOF
+
       - name: Deploy to GitHub Pages
         uses: crazy-max/ghaction-github-pages@v5
         with:
