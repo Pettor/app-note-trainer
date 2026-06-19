@@ -14,6 +14,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     staff: "treble",
+    mode: "single",
+    chordPool: "triads",
     noteRange: "wide",
     ledgerLines: true,
     ledgerDepth: 1,
@@ -27,6 +29,8 @@ export const Default: Story = {
 export const AllOn: Story = {
   args: {
     staff: "bass",
+    mode: "chord",
+    chordPool: "sevenths",
     noteRange: "extended",
     ledgerLines: true,
     ledgerDepth: 3,
@@ -40,6 +44,8 @@ export const AllOn: Story = {
 export const LowDifficulty: Story = {
   args: {
     staff: "treble",
+    mode: "single",
+    chordPool: "triads",
     noteRange: "narrow",
     ledgerLines: false,
     ledgerDepth: 1,
@@ -53,6 +59,8 @@ export const LowDifficulty: Story = {
 export const Custom: Story = {
   args: {
     staff: "treble",
+    mode: "chord",
+    chordPool: "triads",
     noteRange: "standard",
     ledgerLines: true,
     ledgerDepth: 1,

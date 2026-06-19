@@ -1,8 +1,10 @@
 import type {
+  ChordPool,
   Difficulty,
   Duration,
   LedgerDepth,
   NoteRange,
+  PracticeMode,
   PresetSettings,
   Staff,
 } from "~/core/practice-settings/PracticeSettings";
@@ -12,6 +14,8 @@ import { usePracticeSettings } from "~/core/practice-settings/UsePracticeSetting
 export interface HomeSessionCardState {
   difficulty: Difficulty;
   staff: Staff;
+  mode: PracticeMode;
+  chordPool: ChordPool;
   noteRange: NoteRange;
   ledgerLines: boolean;
   ledgerDepth: LedgerDepth;
@@ -22,6 +26,8 @@ export interface HomeSessionCardState {
   guessScaleFirst: boolean;
   onDifficultyChange: (value: Difficulty) => void;
   onStaffChange: (value: Staff) => void;
+  onModeChange: (value: PracticeMode) => void;
+  onChordPoolChange: (value: ChordPool) => void;
   onNoteRangeChange: (value: NoteRange) => void;
   onLedgerLinesChange: (value: boolean) => void;
   onLedgerDepthChange: (value: LedgerDepth) => void;
@@ -62,6 +68,8 @@ export function useHomeSessionCard(): HomeSessionCardState {
   return {
     difficulty: settings.difficulty,
     staff: settings.staff,
+    mode: settings.mode ?? "single",
+    chordPool: settings.chordPool ?? "triads",
     noteRange: settings.noteRange,
     ledgerLines: settings.ledgerLines,
     ledgerDepth: settings.ledgerDepth,
@@ -78,6 +86,8 @@ export function useHomeSessionCard(): HomeSessionCardState {
       }
     },
     onStaffChange: (value) => updateSettings({ staff: value }),
+    onModeChange: (value) => updateSettings({ mode: value }),
+    onChordPoolChange: (value) => updateSettings({ chordPool: value }),
     onNoteRangeChange: (value) => applyIndividualUpdate({ noteRange: value }),
     onLedgerLinesChange: (value) => applyIndividualUpdate({ ledgerLines: value }),
     onLedgerDepthChange: (value) => applyIndividualUpdate({ ledgerDepth: value }),

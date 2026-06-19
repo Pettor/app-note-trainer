@@ -6,6 +6,7 @@ import { defineMessages, useIntl } from "react-intl";
 import { HomeSessionCardAccidentalsRow } from "./HomeSessionCardAccidentalsRow";
 import { HomeSessionCardDifficultyRow } from "./HomeSessionCardDifficultyRow";
 import { HomeSessionCardLedgerRow } from "./HomeSessionCardLedgerRow";
+import { HomeSessionCardModeRow } from "./HomeSessionCardModeRow";
 import { HomeSessionCardNoteRangeRow } from "./HomeSessionCardNoteRangeRow";
 import { HomeSessionCardStaffRow } from "./HomeSessionCardStaffRow";
 import { HomeSessionCardSummary } from "./HomeSessionCardSummary";
@@ -36,6 +37,8 @@ export function HomeSessionCard(): ReactElement {
   const {
     difficulty,
     staff,
+    mode,
+    chordPool,
     noteRange,
     ledgerLines,
     ledgerDepth,
@@ -46,6 +49,8 @@ export function HomeSessionCard(): ReactElement {
     guessScaleFirst,
     onDifficultyChange,
     onStaffChange,
+    onModeChange,
+    onChordPoolChange,
     onNoteRangeChange,
     onLedgerLinesChange,
     onLedgerDepthChange,
@@ -65,6 +70,12 @@ export function HomeSessionCard(): ReactElement {
       <div className="px-6 pb-2">
         <HomeSessionCardDifficultyRow difficulty={difficulty} onDifficultyChange={onDifficultyChange} />
         <HomeSessionCardStaffRow staff={staff} onStaffChange={onStaffChange} />
+        <HomeSessionCardModeRow
+          mode={mode}
+          chordPool={chordPool}
+          onModeChange={onModeChange}
+          onChordPoolChange={onChordPoolChange}
+        />
       </div>
 
       {/* Customize disclosure trigger + panel */}
@@ -118,6 +129,8 @@ export function HomeSessionCard(): ReactElement {
 
       <HomeSessionCardSummary
         staff={staff}
+        mode={mode}
+        chordPool={chordPool}
         noteRange={noteRange}
         ledgerLines={ledgerLines}
         ledgerDepth={ledgerDepth}

@@ -1,6 +1,13 @@
 import type { ReactElement, ReactNode } from "react";
 import { defineMessages, useIntl } from "react-intl";
-import type { Duration, LedgerDepth, NoteRange, Staff } from "~/core/practice-settings/PracticeSettings";
+import type {
+  ChordPool,
+  Duration,
+  LedgerDepth,
+  NoteRange,
+  PracticeMode,
+  Staff,
+} from "~/core/practice-settings/PracticeSettings";
 
 const messages = defineMessages({
   sectionLabel: {
@@ -42,6 +49,21 @@ const messages = defineMessages({
     id: "QvE381",
     description: "HomeSessionCard: summary pill for bass clef",
     defaultMessage: "Bass clef",
+  },
+  pillModeSingle: {
+    id: "GYahcw",
+    description: "HomeSessionCard: summary pill for single note mode",
+    defaultMessage: "Single note",
+  },
+  pillModeChordTriads: {
+    id: "iaBMP2",
+    description: "HomeSessionCard: summary pill for chord mode with triads",
+    defaultMessage: "Chords · triads",
+  },
+  pillModeChordSevenths: {
+    id: "0IWbqn",
+    description: "HomeSessionCard: summary pill for chord mode with sevenths",
+    defaultMessage: "Chords · +7ths",
   },
   pillRangeNarrow: {
     id: "I/4oDo",
@@ -136,6 +158,8 @@ function Dot({ color }: { color: string }): ReactElement {
 
 export interface HomeSessionCardSummaryProps {
   staff: Staff;
+  mode: PracticeMode;
+  chordPool: ChordPool;
   noteRange: NoteRange;
   ledgerLines: boolean;
   ledgerDepth: LedgerDepth;
@@ -148,6 +172,8 @@ export interface HomeSessionCardSummaryProps {
 
 export function HomeSessionCardSummary({
   staff,
+  mode,
+  chordPool,
   noteRange,
   ledgerLines,
   ledgerDepth,
@@ -168,6 +194,13 @@ export function HomeSessionCardSummary({
           ? intl.formatMessage(messages.pillRangeWide)
           : intl.formatMessage(messages.pillRangeExtended);
 
+  const modeLabel =
+    mode === "chord"
+      ? chordPool === "sevenths"
+        ? intl.formatMessage(messages.pillModeChordSevenths)
+        : intl.formatMessage(messages.pillModeChordTriads)
+      : intl.formatMessage(messages.pillModeSingle);
+
   const ledgerLabel = ledgerLines
     ? ledgerDepth === 1
       ? intl.formatMessage(messages.pillLedger1)
@@ -186,6 +219,10 @@ export function HomeSessionCardSummary({
         <SummaryPill>
           <Dot color="var(--secondary)" />
           {staff === "treble" ? intl.formatMessage(messages.pillTreble) : intl.formatMessage(messages.pillBass)}
+        </SummaryPill>
+        <SummaryPill>
+          <Dot color="var(--secondary)" />
+          {modeLabel}
         </SummaryPill>
         <SummaryPill>
           <Dot color="var(--accent)" />

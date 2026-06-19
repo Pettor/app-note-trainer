@@ -3,6 +3,8 @@ export type Staff = "treble" | "bass";
 export type Duration = 3 | 5 | 8 | 12;
 export type NoteRange = "narrow" | "standard" | "wide" | "extended";
 export type LedgerDepth = 1 | 3;
+export type PracticeMode = "single" | "chord";
+export type ChordPool = "triads" | "sevenths";
 
 export interface PresetSettings {
   noteRange: NoteRange;
@@ -18,6 +20,8 @@ export interface PresetSettings {
 export interface PracticeSettings extends PresetSettings {
   difficulty: Difficulty;
   staff: Staff;
+  mode: PracticeMode;
+  chordPool: ChordPool;
 }
 
 export const DIFFICULTY_PRESETS: Record<"low" | "medium" | "high" | "pro", PresetSettings> = {
@@ -66,5 +70,7 @@ export const DIFFICULTY_PRESETS: Record<"low" | "medium" | "high" | "pro", Prese
 export const DEFAULT_PRACTICE_SETTINGS: PracticeSettings = {
   difficulty: "medium",
   staff: "treble",
+  mode: "single",
+  chordPool: "triads",
   ...DIFFICULTY_PRESETS.medium,
 };
