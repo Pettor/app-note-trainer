@@ -44,7 +44,7 @@
     "@types/node": "24.13.2",
     "fast-xml-parser": "5.9.3",
     "husky": "9.1.7",
-    "lint-staged": "17.0.7",
+    "lint-staged": "17.0.8",
     "move-cli": "catalog:common",
     "nyc": "catalog:coverage",
     "prettier": "3.8.4",
