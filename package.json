@@ -42,7 +42,7 @@
     "@commitlint/config-conventional": "21.0.2",
     "@commitlint/types": "21.0.1",
     "@types/node": "24.13.2",
-    "fast-xml-parser": "5.8.0",
+    "fast-xml-parser": "5.9.3",
     "husky": "9.1.7",
     "lint-staged": "17.0.7",
     "move-cli": "catalog:common",
