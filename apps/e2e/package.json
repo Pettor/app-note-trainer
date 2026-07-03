@@ -18,9 +18,9 @@
   "devDependencies": {
     "@config/eslint": "workspace:*",
     "@config/typescript": "workspace:*",
-"@playwright/test": "catalog:playwright",
-    "cross-env": "catalog:common",
-    "nyc": "catalog:coverage",
-    "playwright": "catalog:playwright"
+    "@playwright/test": "catalog:dev",
+    "cross-env": "catalog:dev",
+    "nyc": "catalog:dev",
+    "playwright": "catalog:dev"
   }
 }
