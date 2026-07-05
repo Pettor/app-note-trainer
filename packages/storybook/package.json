@@ -16,6 +16,7 @@
     "clean:all": "pnpm clean node_modules"
   },
   "peerDependencies": {
+    "@heroui/react": "catalog:ui",
     "@storybook/react": "catalog:dev",
     "@tanstack/react-router": "catalog:tanstack",
     "react": ">=19.0.0",
@@ -23,6 +24,8 @@
   },
   "devDependencies": {
     "@config/eslint": "workspace:*",
-    "@config/typescript": "workspace:*"
+    "@config/typescript": "workspace:*",
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react"
   }
 }

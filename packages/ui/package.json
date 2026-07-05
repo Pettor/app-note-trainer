@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@config/eslint": "workspace:*",
+    "eslint": "catalog:dev",
     "@config/typescript": "workspace:*",
     "@faker-js/faker": "catalog:dev",
     "@package/storybook": "workspace:*",
