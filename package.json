@@ -54,11 +54,6 @@
     "tsup": "8.5.1",
     "turbo": "2.10.0"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@heroui/shared-utils"
-    ]
-  },
   "lint-staged": {
     "*.js": "prettier --write",
     "*.ts": "prettier --write",

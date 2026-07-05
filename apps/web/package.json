@@ -43,6 +43,10 @@
   },
   "devDependencies": {
     "@config/eslint": "workspace:*",
+    "@storybook/react-vite": "catalog:dev",
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react",
+    "eslint": "catalog:dev",
     "@config/typescript": "workspace:*",
     "@config/vite": "workspace:*",
     "@formatjs/cli": "catalog:dev",
