@@ -138,6 +138,6 @@ catalogs:
 onlyBuiltDependencies:
   - '@heroui/shared-utils'
 allowBuilds:
-  esbuild: false
+  esbuild: true
   sharp: true
   unrs-resolver: false
