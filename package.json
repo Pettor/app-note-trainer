@@ -1,6 +1,6 @@
 {
   "name": "app-note-trainer",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Note Trainer — learn to read sheet music and understand music theory through interactive exercises.",
   "license": "MIT",
   "private": true,

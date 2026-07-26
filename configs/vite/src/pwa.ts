@@ -76,7 +76,7 @@ export function createPWAConfig(options: PWAViteConfigOptions = {}): UserConfig 
     },
     registerType: "prompt",
     workbox: {
-      globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+      globPatterns: ["**/*.{js,css,html,ico,png,svg,otf,ttf,woff,woff2}"],
       navigateFallbackDenylist: [/storybook/],
     },
     ...pwaOptions,
