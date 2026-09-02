@@ -51,7 +51,23 @@ export default defineConfig({
             "@faker-js/faker",
             "clsx",
             "zod",
+            // Pulled in transitively by @testing-library/dom (via storybook ->
+            // @testing-library/user-event). Both are old-style CJS/UMD
+            // packages whose export shape Rolldown's dep scanner
+            // misdetects, so force interop rather than rely on static
+            // analysis (see needsInterop below).
+            "aria-query",
+            "lz-string",
+            "pretty-format",
           ],
+          // Rolldown's CJS→ESM interop misreads these packages' exports
+          // (aria-query's chained `exports.a = exports.b = ...` initializer,
+          // lz-string's three-way UMD wrapper), so named/default imports from
+          // them throw "does not provide an export named ..." in the browser
+          // test runner. Forcing interop makes Vite treat the whole
+          // `module.exports` as the default export instead of statically
+          // guessing which names it provides.
+          needsInterop: ["aria-query", "lz-string"],
           // storybook/test is a virtual module provided by storybookTest() plugin at runtime;
           // excluding it prevents esbuild from failing the dependency scan before the plugin loads.
           exclude: ["storybook/test"],
