@@ -191,8 +191,8 @@ catalogs:
       specifier: 13.1.1
       version: 13.1.1
     react-intl:
-      specifier: 10.1.23
-      version: 10.1.23
+      specifier: 10.1.24
+      version: 10.1.24
   validation:
     zod:
       specifier: 4.4.3
@@ -326,7 +326,7 @@ importers:
         version: 19.2.8(react@19.2.8)
       react-intl:
         specifier: catalog:ui
-        version: 10.1.23(@types/react@19.2.18)(react@19.2.8)
+        version: 10.1.24(@types/react@19.2.18)(react@19.2.8)
     devDependencies:
       '@config/eslint':
         specifier: workspace:*
@@ -471,7 +471,7 @@ importers:
         version: 19.2.8(react@19.2.8)
       react-intl:
         specifier: catalog:ui
-        version: 10.1.23(@types/react@19.2.18)(react@19.2.8)
+        version: 10.1.24(@types/react@19.2.18)(react@19.2.8)
       zod:
         specifier: catalog:validation
         version: 4.4.3
@@ -5760,8 +5760,8 @@ packages:
     peerDependencies:
       react: 19.2.8
 
-  react-intl@10.1.23:
-    resolution: {integrity: sha512-ky6bkRTUAiymd2l+qOhv4eV46gOd4JuAry2qDgSA3mjk49BrmQMPRumtrLzpUYdvfg0+iq5iPjpBGHgM4XtMJg==}
+  react-intl@10.1.24:
+    resolution: {integrity: sha512-8hiXRnnmOMEPvE5xb1T1Ce1AsmuSWX2voosCsmiyOEGEq83d1mbHy2M1DeoGKt4yF5oPPkzp+aUwSOtf+NYKPA==}
     peerDependencies:
       '@types/react': '>=18.0.0'
       react: 19.2.8
@@ -11779,7 +11779,7 @@ snapshots:
       react: 19.2.8
       scheduler: 0.27.0
 
-  react-intl@10.1.23(@types/react@19.2.18)(react@19.2.8):
+  react-intl@10.1.24(@types/react@19.2.18)(react@19.2.8):
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.17
       '@formatjs/intl': 4.1.19
