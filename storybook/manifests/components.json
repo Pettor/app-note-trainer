@@ -1,0 +1,3227 @@
+{
+  "v": 0,
+  "components": {
+    "design-system-colors": {
+      "id": "design-system-colors",
+      "name": "Colors",
+      "path": "../web/src/storybook/foundation/Colors.stories.tsx",
+      "jsDocTags": {},
+      "error": {
+        "name": "No component found",
+        "message": "We could not detect the component from your story file. Specify meta.component.\n  3 | import { DocumentationDecorator, DocumentationLayout } from \"@package/storybook\";\n  4 |\n> 5 | export default {\n    | ^\n  6 |   title: \"Design System/Colors\",\n  7 |   tags: [\"no-tests\"],\n  8 |   decorators: [DocumentationDecorator],\n\n../web/src/storybook/foundation/Colors.stories.tsx:\nimport { useEffect, useRef, useState, type CSSProperties, type ReactElement, type ReactNode } from \"react\";\nimport { Card, CardContent } from \"@heroui/react\";\nimport { DocumentationDecorator, DocumentationLayout } from \"@package/storybook\";\n\nexport default {\n  title: \"Design System/Colors\",\n  tags: [\"no-tests\"],\n  decorators: [DocumentationDecorator],\n  parameters: {\n    a11y: {\n      test: \"off\",\n    },\n    layout: \"fullscreen\",\n  },\n};\n\nfunction resolveContrastColor(el: HTMLElement): \"black\" | \"white\" {\n  const bg = getComputedStyle(el).backgroundColor;\n  const canvas = document.createElement(\"canvas\");\n  canvas.width = 1;\n  canvas.height = 1;\n  const ctx = canvas.getContext(\"2d\");\n  if (!ctx) return \"black\";\n  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue(\"--background\").trim() || \"#ffffff\";\n  ctx.fillRect(0, 0, 1, 1);\n  ctx.fillStyle = bg;\n  ctx.fillRect(0, 0, 1, 1);\n  const { data } = ctx.getImageData(0, 0, 1, 1);\n  const r = data[0] ?? 0;\n  const g = data[1] ?? 0;\n  const b = data[2] ?? 0;\n  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.5 ? \"black\" : \"white\";\n}\n\nfunction ColorSection({ title, children }: { title: string; children: ReactNode }): ReactElement {\n  return (\n    <div>\n      <p className=\"text-xl font-medium\">{title}</p>\n      <div className=\"h-2\" />\n      <div className=\"flex h-full w-full flex-row flex-wrap items-center justify-start px-4 py-1\">{children}</div>\n    </div>\n  );\n}\n\nfunction ColorItem({ text, bgColor }: { text: string; bgColor: string }): ReactElement {\n  const ref = useRef<HTMLDivElement>(null);\n  const [textColor, setTextColor] = useState<\"black\" | \"white\">(\"black\");\n\n  useEffect(() => {\n    function update(): void {\n      if (ref.current) setTextColor(resolveContrastColor(ref.current));\n    }\n    update();\n    const observer = new MutationObserver(update);\n    observer.observe(document.documentElement, { attributes: true, attributeFilter: [\"class\", \"data-theme\"] });\n    return (): void => observer.disconnect();\n  }, [bgColor]);\n\n  return (\n    <Card variant=\"secondary\" ref={ref} className={`m-2 h-15 w-35 ${bgColor}`}>\n      <CardContent className=\"items-center justify-center truncate text-xs\" style={{ color: textColor }}>\n        {text}\n      </CardContent>\n    </Card>\n  );\n}\n\nfunction GradientSwatch({ text, style }: { text: string; style: CSSProperties }): ReactElement {\n  return (\n    <div className=\"m-2 flex h-15 w-35 items-center justify-center overflow-hidden rounded-xl\" style={style}>\n      <span className=\"truncate px-3 text-xs text-white\">{text}</span>\n    </div>\n  );\n}\n\nfunction GradientBar(): ReactElement {\n  return <div className=\"mx-6 my-3 h-3 rounded-full\" style={{ background: \"var(--brand-gradient)\" }} />;\n}\n\nexport function Colors(): ReactElement {\n  return (\n    <DocumentationLayout label=\"Colors\">\n      <div className=\"h-8\" />\n      <div className=\"flex flex-col gap-4\">\n        <ColorSection title=\"Background & Surfaces\">\n          <ColorItem text=\"--background\" bgColor=\"bg-background\" />\n          <ColorItem text=\"--foreground\" bgColor=\"bg-foreground\" />\n          <ColorItem text=\"--surface\" bgColor=\"bg-surface\" />\n          <ColorItem text=\"--surface-foreground\" bgColor=\"bg-surface-foreground\" />\n          <ColorItem text=\"--surface-secondary\" bgColor=\"bg-surface-secondary\" />\n          <ColorItem text=\"--surface-secondary-fg\" bgColor=\"bg-surface-secondary-foreground\" />\n          <ColorItem text=\"--surface-tertiary\" bgColor=\"bg-surface-tertiary\" />\n          <ColorItem text=\"--surface-tertiary-fg\" bgColor=\"bg-surface-tertiary-foreground\" />\n          <ColorItem text=\"--overlay\" bgColor=\"bg-overlay\" />\n          <ColorItem text=\"--overlay-foreground\" bgColor=\"bg-overlay-foreground\" />\n        </ColorSection>\n\n        <ColorSection title=\"Brand Colors\">\n          <ColorItem text=\"--accent\" bgColor=\"bg-accent\" />\n          <ColorItem text=\"--secondary\" bgColor=\"bg-[var(--secondary)]\" />\n          <ColorItem text=\"--accent-soft\" bgColor=\"bg-accent-soft\" />\n        </ColorSection>\n\n        <div>\n          <p className=\"text-xl font-medium\">Brand Gradient</p>\n          <div className=\"h-2\" />\n          <GradientBar />\n          <div className=\"flex flex-row flex-wrap items-center justify-start px-4 py-1\">\n            <GradientSwatch text=\"--brand-grad-1\" style={{ background: \"var(--brand-grad-1)\" }} />\n            <GradientSwatch text=\"--brand-grad-2\" style={{ background: \"var(--brand-grad-2)\" }} />\n            <GradientSwatch text=\"--brand-grad-3\" style={{ background: \"var(--brand-grad-3)\" }} />\n            <GradientSwatch text=\"--brand-gradient\" style={{ background: \"var(--brand-gradient)\", width: \"9.5rem\" }} />\n          </div>\n        </div>\n\n        <ColorSection title=\"Status Colors\">\n          <ColorItem text=\"--success\" bgColor=\"bg-success\" />\n          <ColorItem text=\"--success-foreground\" bgColor=\"bg-success-foreground\" />\n          <ColorItem text=\"--warning\" bgColor=\"bg-warning\" />\n          <ColorItem text=\"--warning-foreground\" bgColor=\"bg-warning-foreground\" />\n          <ColorItem text=\"--danger\" bgColor=\"bg-danger\" />\n          <ColorItem text=\"--danger-foreground\" bgColor=\"bg-danger-foreground\" />\n        </ColorSection>\n\n        <ColorSection title=\"Form Field Colors\">\n          <ColorItem text=\"--field-background\" bgColor=\"bg-field\" />\n          <ColorItem text=\"--field-foreground\" bgColor=\"bg-field-foreground\" />\n          <ColorItem text=\"--field-placeholder\" bgColor=\"bg-field-placeholder\" />\n          <ColorItem text=\"--field-border\" bgColor=\"bg-field-border\" />\n        </ColorSection>\n\n        <ColorSection title=\"Other Colors\">\n          <ColorItem text=\"--default\" bgColor=\"bg-default\" />\n          <ColorItem text=\"--default-foreground\" bgColor=\"bg-default-foreground\" />\n          <ColorItem text=\"--muted\" bgColor=\"bg-muted\" />\n          <ColorItem text=\"--border\" bgColor=\"bg-border\" />\n          <ColorItem text=\"--separator\" bgColor=\"bg-separator\" />\n          <ColorItem text=\"--focus\" bgColor=\"bg-focus\" />\n          <ColorItem text=\"--link\" bgColor=\"bg-link\" />\n          <ColorItem text=\"--backdrop\" bgColor=\"bg-[var(--backdrop)]\" />\n          <ColorItem text=\"--scrollbar\" bgColor=\"bg-[var(--scrollbar)]\" />\n        </ColorSection>\n      </div>\n    </DocumentationLayout>\n  );\n}\n"
+      },
+      "stories": [
+        {
+          "id": "design-system-colors--colors",
+          "name": "Colors",
+          "snippet": "function Colors() {\n  return (\n    <DocumentationLayout label=\"Colors\">\n      <div className=\"h-8\" />\n      <div className=\"flex flex-col gap-4\">\n        <ColorSection title=\"Background & Surfaces\">\n          <ColorItem text=\"--background\" bgColor=\"bg-background\" />\n          <ColorItem text=\"--foreground\" bgColor=\"bg-foreground\" />\n          <ColorItem text=\"--surface\" bgColor=\"bg-surface\" />\n          <ColorItem text=\"--surface-foreground\" bgColor=\"bg-surface-foreground\" />\n          <ColorItem text=\"--surface-secondary\" bgColor=\"bg-surface-secondary\" />\n          <ColorItem text=\"--surface-secondary-fg\" bgColor=\"bg-surface-secondary-foreground\" />\n          <ColorItem text=\"--surface-tertiary\" bgColor=\"bg-surface-tertiary\" />\n          <ColorItem text=\"--surface-tertiary-fg\" bgColor=\"bg-surface-tertiary-foreground\" />\n          <ColorItem text=\"--overlay\" bgColor=\"bg-overlay\" />\n          <ColorItem text=\"--overlay-foreground\" bgColor=\"bg-overlay-foreground\" />\n        </ColorSection>\n\n        <ColorSection title=\"Brand Colors\">\n          <ColorItem text=\"--accent\" bgColor=\"bg-accent\" />\n          <ColorItem text=\"--secondary\" bgColor=\"bg-[var(--secondary)]\" />\n          <ColorItem text=\"--accent-soft\" bgColor=\"bg-accent-soft\" />\n        </ColorSection>\n\n        <div>\n          <p className=\"text-xl font-medium\">Brand Gradient</p>\n          <div className=\"h-2\" />\n          <GradientBar />\n          <div className=\"flex flex-row flex-wrap items-center justify-start px-4 py-1\">\n            <GradientSwatch text=\"--brand-grad-1\" style={{ background: \"var(--brand-grad-1)\" }} />\n            <GradientSwatch text=\"--brand-grad-2\" style={{ background: \"var(--brand-grad-2)\" }} />\n            <GradientSwatch text=\"--brand-grad-3\" style={{ background: \"var(--brand-grad-3)\" }} />\n            <GradientSwatch text=\"--brand-gradient\" style={{ background: \"var(--brand-gradient)\", width: \"9.5rem\" }} />\n          </div>\n        </div>\n\n        <ColorSection title=\"Status Colors\">\n          <ColorItem text=\"--success\" bgColor=\"bg-success\" />\n          <ColorItem text=\"--success-foreground\" bgColor=\"bg-success-foreground\" />\n          <ColorItem text=\"--warning\" bgColor=\"bg-warning\" />\n          <ColorItem text=\"--warning-foreground\" bgColor=\"bg-warning-foreground\" />\n          <ColorItem text=\"--danger\" bgColor=\"bg-danger\" />\n          <ColorItem text=\"--danger-foreground\" bgColor=\"bg-danger-foreground\" />\n        </ColorSection>\n\n        <ColorSection title=\"Form Field Colors\">\n          <ColorItem text=\"--field-background\" bgColor=\"bg-field\" />\n          <ColorItem text=\"--field-foreground\" bgColor=\"bg-field-foreground\" />\n          <ColorItem text=\"--field-placeholder\" bgColor=\"bg-field-placeholder\" />\n          <ColorItem text=\"--field-border\" bgColor=\"bg-field-border\" />\n        </ColorSection>\n\n        <ColorSection title=\"Other Colors\">\n          <ColorItem text=\"--default\" bgColor=\"bg-default\" />\n          <ColorItem text=\"--default-foreground\" bgColor=\"bg-default-foreground\" />\n          <ColorItem text=\"--muted\" bgColor=\"bg-muted\" />\n          <ColorItem text=\"--border\" bgColor=\"bg-border\" />\n          <ColorItem text=\"--separator\" bgColor=\"bg-separator\" />\n          <ColorItem text=\"--focus\" bgColor=\"bg-focus\" />\n          <ColorItem text=\"--link\" bgColor=\"bg-link\" />\n          <ColorItem text=\"--backdrop\" bgColor=\"bg-[var(--backdrop)]\" />\n          <ColorItem text=\"--scrollbar\" bgColor=\"bg-[var(--scrollbar)]\" />\n        </ColorSection>\n      </div>\n    </DocumentationLayout>\n  );\n}"
+        }
+      ],
+      "import": "import { Card, CardContent } from \"@app/web\";\nimport { DocumentationLayout } from \"@package/storybook\";"
+    },
+    "design-system-typography": {
+      "id": "design-system-typography",
+      "name": "Typography",
+      "path": "../web/src/storybook/foundation/Typography.stories.tsx",
+      "jsDocTags": {},
+      "error": {
+        "name": "No component found",
+        "message": "We could not detect the component from your story file. Specify meta.component.\n  2 | import { DocumentationDecorator, DocumentationLayout } from \"@package/storybook\";\n  3 |\n> 4 | export default {\n    | ^\n  5 |   title: \"Design System/Typography\",\n  6 |   tags: [\"no-tests\"],\n  7 |   decorators: [DocumentationDecorator],\n\n../web/src/storybook/foundation/Typography.stories.tsx:\nimport type { ReactElement } from \"react\";\nimport { DocumentationDecorator, DocumentationLayout } from \"@package/storybook\";\n\nexport default {\n  title: \"Design System/Typography\",\n  tags: [\"no-tests\"],\n  decorators: [DocumentationDecorator],\n  parameters: {\n    a11y: {\n      test: \"off\",\n    },\n    layout: \"fullscreen\",\n  },\n};\n\nexport function Typography(): ReactElement {\n  return (\n    <DocumentationLayout label=\"Typography\">\n      <div className=\"prose dark:prose-invert mt-10\">\n        <h1>h1. Heading</h1>\n        <h2>h2. Heading</h2>\n        <h3>h3. Heading</h3>\n        <h4>h4. Heading</h4>\n        <h5>h5. Heading</h5>\n        <h6>h6. Heading</h6>\n      </div>\n      <div className=\"prose dark:prose-invert mt-2\">\n        <div className=\"font-thin\">Thin - Font Weight</div>\n        <div className=\"font-extralight\">Extralight - Font Weight</div>\n        <div className=\"font-light\">Light - Font Weight</div>\n        <div className=\"font-normal\">Normal - Font Weight</div>\n        <div className=\"font-medium\">Medium - Font Weight</div>\n        <div className=\"font-semibold\">Semibold - Font Weight</div>\n        <div className=\"font-bold\">Bold - Font Weight</div>\n        <div className=\"font-extrabold\">Extrabold - Font Weight</div>\n        <div className=\"font-black\">Black - Font Weight</div>\n      </div>\n      <div className=\"prose dark:prose-invert mt-2\">\n        <div>subtitle1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur</div>\n        <a>link. Lorem ipsum dolor sit amet</a>\n        <blockquote>blockqoute. Lorem ipsum dolor sit amet</blockquote>\n        <figure>figure. Lorem ipsum dolor sit amet</figure>\n        <figcaption>figcaption. Lorem ipsum dolor sit amet</figcaption>\n        <strong>strong. Lorem ipsum dolor sit amet</strong>\n        <em>em. Lorem ipsum dolor sit amet</em>\n        <code>code. Lorem ipsum dolor sit amet</code>\n        <pre>pre. Lorem ipsum dolor sit amet</pre>\n        <ol>ol. Lorem ipsum dolor sit amet</ol>\n        <ul>ul. Lorem ipsum dolor sit amet</ul>\n        <li>li. Lorem ipsum dolor sit amet</li>\n        <table>table. Lorem ipsum dolor sit amet</table>\n        <thead>thead. Lorem ipsum dolor sit amet</thead>\n        <tr>tr. Lorem ipsum dolor sit amet</tr>\n        <th>th. Lorem ipsum dolor sit amet</th>\n        <td>td. Lorem ipsum dolor sit amet</td>\n        <hr />\n      </div>\n    </DocumentationLayout>\n  );\n}\n"
+      },
+      "stories": [
+        {
+          "id": "design-system-typography--typography",
+          "name": "Typography",
+          "snippet": "function Typography() {\n  return (\n    <DocumentationLayout label=\"Typography\">\n      <div className=\"prose dark:prose-invert mt-10\">\n        <h1>h1. Heading</h1>\n        <h2>h2. Heading</h2>\n        <h3>h3. Heading</h3>\n        <h4>h4. Heading</h4>\n        <h5>h5. Heading</h5>\n        <h6>h6. Heading</h6>\n      </div>\n      <div className=\"prose dark:prose-invert mt-2\">\n        <div className=\"font-thin\">Thin - Font Weight</div>\n        <div className=\"font-extralight\">Extralight - Font Weight</div>\n        <div className=\"font-light\">Light - Font Weight</div>\n        <div className=\"font-normal\">Normal - Font Weight</div>\n        <div className=\"font-medium\">Medium - Font Weight</div>\n        <div className=\"font-semibold\">Semibold - Font Weight</div>\n        <div className=\"font-bold\">Bold - Font Weight</div>\n        <div className=\"font-extrabold\">Extrabold - Font Weight</div>\n        <div className=\"font-black\">Black - Font Weight</div>\n      </div>\n      <div className=\"prose dark:prose-invert mt-2\">\n        <div>subtitle1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur</div>\n        <a>link. Lorem ipsum dolor sit amet</a>\n        <blockquote>blockqoute. Lorem ipsum dolor sit amet</blockquote>\n        <figure>figure. Lorem ipsum dolor sit amet</figure>\n        <figcaption>figcaption. Lorem ipsum dolor sit amet</figcaption>\n        <strong>strong. Lorem ipsum dolor sit amet</strong>\n        <em>em. Lorem ipsum dolor sit amet</em>\n        <code>code. Lorem ipsum dolor sit amet</code>\n        <pre>pre. Lorem ipsum dolor sit amet</pre>\n        <ol>ol. Lorem ipsum dolor sit amet</ol>\n        <ul>ul. Lorem ipsum dolor sit amet</ul>\n        <li>li. Lorem ipsum dolor sit amet</li>\n        <table>table. Lorem ipsum dolor sit amet</table>\n        <thead>thead. Lorem ipsum dolor sit amet</thead>\n        <tr>tr. Lorem ipsum dolor sit amet</tr>\n        <th>th. Lorem ipsum dolor sit amet</th>\n        <td>td. Lorem ipsum dolor sit amet</td>\n        <hr />\n      </div>\n    </DocumentationLayout>\n  );\n}"
+        }
+      ],
+      "import": "import { DocumentationLayout } from \"@package/storybook\";"
+    },
+    "views-home": {
+      "id": "views-home",
+      "name": "Component",
+      "path": "../web/src/views/home/HomeView.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "HomeView",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/views/home/HomeView.tsx",
+        "actualName": "HomeView",
+        "exportName": "HomeView",
+        "props": {
+          "onStart": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "() => void",
+              "signature": {
+                "arguments": [],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "views-home--fullscreen",
+          "name": "Fullscreen",
+          "snippet": "const Fullscreen = () => <Component onStart={() => {}} />;"
+        },
+        {
+          "id": "views-home--phone",
+          "name": "Phone",
+          "snippet": "const Phone = () => <Component onStart={() => {}} />;"
+        }
+      ],
+      "import": "import { HomeView as Component } from \"@app/web\";"
+    },
+    "views-home-home-session-card": {
+      "id": "views-home-home-session-card",
+      "name": "Component",
+      "path": "../web/src/views/home/HomeSessionCard.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "HomeSessionCard",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/views/home/HomeSessionCard.tsx",
+        "actualName": "HomeSessionCard",
+        "exportName": "HomeSessionCard"
+      },
+      "stories": [
+        {
+          "id": "views-home-home-session-card--default",
+          "name": "Default",
+          "snippet": "const Default = () => <Component />;"
+        },
+        {
+          "id": "views-home-home-session-card--phone",
+          "name": "Phone",
+          "snippet": "const Phone = () => <Component />;"
+        }
+      ],
+      "import": "import { HomeSessionCard as Component } from \"@app/web\";"
+    },
+    "views-home-home-session-card-accidentals-row": {
+      "id": "views-home-home-session-card-accidentals-row",
+      "name": "HomeSessionCardAccidentalsRow",
+      "path": "../web/src/views/home/HomeSessionCardAccidentalsRow.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "HomeSessionCardAccidentalsRow",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/views/home/HomeSessionCardAccidentalsRow.tsx",
+        "actualName": "HomeSessionCardAccidentalsRow",
+        "exportName": "HomeSessionCardAccidentalsRow",
+        "props": {
+          "sharps": {
+            "required": true,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": ""
+          },
+          "guessScaleFirst": {
+            "required": true,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": ""
+          },
+          "naturals": {
+            "required": true,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": ""
+          },
+          "onSharpsChange": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(value: boolean) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "boolean"
+                    },
+                    "name": "value"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "onGuessScaleFirstChange": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(value: boolean) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "boolean"
+                    },
+                    "name": "value"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "onNaturalsChange": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(value: boolean) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "boolean"
+                    },
+                    "name": "value"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "views-home-home-session-card-accidentals-row--off",
+          "name": "Off",
+          "snippet": "const Off = () => <HomeSessionCardAccidentalsRow\n    onSharpsChange={() => {}}\n    onGuessScaleFirstChange={() => {}}\n    onNaturalsChange={() => {}}\n    sharps={false}\n    guessScaleFirst={false}\n    naturals={false} />;"
+        },
+        {
+          "id": "views-home-home-session-card-accidentals-row--on-default",
+          "name": "On Default",
+          "snippet": "const OnDefault = () => <HomeSessionCardAccidentalsRow\n    onSharpsChange={() => {}}\n    onGuessScaleFirstChange={() => {}}\n    onNaturalsChange={() => {}}\n    sharps\n    guessScaleFirst={false}\n    naturals={false} />;"
+        },
+        {
+          "id": "views-home-home-session-card-accidentals-row--on-with-guess-scale",
+          "name": "On With Guess Scale",
+          "snippet": "const OnWithGuessScale = () => <HomeSessionCardAccidentalsRow\n    onSharpsChange={() => {}}\n    onGuessScaleFirstChange={() => {}}\n    onNaturalsChange={() => {}}\n    sharps\n    guessScaleFirst\n    naturals={false} />;"
+        },
+        {
+          "id": "views-home-home-session-card-accidentals-row--on-with-naturals",
+          "name": "On With Naturals",
+          "snippet": "const OnWithNaturals = () => <HomeSessionCardAccidentalsRow\n    onSharpsChange={() => {}}\n    onGuessScaleFirstChange={() => {}}\n    onNaturalsChange={() => {}}\n    sharps\n    guessScaleFirst={false}\n    naturals />;"
+        },
+        {
+          "id": "views-home-home-session-card-accidentals-row--on-full",
+          "name": "On Full",
+          "snippet": "const OnFull = () => <HomeSessionCardAccidentalsRow\n    onSharpsChange={() => {}}\n    onGuessScaleFirstChange={() => {}}\n    onNaturalsChange={() => {}}\n    sharps\n    guessScaleFirst\n    naturals />;"
+        }
+      ],
+      "import": "import { HomeSessionCardAccidentalsRow } from \"@app/web\";"
+    },
+    "views-home-home-session-card-difficulty-row": {
+      "id": "views-home-home-session-card-difficulty-row",
+      "name": "HomeSessionCardDifficultyRow",
+      "path": "../web/src/views/home/HomeSessionCardDifficultyRow.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "HomeSessionCardDifficultyRow",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/views/home/HomeSessionCardDifficultyRow.tsx",
+        "actualName": "HomeSessionCardDifficultyRow",
+        "exportName": "HomeSessionCardDifficultyRow",
+        "props": {
+          "difficulty": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "\"low\" | \"medium\" | \"high\" | \"pro\" | \"custom\"",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "\"low\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"medium\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"high\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"pro\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"custom\""
+                }
+              ]
+            },
+            "description": ""
+          },
+          "onDifficultyChange": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(value: Difficulty) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "union",
+                      "raw": "\"low\" | \"medium\" | \"high\" | \"pro\" | \"custom\"",
+                      "elements": [
+                        {
+                          "name": "literal",
+                          "value": "\"low\""
+                        },
+                        {
+                          "name": "literal",
+                          "value": "\"medium\""
+                        },
+                        {
+                          "name": "literal",
+                          "value": "\"high\""
+                        },
+                        {
+                          "name": "literal",
+                          "value": "\"pro\""
+                        },
+                        {
+                          "name": "literal",
+                          "value": "\"custom\""
+                        }
+                      ]
+                    },
+                    "name": "value"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "views-home-home-session-card-difficulty-row--low",
+          "name": "Low",
+          "snippet": "const Low = () => <HomeSessionCardDifficultyRow onDifficultyChange={() => {}} difficulty=\"low\" />;"
+        },
+        {
+          "id": "views-home-home-session-card-difficulty-row--medium",
+          "name": "Medium",
+          "snippet": "const Medium = () => <HomeSessionCardDifficultyRow onDifficultyChange={() => {}} difficulty=\"medium\" />;"
+        },
+        {
+          "id": "views-home-home-session-card-difficulty-row--high",
+          "name": "High",
+          "snippet": "const High = () => <HomeSessionCardDifficultyRow onDifficultyChange={() => {}} difficulty=\"high\" />;"
+        },
+        {
+          "id": "views-home-home-session-card-difficulty-row--custom",
+          "name": "Custom",
+          "snippet": "const Custom = () => <HomeSessionCardDifficultyRow onDifficultyChange={() => {}} difficulty=\"custom\" />;"
+        }
+      ],
+      "import": "import { HomeSessionCardDifficultyRow } from \"@app/web\";"
+    },
+    "views-home-home-session-card-ledger-row": {
+      "id": "views-home-home-session-card-ledger-row",
+      "name": "Component",
+      "path": "../web/src/views/home/HomeSessionCardLedgerRow.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "HomeSessionCardLedgerRow",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/views/home/HomeSessionCardLedgerRow.tsx",
+        "actualName": "HomeSessionCardLedgerRow",
+        "exportName": "HomeSessionCardLedgerRow",
+        "props": {
+          "ledgerLines": {
+            "required": true,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": ""
+          },
+          "ledgerDepth": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "1 | 3",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "1"
+                },
+                {
+                  "name": "literal",
+                  "value": "3"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "onLedgerLinesChange": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(value: boolean) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "boolean"
+                    },
+                    "name": "value"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "onLedgerDepthChange": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(value: LedgerDepth) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "union",
+                      "raw": "1 | 3",
+                      "elements": [
+                        {
+                          "name": "literal",
+                          "value": "1"
+                        },
+                        {
+                          "name": "literal",
+                          "value": "3"
+                        }
+                      ]
+                    },
+                    "name": "value"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "views-home-home-session-card-ledger-row--default",
+          "name": "Default",
+          "snippet": "const Default = () => <Component\n    ledgerLines\n    ledgerDepth={1}\n    onLedgerLinesChange={() => {}}\n    onLedgerDepthChange={() => {}} />;"
+        },
+        {
+          "id": "views-home-home-session-card-ledger-row--off",
+          "name": "Off",
+          "snippet": "const Off = () => <Component\n    ledgerLines={false}\n    ledgerDepth={1}\n    onLedgerLinesChange={() => {}}\n    onLedgerDepthChange={() => {}} />;"
+        },
+        {
+          "id": "views-home-home-session-card-ledger-row--deep-lines",
+          "name": "Deep Lines",
+          "snippet": "const DeepLines = () => <Component\n    ledgerLines\n    ledgerDepth={3}\n    onLedgerLinesChange={() => {}}\n    onLedgerDepthChange={() => {}} />;"
+        }
+      ],
+      "import": "import { HomeSessionCardLedgerRow as Component } from \"@app/web\";"
+    },
+    "views-home-home-session-card-note-range-row": {
+      "id": "views-home-home-session-card-note-range-row",
+      "name": "Component",
+      "path": "../web/src/views/home/HomeSessionCardNoteRangeRow.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "HomeSessionCardNoteRangeRow",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/views/home/HomeSessionCardNoteRangeRow.tsx",
+        "actualName": "HomeSessionCardNoteRangeRow",
+        "exportName": "HomeSessionCardNoteRangeRow",
+        "props": {
+          "noteRange": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "\"narrow\" | \"standard\" | \"wide\" | \"extended\"",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "\"narrow\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"standard\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"wide\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"extended\""
+                }
+              ]
+            },
+            "description": ""
+          },
+          "onNoteRangeChange": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(value: NoteRange) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "union",
+                      "raw": "\"narrow\" | \"standard\" | \"wide\" | \"extended\"",
+                      "elements": [
+                        {
+                          "name": "literal",
+                          "value": "\"narrow\""
+                        },
+                        {
+                          "name": "literal",
+                          "value": "\"standard\""
+                        },
+                        {
+                          "name": "literal",
+                          "value": "\"wide\""
+                        },
+                        {
+                          "name": "literal",
+                          "value": "\"extended\""
+                        }
+                      ]
+                    },
+                    "name": "value"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "views-home-home-session-card-note-range-row--default",
+          "name": "Default",
+          "snippet": "const Default = () => <Component noteRange=\"wide\" onNoteRangeChange={() => {}} />;"
+        },
+        {
+          "id": "views-home-home-session-card-note-range-row--narrow",
+          "name": "Narrow",
+          "snippet": "const Narrow = () => <Component noteRange=\"narrow\" onNoteRangeChange={() => {}} />;"
+        },
+        {
+          "id": "views-home-home-session-card-note-range-row--extended",
+          "name": "Extended",
+          "snippet": "const Extended = () => <Component noteRange=\"extended\" onNoteRangeChange={() => {}} />;"
+        }
+      ],
+      "import": "import { HomeSessionCardNoteRangeRow as Component } from \"@app/web\";"
+    },
+    "views-home-home-session-card-staff-row": {
+      "id": "views-home-home-session-card-staff-row",
+      "name": "HomeSessionCardStaffRow",
+      "path": "../web/src/views/home/HomeSessionCardStaffRow.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "HomeSessionCardStaffRow",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/views/home/HomeSessionCardStaffRow.tsx",
+        "actualName": "HomeSessionCardStaffRow",
+        "exportName": "HomeSessionCardStaffRow",
+        "props": {
+          "staff": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "\"treble\" | \"bass\"",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "\"treble\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"bass\""
+                }
+              ]
+            },
+            "description": ""
+          },
+          "onStaffChange": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(value: Staff) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "union",
+                      "raw": "\"treble\" | \"bass\"",
+                      "elements": [
+                        {
+                          "name": "literal",
+                          "value": "\"treble\""
+                        },
+                        {
+                          "name": "literal",
+                          "value": "\"bass\""
+                        }
+                      ]
+                    },
+                    "name": "value"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "views-home-home-session-card-staff-row--treble",
+          "name": "Treble",
+          "snippet": "const Treble = () => <HomeSessionCardStaffRow onStaffChange={() => {}} staff=\"treble\" />;"
+        },
+        {
+          "id": "views-home-home-session-card-staff-row--bass",
+          "name": "Bass",
+          "snippet": "const Bass = () => <HomeSessionCardStaffRow onStaffChange={() => {}} staff=\"bass\" />;"
+        }
+      ],
+      "import": "import { HomeSessionCardStaffRow } from \"@app/web\";"
+    },
+    "views-home-home-session-card-summary": {
+      "id": "views-home-home-session-card-summary",
+      "name": "HomeSessionCardSummary",
+      "path": "../web/src/views/home/HomeSessionCardSummary.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "HomeSessionCardSummary",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/views/home/HomeSessionCardSummary.tsx",
+        "actualName": "HomeSessionCardSummary",
+        "exportName": "HomeSessionCardSummary",
+        "props": {
+          "staff": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "\"treble\" | \"bass\"",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "\"treble\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"bass\""
+                }
+              ]
+            },
+            "description": ""
+          },
+          "noteRange": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "\"narrow\" | \"standard\" | \"wide\" | \"extended\"",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "\"narrow\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"standard\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"wide\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"extended\""
+                }
+              ]
+            },
+            "description": ""
+          },
+          "ledgerLines": {
+            "required": true,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": ""
+          },
+          "ledgerDepth": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "1 | 3",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "1"
+                },
+                {
+                  "name": "literal",
+                  "value": "3"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "sharps": {
+            "required": true,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": ""
+          },
+          "naturals": {
+            "required": true,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": ""
+          },
+          "timerEnabled": {
+            "required": true,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": ""
+          },
+          "duration": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "3 | 5 | 8 | 12",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "3"
+                },
+                {
+                  "name": "literal",
+                  "value": "5"
+                },
+                {
+                  "name": "literal",
+                  "value": "8"
+                },
+                {
+                  "name": "literal",
+                  "value": "12"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "guessScaleFirst": {
+            "required": true,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "views-home-home-session-card-summary--default",
+          "name": "Default",
+          "snippet": "const Default = () => <HomeSessionCardSummary\n    staff=\"treble\"\n    noteRange=\"wide\"\n    ledgerLines\n    ledgerDepth={1}\n    sharps\n    timerEnabled\n    duration={8}\n    guessScaleFirst={false} />;"
+        },
+        {
+          "id": "views-home-home-session-card-summary--all-on",
+          "name": "All On",
+          "snippet": "const AllOn = () => <HomeSessionCardSummary\n    staff=\"bass\"\n    noteRange=\"extended\"\n    ledgerLines\n    ledgerDepth={3}\n    sharps\n    timerEnabled\n    duration={5}\n    guessScaleFirst />;"
+        },
+        {
+          "id": "views-home-home-session-card-summary--low-difficulty",
+          "name": "Low Difficulty",
+          "snippet": "const LowDifficulty = () => <HomeSessionCardSummary\n    staff=\"treble\"\n    noteRange=\"narrow\"\n    ledgerLines={false}\n    ledgerDepth={1}\n    sharps={false}\n    timerEnabled={false}\n    duration={8}\n    guessScaleFirst={false} />;"
+        },
+        {
+          "id": "views-home-home-session-card-summary--custom",
+          "name": "Custom",
+          "snippet": "const Custom = () => <HomeSessionCardSummary\n    staff=\"treble\"\n    noteRange=\"standard\"\n    ledgerLines\n    ledgerDepth={1}\n    sharps={false}\n    timerEnabled\n    duration={12}\n    guessScaleFirst={false} />;"
+        }
+      ],
+      "import": "import { HomeSessionCardSummary } from \"@app/web\";"
+    },
+    "views-home-home-session-card-timer-row": {
+      "id": "views-home-home-session-card-timer-row",
+      "name": "HomeSessionCardTimerRow",
+      "path": "../web/src/views/home/HomeSessionCardTimerRow.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "HomeSessionCardTimerRow",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/views/home/HomeSessionCardTimerRow.tsx",
+        "actualName": "HomeSessionCardTimerRow",
+        "exportName": "HomeSessionCardTimerRow",
+        "props": {
+          "timerEnabled": {
+            "required": true,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": ""
+          },
+          "duration": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "3 | 5 | 8 | 12",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "3"
+                },
+                {
+                  "name": "literal",
+                  "value": "5"
+                },
+                {
+                  "name": "literal",
+                  "value": "8"
+                },
+                {
+                  "name": "literal",
+                  "value": "12"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "onTimerChange": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(value: boolean) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "boolean"
+                    },
+                    "name": "value"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "onDurationChange": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(value: Duration) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "union",
+                      "raw": "3 | 5 | 8 | 12",
+                      "elements": [
+                        {
+                          "name": "literal",
+                          "value": "3"
+                        },
+                        {
+                          "name": "literal",
+                          "value": "5"
+                        },
+                        {
+                          "name": "literal",
+                          "value": "8"
+                        },
+                        {
+                          "name": "literal",
+                          "value": "12"
+                        }
+                      ]
+                    },
+                    "name": "value"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "views-home-home-session-card-timer-row--timer-off",
+          "name": "Timer Off",
+          "snippet": "const TimerOff = () => <HomeSessionCardTimerRow\n    onTimerChange={() => {}}\n    onDurationChange={() => {}}\n    timerEnabled={false}\n    duration={5} />;"
+        },
+        {
+          "id": "views-home-home-session-card-timer-row--timer-on",
+          "name": "Timer On",
+          "snippet": "const TimerOn = () => <HomeSessionCardTimerRow\n    onTimerChange={() => {}}\n    onDurationChange={() => {}}\n    timerEnabled\n    duration={5} />;"
+        },
+        {
+          "id": "views-home-home-session-card-timer-row--timer-on-short",
+          "name": "Timer On Short",
+          "snippet": "const TimerOnShort = () => <HomeSessionCardTimerRow\n    onTimerChange={() => {}}\n    onDurationChange={() => {}}\n    timerEnabled\n    duration={3} />;"
+        },
+        {
+          "id": "views-home-home-session-card-timer-row--timer-on-long",
+          "name": "Timer On Long",
+          "snippet": "const TimerOnLong = () => <HomeSessionCardTimerRow\n    onTimerChange={() => {}}\n    onDurationChange={() => {}}\n    timerEnabled\n    duration={12} />;"
+        }
+      ],
+      "import": "import { HomeSessionCardTimerRow } from \"@app/web\";"
+    },
+    "views-practice": {
+      "id": "views-practice",
+      "name": "Component",
+      "path": "../web/src/views/practice/PracticeView.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "PracticeView",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/views/practice/PracticeView.tsx",
+        "actualName": "PracticeView",
+        "exportName": "PracticeView",
+        "props": {
+          "settings": {
+            "required": true,
+            "tsType": {
+              "name": "PracticeSettings"
+            },
+            "description": ""
+          },
+          "onKeyPress": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(key: PianoKeyData) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "PianoKeyData"
+                    },
+                    "name": "key"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "onPause": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "() => void",
+              "signature": {
+                "arguments": [],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "onExit": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "() => void",
+              "signature": {
+                "arguments": [],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "isPaused": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "keyName": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "\"C\"",
+              "computed": false
+            }
+          },
+          "scaleType": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "\"major\"",
+              "computed": false
+            }
+          },
+          "keySignature": {
+            "required": false,
+            "tsType": {
+              "name": "KeySignatureInfo"
+            },
+            "description": ""
+          },
+          "remaining": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "settings.duration",
+              "computed": true
+            }
+          },
+          "notesCompleted": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "0",
+              "computed": false
+            }
+          },
+          "totalNotes": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "20",
+              "computed": false
+            }
+          },
+          "correctCount": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "0",
+              "computed": false
+            }
+          },
+          "wrongCount": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "0",
+              "computed": false
+            }
+          },
+          "countdown": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "number | null",
+              "elements": [
+                {
+                  "name": "number"
+                },
+                {
+                  "name": "null"
+                }
+              ]
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "null",
+              "computed": false
+            }
+          },
+          "currentNote": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "StaffNoteData | null",
+              "elements": [
+                {
+                  "name": "StaffNoteData"
+                },
+                {
+                  "name": "null"
+                }
+              ]
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "null",
+              "computed": false
+            }
+          },
+          "scale": {
+            "required": false,
+            "tsType": {
+              "name": "Scale"
+            },
+            "description": ""
+          },
+          "scaleChoices": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "Scale"
+                }
+              ],
+              "raw": "Scale[]"
+            },
+            "description": ""
+          },
+          "guessedScale": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "Scale | null",
+              "elements": [
+                {
+                  "name": "Scale"
+                },
+                {
+                  "name": "null"
+                }
+              ]
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "null",
+              "computed": false
+            }
+          },
+          "scaleGuessCorrect": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "boolean | null",
+              "elements": [
+                {
+                  "name": "boolean"
+                },
+                {
+                  "name": "null"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "onScaleGuess": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(scale: Scale) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Scale"
+                    },
+                    "name": "scale"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "hideScaleInfo": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "views-practice--fullscreen",
+          "name": "Fullscreen",
+          "snippet": "const Fullscreen = () => <Component\n    settings={DEFAULT_PRACTICE_SETTINGS}\n    onKeyPress={() => {}}\n    onPause={() => {}}\n    onExit={() => {}}\n    keyName=\"G\"\n    scaleType=\"major\"\n    remaining={3.4}\n    notesCompleted={7}\n    totalNotes={25}\n    correctCount={6}\n    wrongCount={1}\n    currentNote={{ slot: 4, type: \"quarter\", active: true }} />;"
+        },
+        {
+          "id": "views-practice--phone",
+          "name": "Phone",
+          "snippet": "const Phone = () => <Component\n    settings={DEFAULT_PRACTICE_SETTINGS}\n    onKeyPress={() => {}}\n    onPause={() => {}}\n    onExit={() => {}}\n    keyName=\"G\"\n    scaleType=\"major\"\n    remaining={3.4}\n    notesCompleted={7}\n    totalNotes={25}\n    correctCount={6}\n    wrongCount={1}\n    currentNote={{ slot: 2, type: \"quarter\", active: true }} />;"
+        },
+        {
+          "id": "views-practice--with-timer",
+          "name": "With Timer",
+          "snippet": "const WithTimer = () => <Component\n    settings={{ ...DEFAULT_PRACTICE_SETTINGS, timerEnabled: true, duration: 5 }}\n    onKeyPress={() => {}}\n    onPause={() => {}}\n    onExit={() => {}}\n    keyName=\"G\"\n    scaleType=\"major\"\n    remaining={3.4}\n    notesCompleted={7}\n    totalNotes={25}\n    correctCount={6}\n    wrongCount={1}\n    currentNote={{ slot: 6, type: \"quarter\", active: true }} />;"
+        },
+        {
+          "id": "views-practice--countdown",
+          "name": "Countdown",
+          "snippet": "const Countdown = () => <Component\n    settings={{ ...DEFAULT_PRACTICE_SETTINGS, timerEnabled: true, duration: 5 }}\n    onKeyPress={() => {}}\n    onPause={() => {}}\n    onExit={() => {}}\n    keyName=\"G\"\n    scaleType=\"major\"\n    remaining={3.4}\n    notesCompleted={7}\n    totalNotes={25}\n    correctCount={6}\n    wrongCount={1}\n    countdown={3} />;"
+        },
+        {
+          "id": "views-practice--paused",
+          "name": "Paused",
+          "snippet": "const Paused = () => <Component\n    settings={DEFAULT_PRACTICE_SETTINGS}\n    onKeyPress={() => {}}\n    onPause={() => {}}\n    onExit={() => {}}\n    keyName=\"G\"\n    scaleType=\"major\"\n    remaining={3.4}\n    notesCompleted={7}\n    totalNotes={25}\n    correctCount={6}\n    wrongCount={1}\n    isPaused\n    currentNote={{ slot: 4, type: \"quarter\" }} />;"
+        },
+        {
+          "id": "views-practice--bass",
+          "name": "Bass",
+          "snippet": "const Bass = () => <Component\n    settings={{ ...DEFAULT_PRACTICE_SETTINGS, staff: \"bass\" }}\n    onKeyPress={() => {}}\n    onPause={() => {}}\n    onExit={() => {}}\n    keyName=\"F\"\n    scaleType=\"major\"\n    remaining={3.4}\n    notesCompleted={7}\n    totalNotes={25}\n    correctCount={6}\n    wrongCount={1}\n    currentNote={{ slot: 3, type: \"quarter\" }} />;"
+        },
+        {
+          "id": "views-practice--guess-scale",
+          "name": "Guess Scale",
+          "snippet": "const GuessScale = () => <Component\n    settings={{ ...DEFAULT_PRACTICE_SETTINGS, guessScaleFirst: true }}\n    onKeyPress={() => {}}\n    onPause={() => {}}\n    onExit={() => {}}\n    keyName=\"G\"\n    scaleType=\"major\"\n    remaining={3.4}\n    notesCompleted={7}\n    totalNotes={25}\n    correctCount={6}\n    wrongCount={1}\n    keySignature={{ type: \"sharp\", count: 1 }}\n    hideScaleInfo\n    scale={gMajor}\n    scaleChoices={scaleChoices}\n    guessedScale={null}\n    currentNote={null}\n    countdown={null} />;"
+        },
+        {
+          "id": "views-practice--guess-scale-result",
+          "name": "Guess Scale Result",
+          "snippet": "const GuessScaleResult = () => <Component\n    settings={{ ...DEFAULT_PRACTICE_SETTINGS, guessScaleFirst: true }}\n    onKeyPress={() => {}}\n    onPause={() => {}}\n    onExit={() => {}}\n    keyName=\"G\"\n    scaleType=\"major\"\n    remaining={3.4}\n    notesCompleted={7}\n    totalNotes={25}\n    correctCount={6}\n    wrongCount={1}\n    keySignature={{ type: \"sharp\", count: 1 }}\n    hideScaleInfo\n    scale={gMajor}\n    scaleChoices={scaleChoices}\n    guessedScale={{ root: \"D\", mode: \"major\", sharpenedSteps: [\"F\", \"C\"], flattenedSteps: [] }}\n    currentNote={null}\n    countdown={null} />;"
+        }
+      ],
+      "import": "import { PracticeView as Component } from \"@app/web\";"
+    },
+    "views-practice-guessscale": {
+      "id": "views-practice-guessscale",
+      "name": "Component",
+      "path": "../web/src/views/practice/PracticeGuessScale.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "PracticeGuessScale",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/views/practice/PracticeGuessScale.tsx",
+        "actualName": "PracticeGuessScale",
+        "exportName": "PracticeGuessScale",
+        "props": {
+          "choices": {
+            "required": true,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "Scale"
+                }
+              ],
+              "raw": "Scale[]"
+            },
+            "description": ""
+          },
+          "correctScale": {
+            "required": true,
+            "tsType": {
+              "name": "Scale"
+            },
+            "description": ""
+          },
+          "guessedScale": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "Scale | null",
+              "elements": [
+                {
+                  "name": "Scale"
+                },
+                {
+                  "name": "null"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "onGuess": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(scale: Scale) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Scale"
+                    },
+                    "name": "scale"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "views-practice-guessscale--guessing",
+          "name": "Guessing",
+          "snippet": "const Guessing = () => <Component\n    choices={choices}\n    correctScale={gMajor}\n    guessedScale={null}\n    onGuess={() => {}} />;"
+        },
+        {
+          "id": "views-practice-guessscale--result-correct",
+          "name": "Result Correct",
+          "snippet": "const ResultCorrect = () => <Component\n    choices={choices}\n    correctScale={gMajor}\n    guessedScale={gMajor}\n    onGuess={() => {}} />;"
+        },
+        {
+          "id": "views-practice-guessscale--result-wrong",
+          "name": "Result Wrong",
+          "snippet": "const ResultWrong = () => <Component\n    choices={choices}\n    correctScale={gMajor}\n    guessedScale={dMajor}\n    onGuess={() => {}} />;"
+        }
+      ],
+      "import": "import { PracticeGuessScale as Component } from \"@app/web\";"
+    },
+    "views-score": {
+      "id": "views-score",
+      "name": "Component",
+      "path": "../web/src/views/score/ScoreView.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "ScoreView",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/views/score/ScoreView.tsx",
+        "actualName": "ScoreView",
+        "exportName": "ScoreView",
+        "props": {
+          "staff": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "\"treble\" | \"bass\"",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "\"treble\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"bass\""
+                }
+              ]
+            },
+            "description": ""
+          },
+          "keyName": {
+            "required": true,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "scaleType": {
+            "required": true,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "keySignature": {
+            "required": true,
+            "tsType": {
+              "name": "KeySignatureInfo"
+            },
+            "description": ""
+          },
+          "totalNotes": {
+            "required": true,
+            "tsType": {
+              "name": "number"
+            },
+            "description": ""
+          },
+          "correctCount": {
+            "required": true,
+            "tsType": {
+              "name": "number"
+            },
+            "description": ""
+          },
+          "misses": {
+            "required": true,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "MissRecord"
+                }
+              ],
+              "raw": "MissRecord[]"
+            },
+            "description": ""
+          },
+          "totalTime": {
+            "required": true,
+            "tsType": {
+              "name": "number"
+            },
+            "description": ""
+          },
+          "fastestCorrect": {
+            "required": true,
+            "tsType": {
+              "name": "number"
+            },
+            "description": ""
+          },
+          "minSlot": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": ""
+          },
+          "maxSlot": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": ""
+          },
+          "onExit": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "() => void",
+              "signature": {
+                "arguments": [],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "onPlayAgain": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "() => void",
+              "signature": {
+                "arguments": [],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "views-score--default",
+          "name": "Default",
+          "snippet": "const Default = () => <Component\n    staff=\"treble\"\n    keyName=\"G\"\n    scaleType=\"major\"\n    keySignature={{ type: \"sharp\", count: 1 }}\n    totalNotes={25}\n    correctCount={22}\n    misses={sampleMisses}\n    totalTime={96.4}\n    fastestCorrect={0.8}\n    minSlot={-2}\n    maxSlot={14}\n    onExit={() => {}}\n    onPlayAgain={() => {}} />;"
+        },
+        {
+          "id": "views-score--perfect",
+          "name": "Perfect",
+          "snippet": "const Perfect = () => <Component\n    staff=\"treble\"\n    keyName=\"G\"\n    scaleType=\"major\"\n    keySignature={{ type: \"sharp\", count: 1 }}\n    totalNotes={25}\n    correctCount={25}\n    misses={[]}\n    totalTime={72.1}\n    fastestCorrect={0.6}\n    minSlot={-2}\n    maxSlot={14}\n    onExit={() => {}}\n    onPlayAgain={() => {}} />;"
+        },
+        {
+          "id": "views-score--mobile",
+          "name": "Mobile",
+          "snippet": "const Mobile = () => <Component\n    staff=\"treble\"\n    keyName=\"G\"\n    scaleType=\"major\"\n    keySignature={{ type: \"sharp\", count: 1 }}\n    totalNotes={25}\n    correctCount={22}\n    misses={sampleMisses}\n    totalTime={96.4}\n    fastestCorrect={0.8}\n    minSlot={-2}\n    maxSlot={14}\n    onExit={() => {}}\n    onPlayAgain={() => {}} />;"
+        },
+        {
+          "id": "views-score--mobile-perfect",
+          "name": "Mobile Perfect",
+          "snippet": "const MobilePerfect = () => <Component\n    staff=\"treble\"\n    keyName=\"G\"\n    scaleType=\"major\"\n    keySignature={{ type: \"sharp\", count: 1 }}\n    totalNotes={25}\n    correctCount={25}\n    misses={[]}\n    totalTime={72.1}\n    fastestCorrect={0.6}\n    minSlot={-2}\n    maxSlot={14}\n    onExit={() => {}}\n    onPlayAgain={() => {}} />;"
+        },
+        {
+          "id": "views-score--bass-clef",
+          "name": "Bass Clef",
+          "snippet": "const BassClef = () => <Component\n    staff=\"bass\"\n    keyName=\"F\"\n    scaleType=\"major\"\n    keySignature={{ type: \"flat\", count: 1 }}\n    totalNotes={25}\n    correctCount={19}\n    misses={[\n      {\n        slot: 4,\n        correctStep: \"D\",\n        correctAccidental: \"natural\",\n        correctOctave: 3,\n        guessNote: \"C\",\n        guessOctave: 3,\n        timeTaken: 4.2,\n      },\n    ]}\n    totalTime={84.7}\n    fastestCorrect={0.8}\n    minSlot={0}\n    maxSlot={8}\n    onExit={() => {}}\n    onPlayAgain={() => {}} />;"
+        }
+      ],
+      "import": "import { ScoreView as Component } from \"@app/web\";"
+    },
+    "actions-command-palette": {
+      "id": "actions-command-palette",
+      "name": "Component",
+      "path": "../web/src/components/actions/command-palette/CommandPalette.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "CommandPalette",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/components/actions/command-palette/CommandPalette.tsx",
+        "actualName": "CommandPalette",
+        "exportName": "CommandPalette",
+        "props": {
+          "isOpen": {
+            "required": true,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": ""
+          },
+          "commands": {
+            "required": true,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "Command"
+                }
+              ],
+              "raw": "Command[]"
+            },
+            "description": ""
+          },
+          "onClose": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "() => void",
+              "signature": {
+                "arguments": [],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "actions-command-palette--default",
+          "name": "Default",
+          "snippet": "const Default = () => <Component />;"
+        },
+        {
+          "id": "actions-command-palette--empty",
+          "name": "Empty",
+          "snippet": "const Empty = () => <Component commands={[]} />;"
+        },
+        {
+          "id": "actions-command-palette--phone",
+          "name": "Phone",
+          "snippet": "const Phone = () => <Component />;"
+        },
+        {
+          "id": "actions-command-palette--search",
+          "name": "Search",
+          "snippet": "const Search = () => <Component />;"
+        },
+        {
+          "id": "actions-command-palette--empty-search",
+          "name": "Empty Search",
+          "snippet": "const EmptySearch = () => <Component />;"
+        },
+        {
+          "id": "actions-command-palette--click-command",
+          "name": "Click Command",
+          "snippet": "const ClickCommand = () => <Component />;"
+        },
+        {
+          "id": "actions-command-palette--keyboard-navigation",
+          "name": "Keyboard Navigation",
+          "snippet": "const KeyboardNavigation = () => <Component />;"
+        }
+      ],
+      "import": "import {\n    ArrowLeftStartOnRectangleIcon,\n    CommandPalette as Component,\n    ComputerDesktopIcon,\n    HomeIcon,\n    MoonIcon,\n    Squares2X2Icon,\n    SunIcon,\n} from \"@app/web\";"
+    },
+    "actions-language-selector": {
+      "id": "actions-language-selector",
+      "name": "Component",
+      "path": "../web/src/components/actions/language-selector/LanguageSelector.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "LanguageSelector",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/components/actions/language-selector/LanguageSelector.tsx",
+        "actualName": "LanguageSelector",
+        "exportName": "LanguageSelector",
+        "props": {
+          "mode": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "\"en\" | \"sv\"",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "\"en\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"sv\""
+                }
+              ]
+            },
+            "description": ""
+          },
+          "onSelect": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(mode: LocaleMode) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "union",
+                      "raw": "\"en\" | \"sv\"",
+                      "elements": [
+                        {
+                          "name": "literal",
+                          "value": "\"en\""
+                        },
+                        {
+                          "name": "literal",
+                          "value": "\"sv\""
+                        }
+                      ]
+                    },
+                    "name": "mode"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "actions-language-selector--english",
+          "name": "English",
+          "snippet": "const English = () => <Component />;"
+        },
+        {
+          "id": "actions-language-selector--swedish",
+          "name": "Swedish",
+          "snippet": "const Swedish = () => <Component mode=\"sv\" />;"
+        },
+        {
+          "id": "actions-language-selector--select-swedish",
+          "name": "Select Swedish",
+          "snippet": "const SelectSwedish = () => <Component />;"
+        }
+      ],
+      "import": "import { LanguageSelector as Component } from \"@app/web\";"
+    },
+    "actions-quick-menu": {
+      "id": "actions-quick-menu",
+      "name": "Component",
+      "path": "../web/src/components/actions/quick-menu/QuickMenu.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "QuickMenu",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/components/actions/quick-menu/QuickMenu.tsx",
+        "actualName": "QuickMenu",
+        "exportName": "QuickMenu",
+        "props": {
+          "onSettings": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "() => void",
+              "signature": {
+                "arguments": [],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "onLogout": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "() => void",
+              "signature": {
+                "arguments": [],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "onSearch": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "() => void",
+              "signature": {
+                "arguments": [],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "actions-quick-menu--default",
+          "name": "Default",
+          "snippet": "const Default = () => <Component />;"
+        },
+        {
+          "id": "actions-quick-menu--interaction",
+          "name": "Interaction",
+          "snippet": "const Interaction = () => <Component />;"
+        }
+      ],
+      "import": "import { QuickMenu as Component } from \"@app/web\";"
+    },
+    "actions-theme-selector": {
+      "id": "actions-theme-selector",
+      "name": "Component",
+      "path": "../web/src/components/actions/theme-selector/ThemeSelector.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "ThemeSelector",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/components/actions/theme-selector/ThemeSelector.tsx",
+        "actualName": "ThemeSelector",
+        "exportName": "ThemeSelector",
+        "props": {
+          "mode": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "\"light\" | \"dark\" | \"auto\"",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "\"light\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"dark\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"auto\""
+                }
+              ]
+            },
+            "description": ""
+          },
+          "onSelect": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(mode: ThemeMode) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "union",
+                      "raw": "\"light\" | \"dark\" | \"auto\"",
+                      "elements": [
+                        {
+                          "name": "literal",
+                          "value": "\"light\""
+                        },
+                        {
+                          "name": "literal",
+                          "value": "\"dark\""
+                        },
+                        {
+                          "name": "literal",
+                          "value": "\"auto\""
+                        }
+                      ]
+                    },
+                    "name": "mode"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "actions-theme-selector--auto",
+          "name": "Auto",
+          "snippet": "const Auto = () => <Component />;"
+        },
+        {
+          "id": "actions-theme-selector--light",
+          "name": "Light",
+          "snippet": "const Light = () => <Component mode=\"light\" />;"
+        },
+        {
+          "id": "actions-theme-selector--dark",
+          "name": "Dark",
+          "snippet": "const Dark = () => <Component mode=\"dark\" />;"
+        },
+        {
+          "id": "actions-theme-selector--select-light",
+          "name": "Select Light",
+          "snippet": "const SelectLight = () => <Component />;"
+        },
+        {
+          "id": "actions-theme-selector--select-dark",
+          "name": "Select Dark",
+          "snippet": "const SelectDark = () => <Component mode=\"light\" />;"
+        }
+      ],
+      "import": "import { ThemeSelector as Component } from \"@app/web\";"
+    },
+    "core-route-error": {
+      "id": "core-route-error",
+      "name": "RouteError",
+      "path": "../web/src/core/routes/logic/RouteError.stories.tsx",
+      "jsDocTags": {},
+      "error": {
+        "name": "No component definition found",
+        "message": "File: /home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/core/routes/logic/RouteError.tsx\nError:\n\".\" is not exported under no conditions from package /home/runner/work/app-note-trainer/app-note-trainer/apps/web/node_modules/@tanstack/react-router (see exports field in /home/runner/work/app-note-trainer/app-note-trainer/apps/web/node_modules/@tanstack/react-router/package.json)\nYou can debug your component file in this playground: https://react-docgen.dev/playground\nCode:\nimport type { ReactElement } from \"react\";\nimport { ExclamationTriangleIcon } from \"@heroicons/react/24/outline\";\nimport { Button } from \"@heroui/react\";\nimport { useRouter } from \"@tanstack/react-router\";\nimport { useIntl } from \"react-intl\";\n\ninterface RouteErrorProps {\n  error?: Error;\n}\n\nexport function RouteError({ error }: RouteErrorProps): ReactElement {\n  const intl = useIntl();\n  const router = useRouter();\n\n  function handleRetry(): void {\n    router.invalidate();\n  }\n\n  const title = intl.formatMessage({\n    description: \"RouteError: heading - error title\",\n    defaultMessage: \"Something went wrong\",\n    id: \"lY27zk\",\n  });\n\n  const description = intl.formatMessage({\n    description: \"RouteError: body - error description\",\n    defaultMessage: \"An unexpected error occurred. Please try again.\",\n    id: \"O+ukwO\",\n  });\n\n  const retryLabel = intl.formatMessage({\n    description: \"RouteError: button - retry\",\n    defaultMessage: \"Try again\",\n    id: \"xUgKrt\",\n  });\n\n  return (\n    <div className=\"flex min-h-screen flex-col items-center justify-center gap-4 p-6 text-center\">\n      <ExclamationTriangleIcon className=\"text-warning h-12 w-12\" aria-hidden=\"true\" />\n      <h1 className=\"text-xl font-semibold\">{title}</h1>\n      <p className=\"text-default-500 max-w-sm text-sm\">{description}</p>\n      {error?.message && (\n        <p className=\"text-danger bg-danger-50 max-w-sm rounded-md px-3 py-2 font-mono text-xs\" role=\"alert\">\n          {error.message}\n        </p>\n      )}\n      <Button variant=\"primary\" onPress={handleRetry}>\n        {retryLabel}\n      </Button>\n    </div>\n  );\n}\n"
+      },
+      "stories": [
+        {
+          "id": "core-route-error--default",
+          "name": "Default",
+          "snippet": "const Default = () => <RouteError />;"
+        },
+        {
+          "id": "core-route-error--with-error-message",
+          "name": "With Error Message",
+          "snippet": "const WithErrorMessage = () => <RouteError error={new Error(\"Failed to fetch data from /api/users\")} />;"
+        }
+      ],
+      "import": "import { RouteError } from \"@app/web\";"
+    },
+    "core-route-loading": {
+      "id": "core-route-loading",
+      "name": "Component",
+      "path": "../web/src/core/routes/logic/RouteLoading.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "RouteLoading",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/core/routes/logic/RouteLoading.tsx",
+        "actualName": "RouteLoading",
+        "exportName": "RouteLoading"
+      },
+      "stories": [
+        {
+          "id": "core-route-loading--default",
+          "name": "Default",
+          "snippet": "const Default = () => <Component />;"
+        }
+      ],
+      "import": "import { RouteLoading as Component } from \"@app/web\";"
+    },
+    "display-music-glyph": {
+      "id": "display-music-glyph",
+      "name": "MusicGlyph",
+      "path": "../web/src/components/display/music-glyph/MusicGlyph.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "MusicGlyph",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/components/display/music-glyph/MusicGlyph.tsx",
+        "actualName": "MusicGlyph",
+        "exportName": "MusicGlyph",
+        "props": {
+          "glyph": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "keyof typeof MUSIC_GLYPHS",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "gClef"
+                },
+                {
+                  "name": "literal",
+                  "value": "fClef"
+                },
+                {
+                  "name": "literal",
+                  "value": "noteheadWhole"
+                },
+                {
+                  "name": "literal",
+                  "value": "noteheadHalf"
+                },
+                {
+                  "name": "literal",
+                  "value": "noteheadBlack"
+                },
+                {
+                  "name": "literal",
+                  "value": "accidentalSharp"
+                },
+                {
+                  "name": "literal",
+                  "value": "accidentalFlat"
+                },
+                {
+                  "name": "literal",
+                  "value": "accidentalNatural"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "size": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "64",
+              "computed": false
+            }
+          },
+          "className": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "style": {
+            "required": false,
+            "tsType": {
+              "name": "CSSProperties"
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "display-music-glyph--g-clef",
+          "name": "G Clef",
+          "snippet": "const GClef = () => <MusicGlyph glyph=\"gClef\" size={64} />;"
+        },
+        {
+          "id": "display-music-glyph--f-clef",
+          "name": "F Clef",
+          "snippet": "const FClef = () => <MusicGlyph glyph=\"fClef\" size={64} />;"
+        },
+        {
+          "id": "display-music-glyph--whole-note",
+          "name": "Whole Note",
+          "snippet": "const WholeNote = () => <MusicGlyph glyph=\"noteheadWhole\" size={64} />;"
+        },
+        {
+          "id": "display-music-glyph--half-note",
+          "name": "Half Note",
+          "snippet": "const HalfNote = () => <MusicGlyph glyph=\"noteheadHalf\" size={64} />;"
+        },
+        {
+          "id": "display-music-glyph--quarter-note",
+          "name": "Quarter Note",
+          "snippet": "const QuarterNote = () => <MusicGlyph glyph=\"noteheadBlack\" size={64} />;"
+        },
+        {
+          "id": "display-music-glyph--gallery",
+          "name": "Gallery",
+          "snippet": "const Gallery = () => <GlyphGalleryStory />;"
+        },
+        {
+          "id": "display-music-glyph--size-scale",
+          "name": "Size Scale",
+          "snippet": "const SizeScale = () => <SizeScaleStory />;"
+        }
+      ],
+      "import": "import { MusicGlyph } from \"@app/web\";"
+    },
+    "display-sheet-music-staff": {
+      "id": "display-sheet-music-staff",
+      "name": "Component",
+      "path": "../web/src/components/display/sheet-music-staff/SheetMusicStaff.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "SheetMusicStaff",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/components/display/sheet-music-staff/SheetMusicStaff.tsx",
+        "actualName": "SheetMusicStaff",
+        "exportName": "SheetMusicStaff",
+        "props": {
+          "staff": {
+            "required": true,
+            "tsType": {
+              "name": "union",
+              "raw": "\"treble\" | \"bass\"",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "\"treble\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"bass\""
+                }
+              ]
+            },
+            "description": ""
+          },
+          "notes": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "StaffNoteData"
+                }
+              ],
+              "raw": "StaffNoteData[]"
+            },
+            "description": ""
+          },
+          "keySignature": {
+            "required": false,
+            "tsType": {
+              "name": "KeySignatureInfo"
+            },
+            "description": ""
+          },
+          "className": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "minSlot": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": "Fixed slot bounds for the viewBox — prevents layout shift when notes change.\n When omitted, bounds are auto-detected from the notes array each render."
+          },
+          "maxSlot": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "display-sheet-music-staff--treble-clef",
+          "name": "Treble Clef",
+          "snippet": "const TrebleClef = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--bass-clef",
+          "name": "Bass Clef",
+          "snippet": "const BassClef = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--desktop",
+          "name": "Desktop",
+          "snippet": "const Desktop = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--phone",
+          "name": "Phone",
+          "snippet": "const Phone = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--bass-phone",
+          "name": "Bass Phone",
+          "snippet": "const BassPhone = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--with-note",
+          "name": "With Note",
+          "snippet": "const WithNote = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--with-ledger-note",
+          "name": "With Ledger Note",
+          "snippet": "const WithLedgerNote = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--quarter-note",
+          "name": "Quarter Note",
+          "snippet": "const QuarterNote = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--quarter-note-high",
+          "name": "Quarter Note High",
+          "snippet": "const QuarterNoteHigh = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--phone-with-note",
+          "name": "Phone With Note",
+          "snippet": "const PhoneWithNote = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--active-note",
+          "name": "Active Note",
+          "snippet": "const ActiveNote = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--active-note-ledger",
+          "name": "Active Note Ledger",
+          "snippet": "const ActiveNoteLedger = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--treble-ledger-lowest",
+          "name": "Treble Ledger Lowest",
+          "snippet": "const TrebleLedgerLowest = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--treble-ledger-highest",
+          "name": "Treble Ledger Highest",
+          "snippet": "const TrebleLedgerHighest = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--bass-ledger-lowest",
+          "name": "Bass Ledger Lowest",
+          "snippet": "const BassLedgerLowest = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--bass-ledger-highest",
+          "name": "Bass Ledger Highest",
+          "snippet": "const BassLedgerHighest = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--phone-treble-ledger-lowest",
+          "name": "Phone Treble Ledger Lowest",
+          "snippet": "const PhoneTrebleLedgerLowest = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--phone-treble-ledger-highest",
+          "name": "Phone Treble Ledger Highest",
+          "snippet": "const PhoneTrebleLedgerHighest = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--sharp-note",
+          "name": "Sharp Note",
+          "snippet": "const SharpNote = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--phone-sharp-note",
+          "name": "Phone Sharp Note",
+          "snippet": "const PhoneSharpNote = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--flat-note",
+          "name": "Flat Note",
+          "snippet": "const FlatNote = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--key-sig-one-sharp-treble",
+          "name": "Key Sig One Sharp Treble",
+          "snippet": "const KeySigOneSharpTreble = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--key-sig-two-sharps-treble",
+          "name": "Key Sig Two Sharps Treble",
+          "snippet": "const KeySigTwoSharpsTreble = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--key-sig-three-sharps-treble",
+          "name": "Key Sig Three Sharps Treble",
+          "snippet": "const KeySigThreeSharpsTreble = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--key-sig-four-sharps-treble",
+          "name": "Key Sig Four Sharps Treble",
+          "snippet": "const KeySigFourSharpsTreble = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--key-sig-one-flat-treble",
+          "name": "Key Sig One Flat Treble",
+          "snippet": "const KeySigOneFlatTreble = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--key-sig-two-flats-treble",
+          "name": "Key Sig Two Flats Treble",
+          "snippet": "const KeySigTwoFlatsTreble = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--key-sig-three-flats-treble",
+          "name": "Key Sig Three Flats Treble",
+          "snippet": "const KeySigThreeFlatsTreble = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--key-sig-four-flats-treble",
+          "name": "Key Sig Four Flats Treble",
+          "snippet": "const KeySigFourFlatsTreble = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--key-sig-two-sharps-bass",
+          "name": "Key Sig Two Sharps Bass",
+          "snippet": "const KeySigTwoSharpsBass = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--key-sig-two-flats-bass",
+          "name": "Key Sig Two Flats Bass",
+          "snippet": "const KeySigTwoFlatsBass = () => <Component />;"
+        },
+        {
+          "id": "display-sheet-music-staff--phone-key-signature",
+          "name": "Phone Key Signature",
+          "snippet": "const PhoneKeySignature = () => <Component />;"
+        }
+      ],
+      "import": "import { SheetMusicStaff as Component } from \"@app/web\";"
+    },
+    "feedback-about": {
+      "id": "feedback-about",
+      "name": "Component",
+      "path": "../web/src/components/feedback/about-details/AboutDetails.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "AboutDetails",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/components/feedback/about-details/AboutDetails.tsx",
+        "actualName": "AboutDetails",
+        "exportName": "AboutDetails",
+        "props": {
+          "appName": {
+            "required": true,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "appVersion": {
+            "required": true,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "feedback-about--details",
+          "name": "Details",
+          "snippet": "const Details = () => <Component />;"
+        }
+      ],
+      "import": "import { AboutDetails as Component } from \"@app/web\";"
+    },
+    "feedback-pwa-offline": {
+      "id": "feedback-pwa-offline",
+      "name": "PWAOffline",
+      "path": "../web/src/components/feedback/pwa-offline-dialog/PwaOfflineDialog.stories.tsx",
+      "jsDocTags": {},
+      "error": {
+        "name": "No component found",
+        "message": "We could not detect the component from your story file. Specify meta.component.\n   6 | import { PwaOfflineDialogProps } from \"./PwaOfflineDialog\";\n   7 |\n>  8 | const meta: Meta = {\n     | ^\n   9 |   title: \"Feedback/PWA Offline\",\n  10 |   decorators: [CommonDecorator, ToastDecorator],\n  11 | };\n\n../web/src/components/feedback/pwa-offline-dialog/PwaOfflineDialog.stories.tsx:\nimport { toast, Button } from \"@heroui/react\";\nimport { CommonDecorator, ToastDecorator } from \"@package/storybook\";\nimport type { Meta, StoryObj } from \"@storybook/react-vite\";\nimport { useIntl } from \"react-intl\";\nimport { expect, within } from \"storybook/test\";\nimport { PwaOfflineDialogProps } from \"./PwaOfflineDialog\";\n\nconst meta: Meta = {\n  title: \"Feedback/PWA Offline\",\n  decorators: [CommonDecorator, ToastDecorator],\n};\n\nexport default meta;\ntype Story = StoryObj<typeof meta>;\n\nexport const OfflineDialog: Story = {\n  render: () => {\n    const intl = useIntl();\n    return (\n      <Button\n        onPress={() => {\n          const [msg, opts] = PwaOfflineDialogProps(intl, () => console.log(\"onClose\"));\n          toast(msg, opts);\n        }}\n      >\n        Show Toast\n      </Button>\n    );\n  },\n  play: async ({ canvas, userEvent }) => {\n    await userEvent.click(canvas.getByRole(\"button\", { name: \"Show Toast\" }));\n\n    const body = within(document.body);\n    await expect(await body.findByText(/ready to work offline/i)).toBeInTheDocument();\n  },\n};\n"
+      },
+      "stories": [
+        {
+          "id": "feedback-pwa-offline--offline-dialog",
+          "name": "Offline Dialog",
+          "snippet": "const OfflineDialog = () => {\n  const intl = useIntl();\n  return (\n    <Button\n      onPress={() => {\n        const [msg, opts] = PwaOfflineDialogProps(intl, () => console.log(\"onClose\"));\n        toast(msg, opts);\n      }}\n    >\n      Show Toast\n    </Button>\n  );\n};"
+        }
+      ],
+      "import": "import { Button } from \"@app/web\";"
+    },
+    "feedback-pwa-update": {
+      "id": "feedback-pwa-update",
+      "name": "PWAUpdate",
+      "path": "../web/src/components/feedback/pwa-update-dialog/PwaUpdateDialog.stories.tsx",
+      "jsDocTags": {},
+      "error": {
+        "name": "No component found",
+        "message": "We could not detect the component from your story file. Specify meta.component.\n   6 | import { PwaUpdateDialogProps } from \"./PwaUpdateDialog\";\n   7 |\n>  8 | const meta = {\n     | ^\n   9 |   title: \"Feedback/PWA Update\",\n  10 |   decorators: [CommonDecorator, ToastDecorator],\n  11 | };\n\n../web/src/components/feedback/pwa-update-dialog/PwaUpdateDialog.stories.tsx:\nimport { Button, toast } from \"@heroui/react\";\nimport { CommonDecorator, ToastDecorator } from \"@package/storybook\";\nimport type { StoryObj } from \"@storybook/react-vite\";\nimport { useIntl } from \"react-intl\";\nimport { expect, within } from \"storybook/test\";\nimport { PwaUpdateDialogProps } from \"./PwaUpdateDialog\";\n\nconst meta = {\n  title: \"Feedback/PWA Update\",\n  decorators: [CommonDecorator, ToastDecorator],\n};\n\nexport default meta;\ntype Story = StoryObj<typeof meta>;\n\nexport const UpdateDialog: Story = {\n  render: () => {\n    const intl = useIntl();\n    return (\n      <Button\n        onPress={() => {\n          const [msg, opts] = PwaUpdateDialogProps(\n            intl,\n            \"App\",\n            () => console.log(\"onClose\"),\n            () => console.log(\"onUpdate\")\n          );\n          toast(msg, opts);\n        }}\n      >\n        Show Toast\n      </Button>\n    );\n  },\n  play: async ({ canvas, userEvent }) => {\n    await userEvent.click(canvas.getByRole(\"button\", { name: \"Show Toast\" }));\n\n    const body = within(document.body);\n    await expect(await body.findByText(/A new version of App is available/i)).toBeInTheDocument();\n    await expect(await body.findByRole(\"button\", { name: /update/i })).toBeInTheDocument();\n  },\n};\n"
+      },
+      "stories": [
+        {
+          "id": "feedback-pwa-update--update-dialog",
+          "name": "Update Dialog",
+          "snippet": "const UpdateDialog = () => {\n  const intl = useIntl();\n  return (\n    <Button\n      onPress={() => {\n        const [msg, opts] = PwaUpdateDialogProps(\n          intl,\n          \"App\",\n          () => console.log(\"onClose\"),\n          () => console.log(\"onUpdate\")\n        );\n        toast(msg, opts);\n      }}\n    >\n      Show Toast\n    </Button>\n  );\n};"
+        }
+      ],
+      "import": "import { Button } from \"@app/web\";"
+    },
+    "feedback-settings-modal": {
+      "id": "feedback-settings-modal",
+      "name": "Component",
+      "path": "../web/src/components/feedback/settings-modal/SettingsModal.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "SettingsModal",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/components/feedback/settings-modal/SettingsModal.tsx",
+        "actualName": "SettingsModal",
+        "exportName": "SettingsModal",
+        "props": {
+          "isOpen": {
+            "required": true,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": ""
+          },
+          "sections": {
+            "required": true,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "union",
+                  "raw": "\"account\" | \"appearance\" | \"language\" | \"about\"",
+                  "elements": [
+                    {
+                      "name": "literal",
+                      "value": "\"account\""
+                    },
+                    {
+                      "name": "literal",
+                      "value": "\"appearance\""
+                    },
+                    {
+                      "name": "literal",
+                      "value": "\"language\""
+                    },
+                    {
+                      "name": "literal",
+                      "value": "\"about\""
+                    }
+                  ]
+                }
+              ],
+              "raw": "SettingsSection[]"
+            },
+            "description": ""
+          },
+          "initialSection": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "\"account\" | \"appearance\" | \"language\" | \"about\"",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "\"account\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"appearance\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"language\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"about\""
+                }
+              ]
+            },
+            "description": ""
+          },
+          "onClose": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "() => void",
+              "signature": {
+                "arguments": [],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "account": {
+            "required": false,
+            "tsType": {
+              "name": "SettingsAccountSectionProps"
+            },
+            "description": ""
+          },
+          "appearance": {
+            "required": true,
+            "tsType": {
+              "name": "SettingsAppearanceSectionProps"
+            },
+            "description": ""
+          },
+          "language": {
+            "required": true,
+            "tsType": {
+              "name": "SettingsLanguageSectionProps"
+            },
+            "description": ""
+          },
+          "aboutDetails": {
+            "required": true,
+            "tsType": {
+              "name": "SettingsAboutSectionProps"
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "feedback-settings-modal--default",
+          "name": "Default",
+          "snippet": "const Default = () => <Component />;"
+        },
+        {
+          "id": "feedback-settings-modal--account",
+          "name": "Account",
+          "snippet": "const Account = () => <Component initialSection=\"account\" />;"
+        },
+        {
+          "id": "feedback-settings-modal--appearance",
+          "name": "Appearance",
+          "snippet": "const Appearance = () => <Component initialSection=\"appearance\" />;"
+        },
+        {
+          "id": "feedback-settings-modal--language",
+          "name": "Language",
+          "snippet": "const Language = () => <Component initialSection=\"language\" />;"
+        },
+        {
+          "id": "feedback-settings-modal--about",
+          "name": "About",
+          "snippet": "const About = () => <Component initialSection=\"about\" />;"
+        },
+        {
+          "id": "feedback-settings-modal--phone",
+          "name": "Phone",
+          "snippet": "const Phone = () => <Component />;"
+        }
+      ],
+      "import": "import { SettingsModal as Component } from \"@app/web\";"
+    },
+    "input-input-field": {
+      "id": "input-input-field",
+      "name": "InputFieldWrapper",
+      "path": "../web/src/components/input/input-field/InputField.stories.tsx",
+      "jsDocTags": {},
+      "error": {
+        "name": "No component definition found",
+        "message": "File: /home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/components/input/input-field/InputField.tsx\nError:\n\".\" is not exported under no conditions from package /home/runner/work/app-note-trainer/app-note-trainer/apps/web/node_modules/@tanstack/react-form (see exports field in /home/runner/work/app-note-trainer/app-note-trainer/apps/web/node_modules/@tanstack/react-form/package.json)\nYou can debug your component file in this playground: https://react-docgen.dev/playground\nCode:\nimport type { ReactElement, ReactNode } from \"react\";\nimport type { InputProps } from \"@heroui/react\";\nimport {\n  FieldError,\n  InputGroup,\n  InputGroupInput,\n  InputGroupPrefix,\n  InputGroupSuffix,\n  Label,\n  TextField,\n} from \"@heroui/react\";\nimport type { AnyFieldApi } from \"@tanstack/react-form\";\n\ninterface InputFieldProps extends Omit<InputProps, \"children\"> {\n  field: AnyFieldApi;\n  label?: string;\n  startContent?: ReactNode;\n  endContent?: ReactNode;\n}\n\nexport function InputField({ field, label, startContent, endContent, ...rest }: InputFieldProps): ReactElement {\n  const errorMessage =\n    field.state.meta.isTouched && !field.state.meta.isValid\n      ? field.state.meta.errors.map((err) => err.message).join(\",\")\n      : null;\n\n  return (\n    <TextField isInvalid={field.state.meta.isTouched && !field.state.meta.isValid} validationBehavior=\"aria\">\n      {label && <Label>{label}</Label>}\n      <InputGroup fullWidth>\n        {startContent && <InputGroupPrefix>{startContent}</InputGroupPrefix>}\n        <InputGroupInput\n          id={field.name}\n          value={field.state.value}\n          onBlur={field.handleBlur}\n          onChange={(e) => field.handleChange(e.target.value)}\n          {...rest}\n        />\n        {endContent && <InputGroupSuffix>{endContent}</InputGroupSuffix>}\n      </InputGroup>\n      {errorMessage && <FieldError>{errorMessage}</FieldError>}\n    </TextField>\n  );\n}\n"
+      },
+      "stories": [
+        {
+          "id": "input-input-field--default",
+          "name": "Default",
+          "snippet": "const Default = () => <InputField label=\"Email\" placeholder=\"you@example.com\" />;"
+        },
+        {
+          "id": "input-input-field--with-icon",
+          "name": "With Icon",
+          "snippet": "const WithIcon = () => <InputField label=\"Email\" placeholder=\"you@example.com\" withIcon />;"
+        },
+        {
+          "id": "input-input-field--without-label",
+          "name": "Without Label",
+          "snippet": "const WithoutLabel = () => <InputField placeholder=\"Type something…\" />;"
+        }
+      ],
+      "import": "import { EnvelopeIcon, InputField } from \"@app/web\";"
+    },
+    "input-piano-keyboard": {
+      "id": "input-piano-keyboard",
+      "name": "Component",
+      "path": "../web/src/components/input/piano-keyboard/PianoKeyboard.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "PianoKeyboard",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/components/input/piano-keyboard/PianoKeyboard.tsx",
+        "actualName": "PianoKeyboard",
+        "exportName": "PianoKeyboard",
+        "props": {
+          "onKeyPress": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(key: PianoKeyData) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "PianoKeyData"
+                    },
+                    "name": "key"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "highlightedKey": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Highlight a specific key in the brand colour, e.g. \"C4\" or \"F#5\""
+          },
+          "correctKey": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Highlight the correct key in green (used in the score miss-review view)"
+          },
+          "wrongKey": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Highlight the wrong key in red (used in the score miss-review view)"
+          },
+          "readonly": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "When true, pointer events are disabled — keyboard is display-only",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "className": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "input-piano-keyboard--default",
+          "name": "Default",
+          "snippet": "const Default = () => <Component onKeyPress={() => {}} />;"
+        },
+        {
+          "id": "input-piano-keyboard--highlighted-white-key",
+          "name": "Highlighted White Key",
+          "snippet": "const HighlightedWhiteKey = () => <Component onKeyPress={() => {}} highlightedKey=\"C4\" />;"
+        },
+        {
+          "id": "input-piano-keyboard--highlighted-black-key",
+          "name": "Highlighted Black Key",
+          "snippet": "const HighlightedBlackKey = () => <Component onKeyPress={() => {}} highlightedKey=\"F#4\" />;"
+        },
+        {
+          "id": "input-piano-keyboard--highlighted-upper-octave",
+          "name": "Highlighted Upper Octave",
+          "snippet": "const HighlightedUpperOctave = () => <Component onKeyPress={() => {}} highlightedKey=\"A5\" />;"
+        },
+        {
+          "id": "input-piano-keyboard--desktop",
+          "name": "Desktop",
+          "snippet": "const Desktop = () => <Component onKeyPress={() => {}} />;"
+        },
+        {
+          "id": "input-piano-keyboard--phone",
+          "name": "Phone",
+          "snippet": "const Phone = () => <Component onKeyPress={() => {}} />;"
+        },
+        {
+          "id": "input-piano-keyboard--phone-highlighted",
+          "name": "Phone Highlighted",
+          "snippet": "const PhoneHighlighted = () => <Component onKeyPress={() => {}} highlightedKey=\"G4\" />;"
+        },
+        {
+          "id": "input-piano-keyboard--keyboard-renders",
+          "name": "Keyboard Renders",
+          "snippet": "const KeyboardRenders = () => <Component onKeyPress={() => {}} />;"
+        },
+        {
+          "id": "input-piano-keyboard--press-white-key",
+          "name": "Press White Key",
+          "snippet": "const PressWhiteKey = () => {\n  const [lastKey, setLastKey] = useState<string | null>(null);\n  return (\n    <div>\n      <Component {...defaultArgs} onKeyPress={(key) => setLastKey(key.label)} />\n      <div data-testid=\"piano-keyboard__result\">{lastKey ?? \"none\"}</div>\n    </div>\n  );\n};"
+        },
+        {
+          "id": "input-piano-keyboard--press-black-key",
+          "name": "Press Black Key",
+          "snippet": "const PressBlackKey = () => {\n  const [lastKey, setLastKey] = useState<string | null>(null);\n  return (\n    <div>\n      <Component {...defaultArgs} onKeyPress={(key) => setLastKey(key.label)} />\n      <div data-testid=\"piano-keyboard__result\">{lastKey ?? \"none\"}</div>\n    </div>\n  );\n};"
+        },
+        {
+          "id": "input-piano-keyboard--press-key-returns-note-data",
+          "name": "Press Key Returns Note Data",
+          "snippet": "const PressKeyReturnsNoteData = () => {\n  const [result, setResult] = useState<string | null>(null);\n  return (\n    <div>\n      <Component\n        {...defaultArgs}\n        onKeyPress={(key) => setResult(`${key.note}|${key.octave}|${key.isBlack ? \"black\" : \"white\"}`)}\n      />\n      <div data-testid=\"piano-keyboard__result\">{result ?? \"none\"}</div>\n    </div>\n  );\n};"
+        },
+        {
+          "id": "input-piano-keyboard--highlighted-key-marked",
+          "name": "Highlighted Key Marked",
+          "snippet": "const HighlightedKeyMarked = () => <Component onKeyPress={() => {}} highlightedKey=\"C4\" />;"
+        },
+        {
+          "id": "input-piano-keyboard--highlighted-black-key-marked",
+          "name": "Highlighted Black Key Marked",
+          "snippet": "const HighlightedBlackKeyMarked = () => <Component onKeyPress={() => {}} highlightedKey=\"F#4\" />;"
+        },
+        {
+          "id": "input-piano-keyboard--multiple-key-presses",
+          "name": "Multiple Key Presses",
+          "snippet": "const MultipleKeyPresses = () => {\n  const [keys, setKeys] = useState<string[]>([]);\n  return (\n    <div>\n      <Component {...defaultArgs} onKeyPress={(key) => setKeys((prev) => [...prev, key.label])} />\n      <div data-testid=\"piano-keyboard__result\">{keys.join(\",\") || \"none\"}</div>\n    </div>\n  );\n};"
+        }
+      ],
+      "import": "import { PianoKeyboard as Component } from \"@app/web\";"
+    },
+    "input-search-field": {
+      "id": "input-search-field",
+      "name": "SearchFieldWrapper",
+      "path": "../web/src/components/input/input-field/SearchField.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "SearchField",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/components/input/input-field/SearchField.tsx",
+        "actualName": "SearchField",
+        "exportName": "SearchField",
+        "props": {
+          "value": {
+            "required": true,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "onChange": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(value: string) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "string"
+                    },
+                    "name": "value"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "ariaLabel": {
+            "required": true,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "className": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          }
+        },
+        "composes": [
+          "Omit"
+        ]
+      },
+      "stories": [
+        {
+          "id": "input-search-field--default",
+          "name": "Default",
+          "snippet": "const Default = () => <SearchField placeholder=\"Search…\" />;"
+        },
+        {
+          "id": "input-search-field--with-value",
+          "name": "With Value",
+          "snippet": "const WithValue = () => <SearchField placeholder=\"Search…\" initialValue=\"invoice\" />;"
+        }
+      ],
+      "import": "import { SearchField } from \"@app/web\";"
+    },
+    "navigation-navbar-content": {
+      "id": "navigation-navbar-content",
+      "name": "Component",
+      "path": "../web/src/components/navigation/navbar-content/NavbarContent.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "NavbarContent",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/apps/web/src/components/navigation/navbar-content/NavbarContent.tsx",
+        "actualName": "NavbarContent",
+        "exportName": "NavbarContent",
+        "props": {
+          "onSettings": {
+            "required": true,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "() => void",
+              "signature": {
+                "arguments": [],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "navigation-navbar-content--responsive",
+          "name": "Responsive",
+          "snippet": "const Responsive = () => <Component />;"
+        },
+        {
+          "id": "navigation-navbar-content--desktop",
+          "name": "Desktop",
+          "snippet": "const Desktop = () => <Component />;"
+        },
+        {
+          "id": "navigation-navbar-content--phone",
+          "name": "Phone",
+          "snippet": "const Phone = () => <Component />;"
+        },
+        {
+          "id": "navigation-navbar-content--interaction",
+          "name": "Interaction",
+          "snippet": "const Interaction = () => <Component />;"
+        }
+      ],
+      "import": "import { NavbarContent as Component } from \"@app/web\";"
+    },
+    "shared-branding-logo": {
+      "id": "shared-branding-logo",
+      "name": "Component",
+      "path": "../../packages/ui/src/Branding/Logo/Logo.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "Logo",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/packages/ui/src/Branding/Logo/Logo.tsx",
+        "actualName": "Logo",
+        "exportName": "Logo",
+        "props": {
+          "size": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "\"small\" | \"medium\" | \"large\"",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "\"small\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"medium\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"large\""
+                }
+              ]
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "\"large\"",
+              "computed": false
+            }
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "shared-branding-logo--small",
+          "name": "Small",
+          "snippet": "const Small = () => <Component size=\"small\" />;"
+        },
+        {
+          "id": "shared-branding-logo--medium",
+          "name": "Medium",
+          "snippet": "const Medium = () => <Component size=\"medium\" />;"
+        },
+        {
+          "id": "shared-branding-logo--large",
+          "name": "Large",
+          "snippet": "const Large = () => <Component size=\"large\" />;"
+        }
+      ],
+      "import": "import { Logo as Component } from \"@package/ui\";"
+    },
+    "shared-branding-logo-full": {
+      "id": "shared-branding-logo-full",
+      "name": "Component",
+      "path": "../../packages/ui/src/Branding/LogoFull/LogoFull.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "LogoFull",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/packages/ui/src/Branding/LogoFull/LogoFull.tsx",
+        "actualName": "LogoFull",
+        "exportName": "LogoFull",
+        "props": {
+          "appName": {
+            "required": true,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "size": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "\"small\" | \"medium\" | \"large\"",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "\"small\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"medium\""
+                },
+                {
+                  "name": "literal",
+                  "value": "\"large\""
+                }
+              ]
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "\"large\"",
+              "computed": false
+            }
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "shared-branding-logo-full--full-small",
+          "name": "Full Small",
+          "snippet": "const FullSmall = () => <Component appName=\"Note Trainer\" size=\"small\" />;"
+        },
+        {
+          "id": "shared-branding-logo-full--full-medium",
+          "name": "Full Medium",
+          "snippet": "const FullMedium = () => <Component appName=\"Note Trainer\" size=\"medium\" />;"
+        },
+        {
+          "id": "shared-branding-logo-full--full-large",
+          "name": "Full Large",
+          "snippet": "const FullLarge = () => <Component appName=\"Note Trainer\" size=\"large\" />;"
+        }
+      ],
+      "import": "import { LogoFull as Component } from \"@package/ui\";"
+    },
+    "shared-icons-social": {
+      "id": "shared-icons-social",
+      "name": "Social",
+      "path": "../../packages/ui/src/Icons/Social/SocialIcons.stories.tsx",
+      "jsDocTags": {},
+      "error": {
+        "name": "No component found",
+        "message": "We could not detect the component from your story file. Specify meta.component.\n  4 | import { LinkedInIcon } from \"./LinkedInIcon\";\n  5 |\n> 6 | const meta: Meta = {\n    | ^\n  7 |   title: \"Shared/Icons/Social\",\n  8 |   tags: [\"autodocs\"],\n  9 | };\n\n../../packages/ui/src/Icons/Social/SocialIcons.stories.tsx:\nimport type { ReactNode } from \"react\";\nimport type { Meta, StoryObj } from \"@storybook/react-vite\";\nimport { GithubIcon } from \"./GithubIcon\";\nimport { LinkedInIcon } from \"./LinkedInIcon\";\n\nconst meta: Meta = {\n  title: \"Shared/Icons/Social\",\n  tags: [\"autodocs\"],\n};\n\nexport default meta;\ntype Story = StoryObj<typeof meta>;\n\nfunction render(children?: ReactNode) {\n  return <div className=\"h-8 w-8\">{children}</div>;\n}\n\nexport const Github: Story = {\n  render: (args) => render(<GithubIcon {...args} />),\n};\n\nexport const Linkedin: Story = {\n  render: (args) => render(<LinkedInIcon {...args} />),\n};\n"
+      },
+      "stories": [
+        {
+          "id": "shared-icons-social--github",
+          "name": "Github",
+          "snippet": "const Github = (args) => render(<GithubIcon {...args} />);"
+        },
+        {
+          "id": "shared-icons-social--linkedin",
+          "name": "Linkedin",
+          "snippet": "const Linkedin = (args) => render(<LinkedInIcon {...args} />);"
+        }
+      ],
+      "import": "import { GithubIcon, LinkedInIcon } from \"@package/ui\";"
+    },
+    "shared-layout-background-blue-fade": {
+      "id": "shared-layout-background-blue-fade",
+      "name": "Component",
+      "path": "../../packages/ui/src/Layout/Background/BlueFadeBackground.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "BlueFadeBackground",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/packages/ui/src/Layout/Background/BlueFadeBackground.tsx",
+        "actualName": "BlueFadeBackground",
+        "exportName": "BlueFadeBackground"
+      },
+      "stories": [
+        {
+          "id": "shared-layout-background-blue-fade--default",
+          "name": "Default",
+          "snippet": "const Default = () => <Component />;"
+        },
+        {
+          "id": "shared-layout-background-blue-fade--interaction",
+          "name": "Interaction",
+          "snippet": "const Interaction = () => <Component />;"
+        }
+      ],
+      "import": "import { BlueFadeBackground as Component } from \"@package/ui\";"
+    },
+    "shared-layout-background-grid": {
+      "id": "shared-layout-background-grid",
+      "name": "Component",
+      "path": "../../packages/ui/src/Layout/Background/GridBackground.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "GridBackground",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/packages/ui/src/Layout/Background/GridBackground.tsx",
+        "actualName": "GridBackground",
+        "exportName": "GridBackground"
+      },
+      "stories": [
+        {
+          "id": "shared-layout-background-grid--default",
+          "name": "Default",
+          "snippet": "const Default = () => <Component />;"
+        },
+        {
+          "id": "shared-layout-background-grid--interaction",
+          "name": "Interaction",
+          "snippet": "const Interaction = () => <Component />;"
+        }
+      ],
+      "import": "import { GridBackground as Component } from \"@package/ui\";"
+    },
+    "shared-layout-basic": {
+      "id": "shared-layout-basic",
+      "name": "Component",
+      "path": "../../packages/ui/src/Layout/BasicLayout/BasicLayout.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "BasicLayout",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/packages/ui/src/Layout/BasicLayout/BasicLayout.tsx",
+        "actualName": "BasicLayout",
+        "exportName": "BasicLayout",
+        "props": {
+          "className": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "backgroundElement": {
+            "required": false,
+            "tsType": {
+              "name": "ReactNode"
+            },
+            "description": ""
+          },
+          "children": {
+            "required": true,
+            "tsType": {
+              "name": "ReactNode"
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "shared-layout-basic--basic-layout",
+          "name": "Basic Layout",
+          "snippet": "const BasicLayout = () => <Component><StorybookTableContentComponent /></Component>;"
+        }
+      ],
+      "import": "import { BasicLayout as Component, StorybookTableContentComponent } from \"@package/ui\";"
+    },
+    "shared-layout-navbar": {
+      "id": "shared-layout-navbar",
+      "name": "Component",
+      "path": "../../packages/ui/src/Layout/NavbarLayout/NavbarLayout.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "NavbarLayout",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/packages/ui/src/Layout/NavbarLayout/NavbarLayout.tsx",
+        "actualName": "NavbarLayout",
+        "exportName": "NavbarLayout",
+        "props": {
+          "navbarElement": {
+            "required": true,
+            "tsType": {
+              "name": "ReactNode"
+            },
+            "description": ""
+          },
+          "backgroundElement": {
+            "required": false,
+            "tsType": {
+              "name": "ReactNode"
+            },
+            "description": ""
+          },
+          "footer": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": ""
+          },
+          "footerText": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "footerCopyright": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "footerContent": {
+            "required": false,
+            "tsType": {
+              "name": "ReactNode"
+            },
+            "description": ""
+          },
+          "children": {
+            "required": false,
+            "tsType": {
+              "name": "ReactNode"
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "shared-layout-navbar--navbar-layout",
+          "name": "Navbar Layout",
+          "snippet": "function NavbarLayout() {\n    return (\n        <Component>\n            <StorybookTableContentComponent />\n        </Component>\n    );\n}"
+        }
+      ],
+      "import": "import {\n    NavbarLayout as Component,\n    StorybookNavbarComponent,\n    StorybookTableContentComponent,\n} from \"@package/ui\";"
+    },
+    "shared-navigation-navbar": {
+      "id": "shared-navigation-navbar",
+      "name": "Component",
+      "path": "../../packages/ui/src/Navigation/Navbar/Navbar.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "Navbar",
+        "definedInFile": "/home/runner/work/app-note-trainer/app-note-trainer/packages/ui/src/Navigation/Navbar/Navbar.tsx",
+        "actualName": "Navbar",
+        "exportName": "Navbar",
+        "props": {
+          "title": {
+            "required": true,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "centerElement": {
+            "required": false,
+            "tsType": {
+              "name": "ReactNode"
+            },
+            "description": ""
+          },
+          "endElement": {
+            "required": false,
+            "tsType": {
+              "name": "ReactNode"
+            },
+            "description": ""
+          },
+          "startElement": {
+            "required": false,
+            "tsType": {
+              "name": "ReactNode"
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "shared-navigation-navbar--standard",
+          "name": "Standard",
+          "snippet": "const Standard = () => <Component />;"
+        },
+        {
+          "id": "shared-navigation-navbar--with-components",
+          "name": "With Components",
+          "snippet": "const WithComponents = () => <Component endElement={<StorybookNavbarContentComponent />} />;"
+        }
+      ],
+      "import": "import { Navbar as Component, StorybookNavbarContentComponent } from \"@package/ui\";"
+    }
+  },
+  "meta": {
+    "docgen": "react-docgen",
+    "durationMs": 1500
+  }
+}

@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{a as t,t as n}from"./src-B3JyUmah.js";function r(){return{isPhone:t(`(max-width: 640px)`),isCompact:t(`(max-height: 630px)`),isMinimal:t(`(max-height: 490px)`)}}function i(){return(i=e((()=>{n()})))()}export{r as n,i as t};
