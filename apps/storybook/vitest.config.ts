@@ -79,6 +79,12 @@ export default defineConfig({
             enabled: true,
             headless: true,
             provider: playwright(),
+            // Vitest defaults the browser viewport to 414x896, which puts every story
+            // in the phone layout and hides the desktop branches of `useViewport`.
+            // 1200x900 matches @storybook/addon-vitest's own default dimensions, so
+            // stories render at the size the viewport addon assumes; individual
+            // stories opt into a narrower layout via `globals.viewport`.
+            viewport: { width: 1200, height: 900 },
             instances: [{ browser: "chromium" }],
           },
         },
