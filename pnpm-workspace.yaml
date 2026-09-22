@@ -96,7 +96,7 @@ catalogs:
     '@eslint/js': 10.0.1
     eslint: 10.10.0
     eslint-config-prettier: 10.1.8
-    eslint-plugin-formatjs: 6.6.3
+    eslint-plugin-formatjs: 8.0.5
     eslint-plugin-import-x: 4.17.1
     eslint-plugin-prettier: 5.5.6
     eslint-plugin-react: 7.37.5
@@ -105,7 +105,7 @@ catalogs:
     eslint-plugin-storybook: 10.6.0
     typescript-eslint: 8.70.0
     # typescript
-    typescript: 7.0.2
+    typescript: 6.0.3
     # tailwind
     tailwindcss: 4.3.3
     '@tailwindcss/aspect-ratio': 0.4.2
@@ -156,4 +156,4 @@ onlyBuiltDependencies:
 allowBuilds:
   esbuild: true
   sharp: true
-  unrs-resolver: false
+  unrs-resolver: true
