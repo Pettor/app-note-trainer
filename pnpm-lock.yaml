@@ -353,8 +353,8 @@ catalogs:
       version: 10.2.2
   validation:
     zod:
-      specifier: 4.6.4
-      version: 4.6.4
+      specifier: 4.6.5
+      version: 4.6.5
 
 overrides:
   '@tanstack/react-query': 5.102.8
@@ -578,7 +578,7 @@ importers:
         version: 5.0.1(@types/node@24.13.6)(@vitest/browser-playwright@5.0.1)(@vitest/coverage-v8@5.0.1)(@vitest/ui@5.0.1)(vite@8.3.0(@types/node@24.13.6)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))
       zod:
         specifier: catalog:validation
-        version: 4.6.4
+        version: 4.6.5
 
   apps/web:
     dependencies:
@@ -632,7 +632,7 @@ importers:
         version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
       zod:
         specifier: catalog:validation
-        version: 4.6.4
+        version: 4.6.5
     devDependencies:
       '@config/eslint':
         specifier: workspace:*
@@ -7324,8 +7324,8 @@ packages:
   zod@4.5.2:
     resolution: {integrity: sha512-XkYXCol10+ba/6F/cueWV+TezUeOqXW0hdeJt5CdXjTYeAgAQg5N03RQdJ80mhfFE72+pblvYMW4wy2Qp4Qbrg==}
 
-  zod@4.6.4:
-    resolution: {integrity: sha512-AXSD6hvGdvRjajG/l1cC+d6IrhH+sjmPKtYeQdJIK8MFJl3LyClzS+o/YsVC+zQZPupAaeH5skwwm8YqYH7BqA==}
+  zod@4.6.5:
+    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
 
 snapshots:
 
@@ -9927,7 +9927,7 @@ snapshots:
       jiti: 2.7.0
       magic-string: 0.30.21
       prettier: 3.9.6
-      zod: 4.6.4
+      zod: 4.6.5
     transitivePeerDependencies:
       - supports-color
 
@@ -9941,7 +9941,7 @@ snapshots:
       '@tanstack/router-utils': 1.162.3(supports-color@7.2.0)
       chokidar: 5.0.0
       unplugin: 3.3.0(esbuild@0.28.1)(rolldown@1.2.6)(rollup@4.62.2)(vite@8.3.0(@types/node@24.13.6)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))
-      zod: 4.6.4
+      zod: 4.6.5
     optionalDependencies:
       '@tanstack/react-router': 1.170.36(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       vite: 8.3.0(@types/node@24.13.6)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0)
@@ -14065,4 +14065,4 @@ snapshots:
 
   zod@4.5.2: {}
 
-  zod@4.6.4: {}
+  zod@4.6.5: {}
