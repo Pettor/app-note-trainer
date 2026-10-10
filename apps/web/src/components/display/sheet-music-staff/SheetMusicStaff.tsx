@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { defineMessages, useIntl } from "react-intl";
+import { defineMessage, defineMessages, useIntl } from "react-intl";
 import { SheetMusicStaffNote } from "./SheetMusicStaffNote";
 import { useSheetMusicStaff } from "./UseSheetMusicStaff";
 import type { StaffNoteData } from "./UseSheetMusicStaff";
@@ -7,11 +7,11 @@ import type { KeySignatureInfo } from "~/core/game/MusicScale";
 import type { Staff } from "~/core/practice-settings/PracticeSettings";
 
 const messages = defineMessages({
-  ariaLabel: {
+  ariaLabel: defineMessage<{ clefName: string }>({
     id: "XmVdlT",
     description: "SheetMusicStaff: SVG aria-label — describes the staff type to screen readers",
     defaultMessage: "{clefName} clef staff",
-  },
+  }),
   trebleClefName: {
     id: "s99SGX",
     description: "SheetMusicStaff: treble clef name for aria-label",

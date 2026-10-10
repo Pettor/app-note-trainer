@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { Button } from "@heroui/react";
 import clsx from "clsx";
-import { defineMessages, useIntl } from "react-intl";
+import { defineMessage, defineMessages, useIntl } from "react-intl";
 import { scaleDisplayName, scaleId } from "~/core/game/MusicScale";
 import type { Scale } from "~/core/game/MusicScale";
 import { useViewport } from "~/core/UseViewport";
@@ -12,11 +12,11 @@ const messages = defineMessages({
     description: "PracticeGuessScale: heading above the scale choice buttons",
     defaultMessage: "What scale is this?",
   },
-  choiceAriaLabel: {
+  choiceAriaLabel: defineMessage<{ name: string }>({
     id: "aZzg7/",
     description: "PracticeGuessScale: aria-label for a scale choice button",
     defaultMessage: "Guess {name}",
-  },
+  }),
 });
 
 export interface PracticeGuessScaleProps {

@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import { Accordion, Switch } from "@heroui/react";
-import { defineMessages, useIntl } from "react-intl";
+import { defineMessage, defineMessages, useIntl } from "react-intl";
 import type { Duration } from "~/core/practice-settings/PracticeSettings";
 
 const messages = defineMessages({
@@ -14,11 +14,11 @@ const messages = defineMessages({
     description: "HomeSessionCard: timer row description",
     defaultMessage: "Pressure builds reflexes.",
   },
-  on: {
+  on: defineMessage<{ duration: number }>({
     id: "7kitNA",
     description: "HomeSessionCard: timer on state label",
     defaultMessage: "On — {duration}s per note",
-  },
+  }),
   off: {
     id: "uWV4Fg",
     description: "HomeSessionCard: timer off state label",

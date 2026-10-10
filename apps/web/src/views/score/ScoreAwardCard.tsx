@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { defineMessages, useIntl } from "react-intl";
+import { defineMessage, defineMessages, useIntl } from "react-intl";
 
 const messages = defineMessages({
   awardUnlocked: {
@@ -12,12 +12,12 @@ const messages = defineMessages({
     description: "ScoreAwardCard: award title",
     defaultMessage: "Note Whisperer",
   },
-  subtitle: {
+  subtitle: defineMessage<{ fastest: string }>({
     id: "RWGoY7",
     description: "ScoreAwardCard: subtitle with fastest time",
     defaultMessage:
       "Every note identified correctly — your fastest was {fastest}s. Try a harder key, or speed up the timer.",
-  },
+  }),
 });
 
 const CONFETTI_DOTS = [

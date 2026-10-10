@@ -3,7 +3,7 @@ import { ArrowRightIcon, HomeIcon } from "@heroicons/react/24/solid";
 import { Button } from "@heroui/react";
 import { useEventListener } from "@package/react";
 import { GithubIcon, LinkedInIcon, NavbarLayout } from "@package/ui";
-import { defineMessages, useIntl } from "react-intl";
+import { defineMessage, defineMessages, useIntl } from "react-intl";
 import { HomeHero } from "./HomeHero";
 import { HomeSessionCard } from "./HomeSessionCard";
 import { SettingsModalController } from "~/components/feedback/settings-modal/SettingsModalController";
@@ -30,11 +30,11 @@ const messages = defineMessages({
     description: "HomeView: footer credit text",
     defaultMessage: "Made with ♪ by Petter Hancock",
   },
-  footerCopyright: {
+  footerCopyright: defineMessage<{ year: number }>({
     id: "BESlDU",
     description: "HomeView: footer copyright text",
     defaultMessage: "© {year} Petter Hancock — All rights reserved",
-  },
+  }),
   footerHomepage: {
     id: "SQ0GhH",
     description: "HomeView: Homepage link aria-label",

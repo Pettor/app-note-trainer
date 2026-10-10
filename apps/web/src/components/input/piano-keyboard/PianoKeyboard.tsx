@@ -1,6 +1,6 @@
 import type { PointerEvent, ReactElement } from "react";
 import clsx from "clsx";
-import { defineMessages, useIntl } from "react-intl";
+import { defineMessage, defineMessages, useIntl } from "react-intl";
 import { PianoKeyboardBlackKey } from "./PianoKeyboardBlackKey";
 import { PianoKeyboardWhiteKey } from "./PianoKeyboardWhiteKey";
 import type { PianoKeyData } from "./UsePianoKeyboard";
@@ -14,11 +14,11 @@ const messages = defineMessages({
     description: "PianoKeyboard: aria-label for the piano keyboard container",
     defaultMessage: "Piano keyboard",
   },
-  keyLabel: {
+  keyLabel: defineMessage<{ note: string }>({
     id: "opqMR4",
     description: "PianoKeyboard: aria-label for an individual key, {note} e.g. 'C4' or 'C sharp 4'",
     defaultMessage: "{note} key",
-  },
+  }),
 });
 
 function formatNoteAriaLabel(key: PianoKeyData): string {
