@@ -1,7 +1,7 @@
 import { type ReactElement, useCallback, useRef } from "react";
 import { BoltIcon, CheckIcon, ClockIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { Button } from "@heroui/react";
-import { defineMessages, useIntl } from "react-intl";
+import { defineMessage, defineMessages, useIntl } from "react-intl";
 import { ScoreAwardCard } from "./ScoreAwardCard";
 import { ScoreHeroCard } from "./ScoreHeroCard";
 import { ScoreMissDetail } from "./ScoreMissDetail";
@@ -19,11 +19,11 @@ const messages = defineMessages({
     description: "ScoreView: total time stat label",
     defaultMessage: "Total time",
   },
-  totalTimeSub: {
+  totalTimeSub: defineMessage<{ avg: string }>({
     id: "Qx8qNK",
     description: "ScoreView: avg per note sub-label",
     defaultMessage: "{avg}s per note",
-  },
+  }),
   fastestAnswer: {
     id: "QhY7Th",
     description: "ScoreView: fastest answer stat label",

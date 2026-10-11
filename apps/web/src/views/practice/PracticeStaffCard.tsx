@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import clsx from "clsx";
-import { defineMessages, useIntl } from "react-intl";
+import { defineMessage, defineMessages, useIntl } from "react-intl";
 import { SheetMusicStaff } from "~/components/display/sheet-music-staff/SheetMusicStaff";
 import type { StaffNoteData } from "~/components/display/sheet-music-staff/UseSheetMusicStaff";
 import type { KeySignatureInfo } from "~/core/game/MusicScale";
@@ -18,16 +18,16 @@ const messages = defineMessages({
     description: "PracticeStaffCard: bass clef label",
     defaultMessage: "Bass",
   },
-  clefLabel: {
+  clefLabel: defineMessage<{ name: string }>({
     id: "4EACmJ",
     description: "PracticeStaffCard: clef header label, e.g. 'Treble clef'",
     defaultMessage: "{name} clef",
-  },
-  keyOfLabel: {
+  }),
+  keyOfLabel: defineMessage<{ key: string }>({
     id: "eORmmz",
     description: "PracticeStaffCard: key signature label",
     defaultMessage: "Key of {key}",
-  },
+  }),
   identifyPrompt: {
     id: "K2MG7W",
     description: "PracticeStaffCard: tap-prompt below staff when waiting for input",

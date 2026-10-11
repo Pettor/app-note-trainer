@@ -1,5 +1,5 @@
 import type { ReactElement, ReactNode } from "react";
-import { defineMessages, useIntl } from "react-intl";
+import { defineMessage, defineMessages, useIntl } from "react-intl";
 import type { Duration, LedgerDepth, NoteRange, Staff } from "~/core/practice-settings/PracticeSettings";
 
 const messages = defineMessages({
@@ -88,11 +88,11 @@ const messages = defineMessages({
     description: "HomeSessionCard: summary pill when sharps are off",
     defaultMessage: "Naturals only",
   },
-  pillTimerOn: {
+  pillTimerOn: defineMessage<{ duration: number }>({
     id: "RVnfVV",
     description: "HomeSessionCard: summary pill when timer is on",
     defaultMessage: "{duration}s timer",
-  },
+  }),
   pillTimerOff: {
     id: "HyYeWk",
     description: "HomeSessionCard: summary pill when timer is off",

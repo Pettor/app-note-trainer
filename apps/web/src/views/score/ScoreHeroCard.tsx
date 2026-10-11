@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
-import { defineMessages, useIntl } from "react-intl";
+import { defineMessage, defineMessages, useIntl } from "react-intl";
+import type { MessageTag } from "react-intl";
 import { useViewport } from "~/core/UseViewport";
 
 const messages = defineMessages({
@@ -18,16 +19,16 @@ const messages = defineMessages({
     description: "ScoreHeroCard: heading for a non-perfect run",
     defaultMessage: "Nice work.",
   },
-  subtitlePerfect: {
+  subtitlePerfect: defineMessage<{ correct: number; total: number; strong: MessageTag }>({
     id: "rsFvdS",
     description: "ScoreHeroCard: subtitle for a perfect run",
     defaultMessage: "You got <strong>{correct} of {total}</strong> notes. Not a single miss — keep that streak going.",
-  },
-  subtitleNice: {
+  }),
+  subtitleNice: defineMessage<{ correct: number; total: number; strong: MessageTag }>({
     id: "Tdvn0B",
     description: "ScoreHeroCard: subtitle for a non-perfect run",
     defaultMessage: "You got <strong>{correct} of {total}</strong> notes. Review the misses below to lock them in.",
-  },
+  }),
   flawlessRun: {
     id: "udCTFL",
     description: "ScoreHeroCard: eyebrow label for a perfect run",

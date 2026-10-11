@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import { Switch } from "@heroui/react";
-import { defineMessages, useIntl } from "react-intl";
+import { defineMessage, defineMessages, useIntl } from "react-intl";
 import type { LedgerDepth } from "~/core/practice-settings/PracticeSettings";
 
 const messages = defineMessages({
@@ -14,11 +14,11 @@ const messages = defineMessages({
     description: "HomeSessionCard: ledger lines row description",
     defaultMessage: "Notes above or below the staff.",
   },
-  on: {
+  on: defineMessage<{ depth: string }>({
     id: "EgYuyz",
     description: "HomeSessionCard: ledger lines on state label",
     defaultMessage: "On — {depth} above & below",
-  },
+  }),
   off: {
     id: "kg64DX",
     description: "HomeSessionCard: ledger lines off state label",
