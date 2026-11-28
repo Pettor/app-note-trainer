@@ -1,0 +1,3 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{t,u as n}from"./src-D14SnSkt.js";import{n as r,t as i}from"./AboutDetails-494woYh_.js";var a,o,s,c;function l(){return(l=e((()=>{t(),r(),a={component:i,title:`Feedback/About`,decorators:[n]},o={appName:`Note Trainer`,appVersion:`1.0.0`},s={args:o},c=[`Details`],s.parameters={...s.parameters,docs:{...s.parameters?.docs,source:{originalSource:`{
+  args: defaultArgs
+}`,...s.parameters?.docs?.source}}}})))()}l();export{s as Details,c as __namedExportsOrder,a as default};
